@@ -5,7 +5,7 @@ plugins {
     application
 }
 
-group = "com.github"
+group = "ru.hse.sd.cli"
 version = "1.0-SNAPSHOT"
 
 repositories {
