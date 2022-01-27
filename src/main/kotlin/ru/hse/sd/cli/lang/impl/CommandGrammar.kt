@@ -1,14 +1,11 @@
 package ru.hse.sd.cli.lang.impl
 
-import com.github.h0tk3y.betterParse.combinators.and
-import com.github.h0tk3y.betterParse.combinators.map
-import com.github.h0tk3y.betterParse.combinators.optional
+import com.github.h0tk3y.betterParse.combinators.*
 import com.github.h0tk3y.betterParse.grammar.Grammar
 import com.github.h0tk3y.betterParse.lexer.literalToken
 import com.github.h0tk3y.betterParse.lexer.regexToken
 import com.github.h0tk3y.betterParse.parser.Parser
-import ru.hse.sd.cli.command.CatCommand
-import ru.hse.sd.cli.command.Command
+import ru.hse.sd.cli.command.*
 
 object CommandGrammar : Grammar<Command>() {
     @Suppress("unused")
@@ -22,9 +19,21 @@ object CommandGrammar : Grammar<Command>() {
     val quoteToken by regexToken("'[^']*'")
     val doubleQuoteToken by regexToken("\"[^\"]*\"")
 
-    val catTerm: Parser<Command> by catToken and optional(identifier) map { CatCommand(it.t2?.text) }
-    val term: Parser<Command> by catTerm
+    val argument by identifier or quoteToken or doubleQuoteToken map {
+        when (it.type) {
+            identifier -> it.text
+            quoteToken -> it.text.removeSurrounding("'")
+            doubleQuoteToken -> it.text.removeSurrounding("\"")
+            else -> throw IllegalArgumentException()
+        }
+    }
+    val echoTerm by echoToken and zeroOrMore(argument) map { EchoCommand(it.t2) }
+    val catTerm by catToken and optional(argument) map { CatCommand(it.t2) }
+    val wcTerm by wcToken and optional(argument) map { WcCommand(it.t2) }
+    val pwdTerm by pwdToken and optional(argument) map { PwdCommand }
+    val exitTerm by exitToken and optional(argument) map { ExitCommand }
+    val externalCommandTerm by argument map { ExternalCommand(it) }
+    val term by echoTerm or catTerm or wcTerm or pwdTerm or exitTerm or externalCommandTerm
 
     override val rootParser: Parser<Command> by term
-
 }
