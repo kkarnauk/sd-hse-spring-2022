@@ -5,6 +5,12 @@ import com.github.h0tk3y.betterParse.parser.parseToEnd
 import ru.hse.sd.cli.command.Command
 import ru.hse.sd.cli.lang.Parser
 
+/**
+ * Implements a bash command parser using [CommandGrammar]
+ */
 class CommandParser : Parser {
+    /**
+     * Implements a bash command parsing using [CommandGrammar]
+     */
     override fun parse(tokens: TokenMatchesSequence): Command = CommandGrammar.parseToEnd(tokens)
 }
