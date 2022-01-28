@@ -4,4 +4,8 @@ sealed interface CommandResult
 
 object ExitResult : CommandResult
 
-data class CodeResult(val code: Int) : CommandResult
+data class CodeResult(val code: Int) : CommandResult {
+    companion object {
+        val success = CodeResult(0)
+    }
+}

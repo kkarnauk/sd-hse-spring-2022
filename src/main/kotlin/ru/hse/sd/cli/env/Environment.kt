@@ -6,6 +6,8 @@ class Environment {
     val workingDirectory: Path
         get() = TODO()
 
+    fun resolvePath(path: Path): Path = if (path.isAbsolute) path else workingDirectory.resolve(path)
+
     fun getVariable(name: String): String = TODO()
 
     fun putVariable(name: String, value: String) {
