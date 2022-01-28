@@ -6,7 +6,7 @@ class Environment {
     private val variables = mutableMapOf<String, String>()
 
     val workingDirectory: Path
-        get() = Path.of("/").toAbsolutePath()
+        get() = Path.of("").toAbsolutePath()
 
     fun resolvePath(path: Path): Path = if (path.isAbsolute) path else workingDirectory.resolve(path)
 

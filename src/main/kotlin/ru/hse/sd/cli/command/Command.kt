@@ -88,7 +88,7 @@ data class WcCommand(val argument: String?) : Command() {
 
 object PwdCommand : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult {
-        context.output.write(env.workingDirectory.toString())
+        context.output.write(env.workingDirectory.toString() + System.lineSeparator())
         return CodeResult.success
     }
 }
