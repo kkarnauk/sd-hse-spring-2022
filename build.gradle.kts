@@ -5,8 +5,12 @@ plugins {
     application
 }
 
-group = "ru.hse.sd.cli"
+group = "ru.hse.sd"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClass.set("ru.hse.sd.cli.MainKt")
+}
 
 repositories {
     mavenCentral()
@@ -24,8 +28,4 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-application {
-    mainClass.set("MainKt")
 }
