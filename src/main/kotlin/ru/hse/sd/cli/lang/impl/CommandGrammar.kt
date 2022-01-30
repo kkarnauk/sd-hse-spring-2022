@@ -19,7 +19,7 @@ object CommandGrammar : Grammar<Command>() {
     val wcToken by literalToken("wc")
     val pwdToken by literalToken("pwd")
     val exitToken by literalToken("exit")
-    val identifier by regexToken("\\w+")
+    val identifier by regexToken("(\\w|\\.|/)+")
     val quoteToken by regexToken("'[^']*'")
     val doubleQuoteToken by regexToken("\"[^\"]*\"")
 

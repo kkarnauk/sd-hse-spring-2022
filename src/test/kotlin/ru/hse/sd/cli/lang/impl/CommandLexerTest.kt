@@ -77,6 +77,12 @@ internal class CommandLexerTest {
                     CommandGrammar.doubleQuoteToken to "\"text 'wow'\""
                 )
             ),
+            Arguments.of(
+                "cat abc/hello.txt", listOf(
+                    CommandGrammar.catToken to "cat",
+                    CommandGrammar.identifier to "abc/hello.txt"
+                )
+            ),
         )
     }
 }
