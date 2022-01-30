@@ -20,6 +20,7 @@ dependencies {
     implementation("com.github.h0tk3y.betterParse:better-parse:0.4.3")
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.1")
+    testImplementation("io.mockk:mockk:1.12.2")
 }
 
 tasks.test {
