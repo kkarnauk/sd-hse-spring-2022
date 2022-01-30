@@ -16,10 +16,10 @@ sealed class Command {
 
     protected fun withValidatingFile(file: File, error: OutputStream, onSuccess: () -> CodeResult): CodeResult {
         return if (!file.isFile) {
-            error.write("$name: ${file.name}: Is not a file")
+            error.write("$name: ${file.name}: Is not a file${System.lineSeparator()}")
             CodeResult(1)
         } else if (!file.exists()) {
-            error.write("$name: ${file.name}: No such file or directory")
+            error.write("$name: ${file.name}: No such file or directory${System.lineSeparator()}")
             CodeResult(1)
         } else {
             onSuccess()
