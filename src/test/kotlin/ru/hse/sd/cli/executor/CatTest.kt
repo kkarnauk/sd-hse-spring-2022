@@ -30,7 +30,6 @@ class CatTest : CommandExecutorTest() {
     }
 
     @Test
-    @Disabled
     fun `Simple rus cat test`() = withTestContext {
         testFullOutput("cat $rusFile", rusLorem)
     }
