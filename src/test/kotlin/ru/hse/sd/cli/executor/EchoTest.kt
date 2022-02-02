@@ -28,7 +28,6 @@ class EchoTest : CommandExecutorTest() {
     }
 
     @Test
-    @Disabled
     fun `Echo token`() = withTestContext {
         test("echo echo", "echo")
         test("echo cat", "cat")
@@ -42,7 +41,6 @@ class EchoTest : CommandExecutorTest() {
     }
 
     @Test
-    @Disabled
     fun `Echo russian`() = withTestContext {
         test("echo Ра си я", "Ра си я")
     }

@@ -19,16 +19,16 @@ object CommandGrammar : Grammar<Command>() {
     internal val wcToken by literalToken("wc")
     internal val pwdToken by literalToken("pwd")
     internal val exitToken by literalToken("exit")
-    internal val identifier by regexToken("(\\w|\\.|/)+")
+    internal val weakCommandName by catToken or echoToken or wcToken or pwdToken or exitToken
     internal val quoteToken by regexToken("'[^']*'")
     internal val doubleQuoteToken by regexToken("\"[^\"]*\"")
+    internal val identifier by regexToken("\\S+")
 
-    private val literal by identifier or quoteToken or doubleQuoteToken map {
+    private val literal by identifier or quoteToken or doubleQuoteToken or weakCommandName map {
         when (it.type) {
-            identifier -> it.text
             quoteToken -> it.text.removeSurrounding("'")
             doubleQuoteToken -> it.text.removeSurrounding("\"")
-            else -> throw IllegalArgumentException()
+            else -> it.text
         }
     }
     private val echoTerm by echoToken and zeroOrMore(literal) map { EchoCommand(it.t2) }
