@@ -96,30 +96,35 @@ data class WcCommand(
     private data class WcResult(
         val linesCount: Int,
         val wordsCount: Int,
-        val symbolsCount: Int
+        val byteCount: Int
     ) {
-        override fun toString(): String = "\t$linesCount\t$wordsCount\t$symbolsCount"
+        override fun toString(): String = "\t$linesCount\t$wordsCount\t$byteCount"
     }
 
     private val whitespaceRegex: Regex = Regex("\\s")
 
-    private fun wc(text: String): WcResult = WcResult(
-        text.lines().size,
-        text.split(whitespaceRegex).filterNot { it.isEmpty() }.size,
-        text.length
-    )
+    private fun wc(bytes: ByteArray): WcResult {
+        val separator = System.lineSeparator()
+        return WcResult(
+            bytes.asSequence().windowed(size = separator.length, step = 1).count { it.string == separator },
+            String(bytes).split(whitespaceRegex).filterNot { it.isEmpty() }.size,
+            bytes.size
+        )
+    }
+
+    private val List<Byte>.string get() = joinToString("") { it.toInt().toChar().toString() }
 
     override fun execute(context: IoContext, env: Environment): CommandResult {
         return if (argument != null) {
             val file = env.resolvePath(Path.of(argument)).toFile()
             withValidatingFile(file, context.error) {
-                val wcResult = wc(file.readText())
+                val wcResult = wc(file.readBytes())
                 context.output.write(wcResult.toString())
                 context.output.write(System.lineSeparator())
                 CodeResult.success
             }
         } else {
-            val wcResult = wc(String(context.input.readAllBytes()))
+            val wcResult = wc(context.input.readAllBytes())
             context.output.write(wcResult.toString())
             context.output.write(System.lineSeparator())
             CodeResult.success

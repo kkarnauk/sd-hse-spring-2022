@@ -5,7 +5,6 @@ import io.mockk.mockkConstructor
 import io.mockk.unmockkAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ru.hse.sd.cli.env.Environment
 import java.io.File
@@ -30,21 +29,5 @@ class PwdTest : CommandExecutorTest() {
     @Test
     fun `Simple pwd`() = withTestContext {
         test("pwd", dir)
-    }
-
-    @Test
-    @Disabled
-    fun `Pwd with arguments`() = withTestContext {
-        test("pwd 123", dir)
-        test("pwd 123 123", dir)
-        test("pwd ../", dir)
-    }
-
-    @Test
-    @Disabled
-    fun `Pwd with tokens`() = withTestContext {
-        test("pwd echo", dir)
-        test("pwd exit pwd", dir)
-        test("pwd firefox cat", dir)
     }
 }
