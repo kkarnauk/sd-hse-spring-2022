@@ -97,6 +97,19 @@ object ExitCommand : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult = ExitResult
 }
 
-data class ExternalCommand(override val name: String) : Command() {
-    override fun execute(context: IoContext, env: Environment): CommandResult = TODO()
+data class ExternalCommand(
+    override val name: String,
+    val args: List<String>
+) : Command() {
+    override fun execute(context: IoContext, env: Environment): CommandResult {
+        val process = ProcessBuilder().apply {
+            command(name, *args.toTypedArray())
+            environment() += env.variables
+        }.start()
+        context.input.transferTo(process.outputStream)
+        process.waitFor()
+        process.inputStream.transferTo(context.output)
+        process.errorStream.transferTo(context.error)
+        return CodeResult(process.exitValue())
+    }
 }

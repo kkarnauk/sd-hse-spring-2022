@@ -36,7 +36,7 @@ object CommandGrammar : Grammar<Command>() {
     val wcTerm by wcToken and optional(literal) map { WcCommand(it.t2) }
     val pwdTerm by pwdToken and optional(literal) map { PwdCommand }
     val exitTerm by exitToken and optional(literal) map { ExitCommand }
-    val externalCommandTerm by literal map { ExternalCommand(it) }
+    val externalCommandTerm by literal and zeroOrMore(literal) map { (name, args) -> ExternalCommand(name, args) }
     val term by echoTerm or catTerm or wcTerm or pwdTerm or exitTerm or externalCommandTerm
 
     override val rootParser: Parser<Command> by term
