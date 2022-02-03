@@ -177,3 +177,11 @@ data class ExternalCommand(
         return CodeResult(process.exitValue())
     }
 }
+
+/**
+ * Represents command that does nothing, usually represents empty line in cli
+ * Does not do anything with neither input, output nor error stream
+ */
+object EmptyCommand : Command() {
+    override fun execute(context: IoContext, env: Environment): CommandResult = CodeResult.success
+}
