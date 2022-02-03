@@ -1,6 +1,5 @@
 package ru.hse.sd.cli.executor
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ru.hse.sd.cli.command.CodeResult
 import ru.hse.sd.cli.command.CommandResult
@@ -22,9 +21,8 @@ class CatTest : CommandExecutorTest() {
     }
 
     @Test
-    @Disabled
     fun `No file cat test`() = withTestContext {
-        test("cat src/test/does-not-exist", error = "cat: does-not-exist: No such file or directory") {
+        test("cat src/test/does-not-exist", error = "cat: does-not-exist: Is not a file") {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }
