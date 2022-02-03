@@ -4,7 +4,7 @@ import com.github.h0tk3y.betterParse.lexer.TokenMatchesSequence
 import ru.hse.sd.cli.command.Command
 
 /**
- * Interface for the bash command parser
+ * Interface for the bash-like CLI parser
  */
 interface Parser {
     /**
