@@ -35,7 +35,7 @@ internal class CommandParserTest {
             Arguments.of("wc filename", WcCommand("filename")),
             Arguments.of("pwd", PwdCommand),
             Arguments.of("exit", ExitCommand),
-            Arguments.of("firefox", ExternalCommand("firefox")),
+            Arguments.of("cd myProject", ExternalCommand("cd", listOf("myProject"))),
         )
     }
 }
