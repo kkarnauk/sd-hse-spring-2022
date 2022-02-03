@@ -2,11 +2,12 @@ package ru.hse.sd.cli
 
 import ru.hse.sd.cli.command.CommandExecutor
 import ru.hse.sd.cli.command.ExitResult
+import java.io.InputStream
 
 private const val commandLinePrefix = ":> "
 
 fun main() {
-    val executor = CommandExecutor(System.`in`, System.out, System.err)
+    val executor = CommandExecutor(InputStream.nullInputStream(), System.out, System.err)
     while (true) {
         print(commandLinePrefix)
         val command = readLine()
