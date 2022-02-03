@@ -10,14 +10,19 @@ fun main() {
     val executor = CommandExecutor(InputStream.nullInputStream(), System.out, System.err)
     while (true) {
         print(commandLinePrefix)
-        val command = readLine()
-        if (command != null) {
-            val result = executor.execute(command)
-            if (result is ExitResult) {
-                break
+        try {
+            val command = readLine()
+            if (command != null) {
+                val result = executor.execute(command)
+                if (result is ExitResult) {
+                    break
+                }
+            } else {
+                println("Couldn't read a command.")
             }
-        } else {
-            println("Couldn't read a command.")
+        } catch (e: Throwable) {
+            println(e.message)
+            println("\nPlease, try again!")
         }
     }
 }
