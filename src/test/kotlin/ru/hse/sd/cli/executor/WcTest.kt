@@ -2,20 +2,24 @@ package ru.hse.sd.cli.executor
 
 import org.junit.jupiter.api.Test
 import ru.hse.sd.cli.command.CodeResult
+import java.nio.file.Files
+import java.nio.file.Path
 import kotlin.test.assertTrue
 
 @Suppress("SpellCheckingInspection")
 class WcTest : CommandExecutorTest() {
     @Test
     fun `Simple eng wc`() = withTestContext {
-        val bytes = 54 + 3 * System.lineSeparator().length
-        test("wc src/test/resources/lorem.txt", "\t2\t8\t$bytes")
+        val path = "src/test/resources/lorem.txt"
+        val bytes = Files.readAllBytes(Path.of(path)).size
+        test("wc $path", "\t2\t8\t$bytes")
     }
 
     @Test
     fun `Simple rus wc`() = withTestContext {
-        val bytes = 101 + (3 * System.lineSeparator().length)
-        test("wc src/test/resources/лорем.txt", "\t2\t8\t$bytes")
+        val path = "src/test/resources/лорем.txt"
+        val bytes = Files.readAllBytes(Path.of(path)).size
+        test("wc $path", "\t2\t8\t$bytes")
     }
 
     @Test
