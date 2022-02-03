@@ -8,10 +8,11 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ru.hse.sd.cli.env.Environment
+import java.io.File
 import java.nio.file.Path
 
 class PwdTest : CommandExecutorTest() {
-    private val dir = "home/user/dir"
+    private val dir = listOf("home", "user", "dir").joinToString(separator = File.separator)
 
     @BeforeEach
     fun `Mock environment`() {
