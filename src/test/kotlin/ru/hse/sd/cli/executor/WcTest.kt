@@ -8,12 +8,14 @@ import kotlin.test.assertTrue
 class WcTest : CommandExecutorTest() {
     @Test
     fun `Simple eng wc`() = withTestContext {
-        test("wc src/test/resources/lorem.txt", "\t2\t8\t57")
+        val bytes = 54 + 3 * System.lineSeparator().length
+        test("wc src/test/resources/lorem.txt", "\t2\t8\t$bytes")
     }
 
     @Test
     fun `Simple rus wc`() = withTestContext {
-        test("wc src/test/resources/лорем.txt", "\t2\t8\t104")
+        val bytes = 101 + (3 * System.lineSeparator().length)
+        test("wc src/test/resources/лорем.txt", "\t2\t8\t$bytes")
     }
 
     @Test
