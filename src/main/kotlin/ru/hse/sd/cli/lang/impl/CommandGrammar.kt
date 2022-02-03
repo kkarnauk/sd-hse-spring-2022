@@ -13,15 +13,15 @@ import ru.hse.sd.cli.command.*
  */
 object CommandGrammar : Grammar<Command>() {
     @Suppress("unused")
-    private val wsToken by regexToken("\\s+", ignore = true)
-    private val catToken by literalToken("cat")
-    private val echoToken by literalToken("echo")
-    private val wcToken by literalToken("wc")
-    private val pwdToken by literalToken("pwd")
-    private val exitToken by literalToken("exit")
-    private val identifier by regexToken("(\\w|\\.|/)+")
-    private val quoteToken by regexToken("'[^']*'")
-    private val doubleQuoteToken by regexToken("\"[^\"]*\"")
+    internal val wsToken by regexToken("\\s+", ignore = true)
+    internal val catToken by literalToken("cat")
+    internal val echoToken by literalToken("echo")
+    internal val wcToken by literalToken("wc")
+    internal val pwdToken by literalToken("pwd")
+    internal val exitToken by literalToken("exit")
+    internal val identifier by regexToken("(\\w|\\.|/)+")
+    internal val quoteToken by regexToken("'[^']*'")
+    internal val doubleQuoteToken by regexToken("\"[^\"]*\"")
 
     private val literal by identifier or quoteToken or doubleQuoteToken map {
         when (it.type) {
