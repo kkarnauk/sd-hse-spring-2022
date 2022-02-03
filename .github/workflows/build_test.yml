@@ -4,9 +4,9 @@ name: Gradle Build and Tests
 
 on:
     push:
-        branches: [main]
+        branches: [main, hw02, cli]
     pull_request:
-        branches: [main]
+        branches: [main, hw02, cli]
 
 jobs:
     gradle:
