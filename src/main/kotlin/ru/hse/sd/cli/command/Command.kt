@@ -7,11 +7,23 @@ import java.io.File
 import java.io.OutputStream
 import java.nio.file.Path
 
+/**
+ * Represents a command in CLI that can be executed by [execute].
+ * Each command has its own unique [name].
+ */
 sealed class Command {
+    /**
+     * Name of the command.
+     */
     open val name: String by lazy {
         this::class.simpleName?.removeSurrounding(prefix = "", suffix = "Command")?.lowercase() ?: "unknown command"
     }
 
+    /**
+     * Main method that executes the command with provided [context] and [env].
+     * @param context input/output/error streams that used while executing.
+     * @param env execution environment that used to get variables and current working directory.
+     */
     abstract fun execute(context: IoContext, env: Environment): CommandResult
 
     protected fun withValidatingFile(file: File, error: OutputStream, onSuccess: () -> CodeResult): CodeResult {
@@ -27,7 +39,16 @@ sealed class Command {
     }
 }
 
-data class EchoCommand(val args: List<String>) : Command() {
+/**
+ * Represents the `echo`-command in CLI.
+ * Takes a message from [args] and sends it to output, ignoring input.
+ */
+data class EchoCommand(
+    /**
+     * Strings to be printed to output, separated by a space.
+     */
+    val args: List<String>
+) : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult {
         val message = args.joinToString(separator = " ", postfix = System.lineSeparator())
         context.output.write(message)
@@ -35,7 +56,17 @@ data class EchoCommand(val args: List<String>) : Command() {
     }
 }
 
-data class CatCommand(val argument: String?) : Command() {
+/**
+ * Represents the `cat`-command in CLI.
+ * Takes a file as [argument] or a message from input and sends it to output.
+ */
+data class CatCommand(
+    /**
+     * Possible name of the file, contents of which are printed to output.
+     * If the file is not provided, then input is used instead.
+     */
+    val argument: String?
+) : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult {
         return if (argument != null) {
             val file = env.resolvePath(Path.of(argument)).toFile()
@@ -50,7 +81,18 @@ data class CatCommand(val argument: String?) : Command() {
     }
 }
 
-data class WcCommand(val argument: String?) : Command() {
+/**
+ * Represents the `wc`-command in CLI.
+ * Takes a file as [argument] or a message from input and counts lines, words and symbols in it.
+ */
+data class WcCommand(
+    /**
+     * Possible name of the file that used to count lines, words and symbols in it.
+     * All this information is sent to output.
+     * If the file is not provided, then input is used instead.
+     */
+    val argument: String?
+) : Command() {
     private data class WcResult(
         val linesCount: Int,
         val wordsCount: Int,
@@ -68,7 +110,6 @@ data class WcCommand(val argument: String?) : Command() {
     )
 
     override fun execute(context: IoContext, env: Environment): CommandResult {
-        // TODO copy-paste
         return if (argument != null) {
             val file = env.resolvePath(Path.of(argument)).toFile()
             withValidatingFile(file, context.error) {
@@ -86,6 +127,10 @@ data class WcCommand(val argument: String?) : Command() {
     }
 }
 
+/**
+ * Represents the `pwd`-command in CLI.
+ * Prints the current working directory to output.
+ */
 object PwdCommand : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult {
         context.output.write(env.workingDirectory.toString() + System.lineSeparator())
@@ -93,12 +138,26 @@ object PwdCommand : Command() {
     }
 }
 
+/**
+ * Represents the `exit`-command in CLI.
+ * Exists CLI.
+ */
 object ExitCommand : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult = ExitResult
 }
 
+/**
+ * Represents all other external commands in CLI.
+ * It tries to invoke an external command, accessible from the terminal, with [name] and [args].
+ */
 data class ExternalCommand(
+    /**
+     * Name of the process to be executed.
+     */
     override val name: String,
+    /**
+     * Arguments to be used running the process.
+     */
     val args: List<String>
 ) : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult {

@@ -8,22 +8,22 @@ import com.github.h0tk3y.betterParse.parser.Parser
 import ru.hse.sd.cli.command.*
 
 /**
- * Bash command grammar.
+ * Bash-like CLI command grammar.
  * Can be used for lexing and parsing.
  */
 object CommandGrammar : Grammar<Command>() {
     @Suppress("unused")
-    val wsToken by regexToken("\\s+", ignore = true)
-    val catToken by literalToken("cat")
-    val echoToken by literalToken("echo")
-    val wcToken by literalToken("wc")
-    val pwdToken by literalToken("pwd")
-    val exitToken by literalToken("exit")
-    val identifier by regexToken("(\\w|\\.|/)+")
-    val quoteToken by regexToken("'[^']*'")
-    val doubleQuoteToken by regexToken("\"[^\"]*\"")
+    private val wsToken by regexToken("\\s+", ignore = true)
+    private val catToken by literalToken("cat")
+    private val echoToken by literalToken("echo")
+    private val wcToken by literalToken("wc")
+    private val pwdToken by literalToken("pwd")
+    private val exitToken by literalToken("exit")
+    private val identifier by regexToken("(\\w|\\.|/)+")
+    private val quoteToken by regexToken("'[^']*'")
+    private val doubleQuoteToken by regexToken("\"[^\"]*\"")
 
-    val literal by identifier or quoteToken or doubleQuoteToken map {
+    private val literal by identifier or quoteToken or doubleQuoteToken map {
         when (it.type) {
             identifier -> it.text
             quoteToken -> it.text.removeSurrounding("'")
@@ -31,13 +31,15 @@ object CommandGrammar : Grammar<Command>() {
             else -> throw IllegalArgumentException()
         }
     }
-    val echoTerm by echoToken and zeroOrMore(literal) map { EchoCommand(it.t2) }
-    val catTerm by catToken and optional(literal) map { CatCommand(it.t2) }
-    val wcTerm by wcToken and optional(literal) map { WcCommand(it.t2) }
-    val pwdTerm by pwdToken and optional(literal) map { PwdCommand }
-    val exitTerm by exitToken and optional(literal) map { ExitCommand }
-    val externalCommandTerm by literal and zeroOrMore(literal) map { (name, args) -> ExternalCommand(name, args) }
-    val term by echoTerm or catTerm or wcTerm or pwdTerm or exitTerm or externalCommandTerm
+    private val echoTerm by echoToken and zeroOrMore(literal) map { EchoCommand(it.t2) }
+    private val catTerm by catToken and optional(literal) map { CatCommand(it.t2) }
+    private val wcTerm by wcToken and optional(literal) map { WcCommand(it.t2) }
+    private val pwdTerm by pwdToken and optional(literal) map { PwdCommand }
+    private val exitTerm by exitToken and optional(literal) map { ExitCommand }
+    private val externalCommandTerm by literal and zeroOrMore(literal) map { (name, args) ->
+        ExternalCommand(name, args)
+    }
+    private val term by echoTerm or catTerm or wcTerm or pwdTerm or exitTerm or externalCommandTerm
 
     override val rootParser: Parser<Command> by term
 }
