@@ -4,8 +4,7 @@ import ru.hse.sd.cli.command.CodeResult
 import ru.hse.sd.cli.command.CommandExecutor
 import ru.hse.sd.cli.command.CommandResult
 import ru.hse.sd.cli.util.write
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.Closeable
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
 import kotlin.test.assertEquals
@@ -33,30 +32,35 @@ abstract class CommandExecutorTest {
     ) = test(command, output, error) { assertEquals(it, expectedResult) }
 
     fun withTestContext(block: TestContext.() -> Unit) {
-        val input = PipedInputStream()
-        val output = PipedOutputStream()
-        val error = PipedOutputStream()
-        val context = TestContext(
-            toInput = PipedOutputStream(input),
-            fromOutput = PipedInputStream(output),
-            fromError = PipedInputStream(error),
-            executor = CommandExecutor(input, output, error)
-        )
-        context.block()
+        PipedInputStream().use { input ->
+            PipedOutputStream().use { output ->
+                PipedOutputStream().use { error ->
+                    TestContext(input, output, error, CommandExecutor(input, output, error)).use(block)
+                }
+            }
+        }
     }
 
+    @Suppress("unused")
     class TestContext internal constructor(
-        private val toInput: OutputStream,
-        fromOutput: InputStream,
-        fromError: InputStream,
+        input: PipedInputStream,
+        output: PipedOutputStream,
+        error: PipedOutputStream,
         private val executor: CommandExecutor
-    ) {
-        private val fromOutput = fromOutput.bufferedReader()
-        private val fromError = fromError.bufferedReader()
+    ) : Closeable {
+        private val toInput = PipedOutputStream(input)
+        private val fromOutput = PipedInputStream(output).bufferedReader()
+        private val fromError = PipedInputStream(error).bufferedReader()
 
         fun input(input: String) = toInput.write("$input\n")
         fun outputLine(): String = fromOutput.readLine()
         fun errorLine(): String = fromError.readLine()
         fun execute(command: String) = executor.execute(command)
+
+        override fun close() {
+            toInput.close()
+            fromOutput.close()
+            fromError.close()
+        }
     }
 }
