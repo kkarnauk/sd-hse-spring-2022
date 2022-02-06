@@ -15,14 +15,14 @@ class CatTest : CommandExecutorTest() {
 
     @Test
     fun `Not a file cat test`() = withTestContext {
-        test("cat src/test/resources", error = "cat: resources: Is not a file") {
+        test("cat src/test/resources", error = "cat: src/test/resources: Is not a file") {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }
 
     @Test
     fun `No file cat test`() = withTestContext {
-        test("cat src/test/does-not-exist", error = "cat: does-not-exist: No such file or directory") {
+        test("cat src/test/does-not-exist", error = "cat: src/test/does-not-exist: No such file or directory") {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }
