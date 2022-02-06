@@ -31,7 +31,7 @@ class WcTest : CommandExecutorTest() {
 
     @Test
     fun `No file cat test`() = withTestContext {
-        test("wc src/test/does-not-exist", error = "wc: does-not-exist: Is not a file") {
+        test("wc src/test/does-not-exist", error = "wc: does-not-exist: No such file or directory") {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }
