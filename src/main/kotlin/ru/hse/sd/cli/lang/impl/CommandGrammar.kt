@@ -14,23 +14,27 @@ import ru.hse.sd.cli.command.*
 object CommandGrammar : Grammar<Command>() {
     @Suppress("unused")
     internal val wsToken by regexToken("\\s+", ignore = true)
+    internal val pipeToken by literalToken("|")
+    internal val equalToken by literalToken("=")
+    internal val dollarToken by literalToken("$")
     internal val catToken by literalToken("cat")
     internal val echoToken by literalToken("echo")
     internal val wcToken by literalToken("wc")
     internal val pwdToken by literalToken("pwd")
     internal val exitToken by literalToken("exit")
-    internal val weakCommandName by catToken or echoToken or wcToken or pwdToken or exitToken
     internal val quoteToken by regexToken("'[^']*'")
     internal val doubleQuoteToken by regexToken("\"[^\"]*\"")
-    internal val identifier by regexToken("[\\S&&[^\"']]+")
+    internal val identifierToken by regexToken("[^\\s=|\"'$]+")
 
-    private val literal by identifier or quoteToken or doubleQuoteToken or weakCommandName map {
+    private val weakCommandName by catToken or echoToken or wcToken or pwdToken or exitToken
+    private val literal by identifierToken or quoteToken or doubleQuoteToken or weakCommandName map {
         when (it.type) {
             quoteToken -> it.text.removeSurrounding("'")
             doubleQuoteToken -> it.text.removeSurrounding("\"")
             else -> it.text
         }
     }
+
     private val echoTerm by echoToken and zeroOrMore(literal) map { EchoCommand(it.t2) }
     private val catTerm by catToken and optional(literal) map { CatCommand(it.t2) }
     private val wcTerm by wcToken and optional(literal) map { WcCommand(it.t2) }
@@ -41,5 +45,11 @@ object CommandGrammar : Grammar<Command>() {
     }
     private val term by echoTerm or catTerm or wcTerm or pwdTerm or exitTerm or externalCommandTerm
 
-    override val rootParser: Parser<Command> by term
+    private val pipeChain by leftAssociative(term, pipeToken) { l, _, r ->
+        PipeCommand(l, r)
+    }
+
+    private val assignment by literal and equalToken and literal map { AssignmentCommand(it.t1, it.t3) }
+
+    override val rootParser: Parser<Command> by assignment or pipeChain
 }
