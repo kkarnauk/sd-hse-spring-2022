@@ -184,3 +184,39 @@ data class ExternalCommand(
 object EmptyCommand : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult = CodeResult.success
 }
+
+/**
+ * TODO
+ */
+data class PipeCommand(
+    /**
+     * TODO
+     */
+    val left: Command,
+    /**
+     * TODO
+     */
+    val right: Command
+) : Command() {
+    override fun execute(context: IoContext, env: Environment): CommandResult {
+        TODO()
+    }
+}
+
+/**
+ * TODO
+ */
+data class AssignmentCommand(
+    /**
+     * TODO
+     */
+    val left: String,
+    /**
+     * TODO
+     */
+    val right: String
+) : Command() {
+    override fun execute(context: IoContext, env: Environment): CommandResult {
+        TODO()
+    }
+}
