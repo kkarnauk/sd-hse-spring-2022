@@ -22,7 +22,7 @@ class CatTest : CommandExecutorTest() {
 
     @Test
     fun `No file cat test`() = withTestContext {
-        test("cat src/test/does-not-exist", error = "cat: does-not-exist: Is not a file") {
+        test("cat src/test/does-not-exist", error = "cat: does-not-exist: No such file or directory") {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }
