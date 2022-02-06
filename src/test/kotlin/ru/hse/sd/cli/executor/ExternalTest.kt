@@ -15,7 +15,7 @@ abstract class ExternalTest : CommandExecutorTest() {
 class LinuxExternalTest : ExternalTest() {
     @Test
     fun `Simple external command test`() = withTestContext {
-        test("head -n 1 src/test/resources/lorem.txt", "Lorem ipsum dolor sit amet, consectetur")
+        test("head -n 1 src/test/resources/lorem.txt", "Lorem ipsum dolor sit amett, consectetur")
     }
 }
 
@@ -23,6 +23,6 @@ class LinuxExternalTest : ExternalTest() {
 class WindowsExternalTest : ExternalTest() {
     @Test
     fun `Simple external command test`() = withTestContext {
-        test("powershell -command \"Get-Content -Head 1 src/test/resources/lorem.txt\"", "Lorem ipsum dolor sit amet, consectetur")
+        test("powershell -command \"Get-Content -Head 1 src/test/resources/lorem.txt\"", "Lorem ipsum dolor sit amett, consectetur")
     }
 }
