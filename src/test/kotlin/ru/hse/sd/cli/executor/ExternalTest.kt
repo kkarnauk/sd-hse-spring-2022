@@ -12,7 +12,7 @@ abstract class ExternalTest : CommandExecutorTest() {
     }
 }
 
-@EnabledOnOs(OS.LINUX, OS.MAC)
+@EnabledOnOs(OS.LINUX)
 class LinuxExternalTest : ExternalTest() {
     @Test
     fun `Simple external command test`() = withTestContext {
@@ -24,6 +24,23 @@ class LinuxExternalTest : ExternalTest() {
         test(
             "head -n 1 src/test/resources/does-not-exist.txt",
             error = "head: cannot open 'src/test/resources/does-not-exist.txt' for reading: No such file or directory",
+            expectedResult = CodeResult(1)
+        )
+    }
+}
+
+@EnabledOnOs(OS.MAC)
+class MacOSExternalTest : ExternalTest() {
+    @Test
+    fun `Simple external command test`() = withTestContext {
+        test("head -n 1 src/test/resources/lorem.txt", "Lorem ipsum dolor sit amet, consectetur")
+    }
+
+    @Test
+    fun `File not found external command test`() = withTestContext {
+        test(
+            "head -n 1 src/test/resources/does-not-exist.txt",
+            error = "head: src/test/resources/does-not-exist.txt: No such file or directory",
             expectedResult = CodeResult(1)
         )
     }
