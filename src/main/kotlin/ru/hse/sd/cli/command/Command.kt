@@ -26,15 +26,16 @@ sealed class Command {
      */
     abstract fun execute(context: IoContext, env: Environment): CommandResult
 
-    protected fun withValidatingFile(file: File, error: OutputStream, onSuccess: () -> CodeResult): CodeResult {
+    protected fun openAndValidateFile(filename: String, error: OutputStream, env: Environment, onSuccess: (File) -> CodeResult): CodeResult {
+        val file = env.resolvePath(Path.of(filename)).toFile()
         return if (!file.exists()) {
-            error.write("$name: ${file.name}: No such file or directory${System.lineSeparator()}")
+            error.write("$name: ${filename}: No such file or directory${System.lineSeparator()}")
             CodeResult(1)
         } else if (!file.isFile) {
-            error.write("$name: ${file.name}: Is not a file${System.lineSeparator()}")
+            error.write("$name: ${filename}: Is not a file${System.lineSeparator()}")
             CodeResult(1)
         } else {
-            onSuccess()
+            onSuccess(file)
         }
     }
 }
@@ -69,8 +70,7 @@ data class CatCommand(
 ) : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult {
         return if (argument != null) {
-            val file = env.resolvePath(Path.of(argument)).toFile()
-            withValidatingFile(file, context.error) {
+            openAndValidateFile(argument, context.error, env) { file ->
                 context.output.write(file.readBytes())
                 CodeResult.success
             }
@@ -116,8 +116,7 @@ data class WcCommand(
 
     override fun execute(context: IoContext, env: Environment): CommandResult {
         return if (argument != null) {
-            val file = env.resolvePath(Path.of(argument)).toFile()
-            withValidatingFile(file, context.error) {
+            openAndValidateFile(argument, context.error, env) { file ->
                 val wcResult = wc(file.readBytes())
                 context.output.write(wcResult.toString())
                 context.output.write(System.lineSeparator())
