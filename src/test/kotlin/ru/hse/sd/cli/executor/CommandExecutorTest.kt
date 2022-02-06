@@ -31,7 +31,7 @@ abstract class CommandExecutorTest {
         expectedResult: CommandResult = CodeResult.success
     ) = test(command, output, error) { assertEquals(it, expectedResult) }
 
-    fun withTestContext(block: TestContext.() -> Unit) {
+    open fun withTestContext(block: TestContext.() -> Unit) {
         PipedInputStream().use { input ->
             PipedOutputStream().use { output ->
                 PipedOutputStream().use { error ->
@@ -56,6 +56,10 @@ abstract class CommandExecutorTest {
         fun outputLine(): String = fromOutput.readLine()
         fun errorLine(): String = fromError.readLine()
         fun execute(command: String) = executor.execute(command)
+
+        // needed to test ExternalCommand: external Process reads from input infinitely long,
+        // so we need to close it before running ExternalCommand tests
+        fun closeInput() = toInput.close()
 
         override fun close() {
             toInput.close()
