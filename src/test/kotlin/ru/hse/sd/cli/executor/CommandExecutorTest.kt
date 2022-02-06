@@ -8,6 +8,7 @@ import java.io.Closeable
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
 import kotlin.test.assertEquals
+import ru.hse.sd.cli.command.ExternalCommand
 
 abstract class CommandExecutorTest {
     fun TestContext.test(pair: Pair<String, String>) = test(pair.first, pair.second)
@@ -56,9 +57,10 @@ abstract class CommandExecutorTest {
         fun outputLine(): String = fromOutput.readLine()
         fun errorLine(): String = fromError.readLine()
         fun execute(command: String) = executor.execute(command)
-
-        // needed to test ExternalCommand: external Process reads from input infinitely long,
-        // so we need to close it before running ExternalCommand tests
+        /**
+            needed to test [ExternalCommand]: external [Process] reads from input infinitely long,
+            so we need to close it before running [ExternalTest]s
+        */
         fun closeInput() = toInput.close()
 
         override fun close() {
