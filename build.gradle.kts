@@ -50,9 +50,9 @@ tasks.test {
         }
 
         addTestListener(object : TestListener {
-            override fun beforeSuite(suite: TestDescriptor) {}
-            override fun beforeTest(testDescriptor: TestDescriptor) {}
-            override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) {}
+            override fun beforeSuite(suite: TestDescriptor) = Unit
+            override fun beforeTest(testDescriptor: TestDescriptor) = Unit
+            override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) = Unit
             override fun afterSuite(desc: TestDescriptor, result: TestResult) {
                 if (desc.parent != null) return
 
@@ -64,9 +64,8 @@ tasks.test {
                     ${result.failedTestCount} failed, 
                     ${result.skippedTestCount} skipped
                     ) 
-                    in ${(result.endTime - result.startTime) / 1000.0} seconds"""
-                    .trimIndent()
-                    .replace(System.lineSeparator(), "")
+                    in ${(result.endTime - result.startTime) / 1000.0} seconds
+                    """.trimIndent().replace(System.lineSeparator(), "")
 
                 println(
                     """
