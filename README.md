@@ -10,13 +10,42 @@
 
 ### Building
 
-Just run `./gradlew fatJar` (on MacOS or Linux) or `.\gradlew.bat fatJar` (on Windows).
+Linux or MacOS:
+
+```bash
+./gradlew fatJar
+```
+
+Windows:
+```bash
+.\gradlew.bat fatJar
+```
+
 It will create a jar in `build/libs/cli-fat-VERSION.jar` that can be run with Java.
 
 ### Running
 
-Just run `java -jar /path/to/fatJar` (described in the previous section).
+```bash
+java -jar /path/to/fatJar
+```
+
+(building the fatJar is described in the previous section)
+
+For example, if you built fatJar to `build/libs/cli-fat-1.0-SNAPSHOT.jar`, run:
+```bash
+java -jar build/libs/cli-fat-1.0-SNAPSHOT.jar 
+```
 
 ### Running tests
 
-If you want to run tests, just use `./gradlew test` (on MacOS or Linux) or `.\gradlew.bat test` (on Windows).
+Linux or MacOS:
+
+```bash
+./gradlew test
+```
+
+Windows:
+
+```bash
+.\gradlew.bat test
+```
