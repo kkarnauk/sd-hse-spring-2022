@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -19,12 +21,63 @@ repositories {
 dependencies {
     implementation("com.github.h0tk3y.betterParse:better-parse:0.4.3")
     testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("io.mockk:mockk:1.12.2")
 }
 
 tasks.test {
     useJUnitPlatform()
+    testLogging {
+        events = setOf(
+            TestLogEvent.FAILED,
+            TestLogEvent.STANDARD_OUT
+        )
+        exceptionFormat = TestExceptionFormat.SHORT
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        showStandardStreams = true
+
+        info {
+            events = setOf(
+                TestLogEvent.FAILED,
+                TestLogEvent.PASSED,
+                TestLogEvent.SKIPPED,
+                TestLogEvent.STANDARD_OUT
+            )
+
+            exceptionFormat = TestExceptionFormat.FULL
+        }
+
+        addTestListener(object : TestListener {
+            override fun beforeSuite(suite: TestDescriptor) {}
+            override fun beforeTest(testDescriptor: TestDescriptor) {}
+            override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) {}
+            override fun afterSuite(desc: TestDescriptor, result: TestResult) {
+                if (desc.parent != null) return
+
+                val summary = """
+                    |${result.resultType} 
+                    |(
+                    |${result.testCount} tests, 
+                    |${result.successfulTestCount} passed, 
+                    |${result.failedTestCount} failed, 
+                    |${result.skippedTestCount} skipped
+                    |) 
+                    |in ${((result.endTime - result.startTime) / 1000.0)} seconds"""
+                    .trimMargin()
+                    .replace(System.lineSeparator(), " ")
+
+                println(
+                    """
+                   >┌${"─".repeat(summary.length + 2)}┐
+                   >| $summary |
+                   >└${"─".repeat(summary.length + 2)}┘
+                    """.trimMargin(">")
+                )
+            }
+        })
+    }
 }
 
 tasks.withType<KotlinCompile> {
