@@ -57,23 +57,23 @@ tasks.test {
                 if (desc.parent != null) return
 
                 val summary = """
-                    |${result.resultType} 
-                    |(
-                    |${result.testCount} tests, 
-                    |${result.successfulTestCount} passed, 
-                    |${result.failedTestCount} failed, 
-                    |${result.skippedTestCount} skipped
-                    |) 
-                    |in ${((result.endTime - result.startTime) / 1000.0)} seconds"""
-                    .trimMargin()
-                    .replace(System.lineSeparator(), " ")
+                    ${result.resultType} 
+                    (
+                    ${result.testCount} tests, 
+                    ${result.successfulTestCount} passed, 
+                    ${result.failedTestCount} failed, 
+                    ${result.skippedTestCount} skipped
+                    ) 
+                    in ${(result.endTime - result.startTime) / 1000.0} seconds"""
+                    .trimIndent()
+                    .replace(System.lineSeparator(), "")
 
                 println(
                     """
-                   >┌${"─".repeat(summary.length + 2)}┐
-                   >| $summary |
-                   >└${"─".repeat(summary.length + 2)}┘
-                    """.trimMargin(">")
+                    ┌${"─".repeat(summary.length + 2)}┐
+                    | $summary |
+                    └${"─".repeat(summary.length + 2)}┘
+                    """.trimIndent()
                 )
             }
         })
