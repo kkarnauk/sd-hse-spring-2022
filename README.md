@@ -49,3 +49,5 @@ Windows:
 ```bash
 .\gradlew.bat test
 ```
+
+For verbose test log add `--info` option 
