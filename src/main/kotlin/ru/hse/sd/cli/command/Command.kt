@@ -188,18 +188,27 @@ object EmptyCommand : Command() {
 }
 
 /**
- * TODO
+ * Represents the command that transfer the output of the [left] [Command] to the input of [right] [Command]
+ *
+ * Pipes are left associative, so expression `command1 | command2 | command3` will be parsed into
+ * `PipeCommand(PipeCommand(command1, command2), command3)`
  */
 data class PipeCommand(
     /**
-     * TODO
+     * Left command of the pipe
      */
     val left: Command,
     /**
-     * TODO
+     * Right command of the pipe
      */
     val right: Command
 ) : Command() {
+    /**
+     * Executes the pipe command
+     *
+     *
+     * Data flows in the following way: `context.input` -> [left] -> [right] -> `context.output`
+     */
     override fun execute(context: IoContext, env: Environment): CommandResult {
         val leftOutput = PipedOutputStream()
         val rightInput = PipedInputStream(leftOutput)
@@ -211,15 +220,15 @@ data class PipeCommand(
 }
 
 /**
- * TODO
+ * Represents the command that assign content of [right] [String] to the variable with name [left] [String]
  */
 data class AssignmentCommand(
     /**
-     * TODO
+     * Name of the variable
      */
     val left: String,
     /**
-     * TODO
+     * Content to assign
      */
     val right: String
 ) : Command() {
