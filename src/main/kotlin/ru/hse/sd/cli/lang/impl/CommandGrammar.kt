@@ -22,7 +22,7 @@ object CommandGrammar : Grammar<Command>() {
     internal val weakCommandName by catToken or echoToken or wcToken or pwdToken or exitToken
     internal val quoteToken by regexToken("'[^']*'")
     internal val doubleQuoteToken by regexToken("\"[^\"]*\"")
-    internal val identifier by regexToken("\\S+")
+    internal val identifier by regexToken("[\\S&&[^\"']]+")
 
     private val literal by identifier or quoteToken or doubleQuoteToken or weakCommandName map {
         when (it.type) {

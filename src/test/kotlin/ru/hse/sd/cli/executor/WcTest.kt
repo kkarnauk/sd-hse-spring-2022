@@ -35,4 +35,10 @@ class WcTest : CommandExecutorTest() {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }
+
+    @Test
+    fun `Wc one quote`() = withTestContext {
+        test("wc \"", expectedResult = CodeResult.internalError)
+        test("wc  \'", expectedResult = CodeResult.internalError)
+    }
 }
