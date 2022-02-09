@@ -104,7 +104,31 @@ internal class CommandLexerTest {
                     CommandGrammar.substitutionToken to "\$x",
                     CommandGrammar.substitutionToken to "\$y",
                 )
-            )
+            ),
+            Arguments.of("grep", listOf(CommandGrammar.grepToken to "grep")),
+            Arguments.of(
+                "grep file", listOf(
+                    CommandGrammar.grepToken to "grep",
+                    CommandGrammar.identifierToken to "file",
+                )
+            ),
+            Arguments.of(
+                "grep -i \"минимальный\" README.md", listOf(
+                    CommandGrammar.grepToken to "grep",
+                    CommandGrammar.identifierToken to "-i",
+                    CommandGrammar.doubleQuoteToken to "\"минимальный\"",
+                    CommandGrammar.identifierToken to "README.md",
+                )
+            ),
+            Arguments.of(
+                "grep -A 1 \"II\" README.md", listOf(
+                    CommandGrammar.grepToken to "grep",
+                    CommandGrammar.identifierToken to "-A",
+                    CommandGrammar.identifierToken to "1",
+                    CommandGrammar.doubleQuoteToken to "\"II\"",
+                    CommandGrammar.identifierToken to "README.md",
+                )
+            ),
         )
     }
 }

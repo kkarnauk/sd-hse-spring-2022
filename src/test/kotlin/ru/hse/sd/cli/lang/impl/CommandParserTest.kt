@@ -54,6 +54,21 @@ internal class CommandParserTest {
             Arguments.of("echo= echo", AssignmentCommand("echo", "echo")),
             Arguments.of("echo =echo", AssignmentCommand("echo", "echo")),
             Arguments.of("echo = echo", AssignmentCommand("echo", "echo")),
+            Arguments.of("grep", GrepCommand(emptyList())),
+            Arguments.of(
+                "grep -i \"минимальный\" README.md", GrepCommand(
+                    listOf(
+                        "-i", "минимальный", "README.md"
+                    )
+                )
+            ),
+            Arguments.of(
+                "grep -A 1 \"II\" README.md", GrepCommand(
+                    listOf(
+                        "-A", "1", "II", "README.md"
+                    )
+                )
+            ),
         )
     }
 }
