@@ -4,6 +4,7 @@ import ru.hse.sd.cli.env.Environment
 import ru.hse.sd.cli.env.IoContext
 import ru.hse.sd.cli.lang.impl.CommandLexer
 import ru.hse.sd.cli.lang.impl.CommandParser
+import ru.hse.sd.cli.util.write
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -38,5 +39,12 @@ class CommandExecutor(
      * Transforms [command] into [Command] and executes it.
      * Uses the collected environment variables and the provided input/output/error streams.
      */
-    fun execute(command: String): CommandResult = parse(command).execute(context, environment)
+    fun execute(command: String): CommandResult {
+        return try {
+            parse(command).execute(context, environment)
+        } catch (e: Throwable) {
+            context.error.write("Internal error: ${e.message ?: "no message."}\n")
+            CodeResult.internalError
+        }
+    }
 }

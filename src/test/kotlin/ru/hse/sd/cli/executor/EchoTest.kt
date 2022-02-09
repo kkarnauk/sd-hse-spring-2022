@@ -2,6 +2,7 @@ package ru.hse.sd.cli.executor
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import ru.hse.sd.cli.command.CodeResult
 
 @Suppress("SpellCheckingInspection")
 class EchoTest : CommandExecutorTest() {
@@ -32,6 +33,12 @@ class EchoTest : CommandExecutorTest() {
         test("echo echo", "echo")
         test("echo cat", "cat")
         test("echo exit", "exit")
+    }
+
+    @Test
+    fun `Echo one quote`() = withTestContext {
+        test("echo \"", expectedResult = CodeResult.internalError)
+        test("echo  \'", expectedResult = CodeResult.internalError)
     }
 
     @Test
