@@ -17,7 +17,7 @@ fun main() {
                 break
             }
         } else {
-            println("Couldn't read a command.")
+            break
         }
     }
 }
