@@ -47,6 +47,13 @@ internal class CommandParserTest {
                 )
             ),
             Arguments.of("x=y", AssignmentCommand("x", "y")),
+            Arguments.of("x =y", AssignmentCommand("x", "y")),
+            Arguments.of("x= y", AssignmentCommand("x", "y")),
+            Arguments.of("x = y", AssignmentCommand("x", "y")),
+            Arguments.of("echo=echo", AssignmentCommand("echo", "echo")),
+            Arguments.of("echo= echo", AssignmentCommand("echo", "echo")),
+            Arguments.of("echo =echo", AssignmentCommand("echo", "echo")),
+            Arguments.of("echo = echo", AssignmentCommand("echo", "echo")),
         )
     }
 }
