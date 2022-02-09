@@ -49,7 +49,9 @@ object CommandGrammar : Grammar<Command>() {
         PipeCommand(l, r)
     }
 
-    private val assignment by literal and equalToken and literal map { AssignmentCommand(it.t1, it.t3) }
+    private val assignment by literal and equalToken and literal map { (left, _, right) ->
+        AssignmentCommand(left, right)
+    }
 
     override val rootParser: Parser<Command> by assignment or pipeChain
 }
