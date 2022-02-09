@@ -188,10 +188,7 @@ object EmptyCommand : Command() {
 }
 
 /**
- * Represents the command that transfer the output of the [left] [Command] to the input of [right] [Command]
- *
- * Pipes are left associative, so expression `command1 | command2 | command3` will be parsed into
- * `PipeCommand(PipeCommand(command1, command2), command3)`
+ * Represents the command that transfer the output of the [left] command to the input of [right] command
  */
 data class PipeCommand(
     /**
@@ -206,7 +203,6 @@ data class PipeCommand(
     /**
      * Executes the pipe command
      *
-     *
      * Data flows in the following way: `context.input` -> [left] -> [right] -> `context.output`
      */
     override fun execute(context: IoContext, env: Environment): CommandResult {
@@ -220,20 +216,20 @@ data class PipeCommand(
 }
 
 /**
- * Represents the command that assign content of [right] [String] to the variable with name [left] [String]
+ * Represents the command that assign [value] to the [varName] in the [Environment]
  */
 data class AssignmentCommand(
     /**
      * Name of the variable
      */
-    val left: String,
+    val varName: String,
     /**
      * Content to assign
      */
-    val right: String
+    val value: String
 ) : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult {
-        env.putVariable(left, right)
+        env.putVariable(varName, value)
         return CodeResult.success
     }
 }
