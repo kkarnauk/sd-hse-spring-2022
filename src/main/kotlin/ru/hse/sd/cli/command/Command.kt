@@ -153,6 +153,17 @@ object ExitCommand : Command() {
 }
 
 /**
+ * TODO
+ */
+data class GrepCommand(
+    val args: List<String>
+) : Command() {
+    override fun execute(context: IoContext, env: Environment): CommandResult {
+        TODO() // use https://github.com/ajalt/clikt here to parse args and then execute command
+    }
+}
+
+/**
  * Represents all other external commands in CLI.
  * It tries to invoke an external command, accessible from the terminal, with [name] and [args].
  */
