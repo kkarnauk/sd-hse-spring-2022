@@ -42,6 +42,23 @@ abstract class CommandExecutorTest {
         }
     }
 
+    // use with caution: only works if @param output ends with new line
+    protected fun TestContext.testFullOutput(
+        command: String,
+        output: String,
+        expectedResult: CommandResult = CodeResult.success
+    ) {
+        val result = execute(command)
+        assertEquals(expectedResult, result)
+        val actualOutput = buildString {
+            repeat(output.count { it == '\n' }) {
+                append(outputLine())
+                append("\n")
+            }
+        }
+        assertEquals(output, actualOutput)
+    }
+
     @Suppress("unused")
     class TestContext internal constructor(
         input: PipedInputStream,

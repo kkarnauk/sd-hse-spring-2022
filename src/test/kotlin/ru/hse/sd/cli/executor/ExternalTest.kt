@@ -27,6 +27,13 @@ class LinuxExternalTest : ExternalTest() {
             expectedResult = CodeResult(1)
         )
     }
+
+    @Test
+    fun `Pipe test`() = withTestContext {
+        test(
+            "head -n 1 src/test/resources/lorem.txt | wc", "\t1\t6\t40"
+        )
+    }
 }
 
 @EnabledOnOs(OS.MAC)
@@ -44,6 +51,13 @@ class MacOSExternalTest : ExternalTest() {
             expectedResult = CodeResult(1)
         )
     }
+
+    @Test
+    fun `Pipe test`() = withTestContext {
+        test(
+            "head -n 1 src/test/resources/lorem.txt | wc", "\t1\t6\t40"
+        )
+    }
 }
 
 @EnabledOnOs(OS.WINDOWS)
@@ -53,6 +67,14 @@ class WindowsExternalTest : ExternalTest() {
         test(
             "powershell -command \"Get-Content -Head 1 src/test/resources/lorem.txt\"",
             "Lorem ipsum dolor sit amet, consectetur"
+        )
+    }
+
+    @Test
+    fun `Pipe test`() = withTestContext {
+        test(
+            "powershell -command \"Get-Content -Head 1 src/test/resources/lorem.txt\" | wc",
+            "\t1\t6\t40"
         )
     }
 }
