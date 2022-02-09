@@ -22,6 +22,7 @@ object CommandGrammar : Grammar<Command>() {
     internal val wcToken by literalToken("wc")
     internal val pwdToken by literalToken("pwd")
     internal val exitToken by literalToken("exit")
+    internal val grepToken by literalToken("grep")
     internal val quoteToken by regexToken("'[^']*'")
     internal val doubleQuoteToken by regexToken("\"[^\"]*\"")
     internal val identifierToken by regexToken("[^\\s=|\"'$]+")
@@ -40,10 +41,11 @@ object CommandGrammar : Grammar<Command>() {
     private val wcTerm by wcToken and optional(literal) map { WcCommand(it.t2) }
     private val pwdTerm by pwdToken and optional(literal) map { PwdCommand }
     private val exitTerm by exitToken and optional(literal) map { ExitCommand }
+    private val grepTerm by grepToken and zeroOrMore(literal) map { GrepCommand(it.t2) }
     private val externalCommandTerm by literal and zeroOrMore(literal) map { (name, args) ->
         ExternalCommand(name, args)
     }
-    private val term by echoTerm or catTerm or wcTerm or pwdTerm or exitTerm or externalCommandTerm
+    private val term by echoTerm or catTerm or wcTerm or pwdTerm or exitTerm or grepTerm or externalCommandTerm
 
     private val pipeChain by leftAssociative(term, pipeToken) { l, _, r ->
         PipeCommand(l, r)
