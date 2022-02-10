@@ -13,7 +13,7 @@ class CatTest : CommandExecutorTest() {
 
     @Test
     fun `Not a file cat test`() = withTestContext {
-        test("cat src/test/resources", error = "cat: src/test/resources: Is not a file") {
+        test("cat ${FileContentResources.resourcesDirPath}", error = "cat: ${FileContentResources.resourcesDirPath}: Is not a file") {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }

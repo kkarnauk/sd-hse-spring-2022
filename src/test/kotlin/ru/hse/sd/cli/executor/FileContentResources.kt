@@ -3,11 +3,14 @@ package ru.hse.sd.cli.executor
 import java.io.File
 
 object FileContentResources {
-    const val engLoremFilename = "src/test/resources/lorem.txt"
-    val engLorem = File(engLoremFilename).readText()
+    const val resourcesDirPath = "src/test/resources"
 
-    const val rusLoremFilename = "src/test/resources/лорем.txt"
+    const val engLoremFilename = "$resourcesDirPath/lorem.txt"
+
+    val engLorem = File(engLoremFilename).readText()
+    const val rusLoremFilename = "$resourcesDirPath/лорем.txt"
+
     val rusLorem = File(rusLoremFilename).readText()
 
-    const val notExistsFilename = "src/test/resources/not-exists.txt"
+    const val notExistsFilename = "$resourcesDirPath/not-exists.txt"
 }
