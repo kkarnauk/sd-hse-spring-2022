@@ -40,15 +40,20 @@ class PipeTest : CommandExecutorTest() {
     @Test
     fun `Intermediate exit`() = withTestContext {
         test("echo Never gonna give you up | exit | echo Never gonna let you down", "Never gonna let you down")
-        test("echo Never gonna give you up | exit", expectedResult = ExitResult)
-        test("cat src/test/does-not-exist", error = "cat: src/test/does-not-exist: No such file or directory") {
-            assertTrue { it is CodeResult && it.code != 0 }
-        }
+    }
+
+    @Test
+    fun `Cat and exit`() = withTestContext {
         test(
-            "echo Never gonna give you up | exit | cat src/test/does-not-exist",
-            error = "cat: src/test/does-not-exist: No such file or directory"
+            "echo Never gonna give you up | exit | cat ${FileContentResources.notExistsFilename}",
+            error = "cat: ${FileContentResources.notExistsFilename}: No such file or directory"
         ) {
             assertTrue { it is CodeResult && it.code != 0 }
         }
+
+        test(
+            "echo Never gonna give you up | cat ${FileContentResources.notExistsFilename} | exit",
+            expectedResult = ExitResult
+        )
     }
 }

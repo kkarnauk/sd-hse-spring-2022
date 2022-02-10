@@ -10,14 +10,14 @@ import kotlin.test.assertTrue
 class WcTest : CommandExecutorTest() {
     @Test
     fun `Simple eng wc`() = withTestContext {
-        val path = "src/test/resources/lorem.txt"
+        val path = FileContentResources.engLoremFilename
         val bytes = Files.readAllBytes(Path.of(path)).size
         test("wc $path", "\t2\t8\t$bytes")
     }
 
     @Test
     fun `Simple rus wc`() = withTestContext {
-        val path = "src/test/resources/лорем.txt"
+        val path = FileContentResources.rusLoremFilename
         val bytes = Files.readAllBytes(Path.of(path)).size
         test("wc $path", "\t2\t8\t$bytes")
     }
@@ -31,7 +31,7 @@ class WcTest : CommandExecutorTest() {
 
     @Test
     fun `No file cat test`() = withTestContext {
-        test("wc src/test/does-not-exist", error = "wc: src/test/does-not-exist: No such file or directory") {
+        test("wc ${FileContentResources.notExistsFilename}", error = "wc: ${FileContentResources.notExistsFilename}: No such file or directory") {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }
