@@ -24,7 +24,7 @@ class WcTest : CommandExecutorTest() {
 
     @Test
     fun `Not a file wc test`() = withTestContext {
-        test("wc src/test/resources", error = "wc: src/test/resources: Is not a file") {
+        test("wc ${FileContentResources.resourcesDirPath}", error = "wc: ${FileContentResources.resourcesDirPath}: Is not a file") {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }
