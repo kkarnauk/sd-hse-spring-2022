@@ -216,7 +216,7 @@ data class PipeCommand(
 }
 
 /**
- * Represents the command that assign [value] to the [varName] in the [Environment]
+ * Represents the command that assign [varValue] to the [varName] in the [Environment]
  */
 data class AssignmentCommand(
     /**
@@ -226,10 +226,10 @@ data class AssignmentCommand(
     /**
      * Content to assign
      */
-    val value: String
+    val varValue: String
 ) : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult {
-        env.putVariable(varName, value)
+        env.putVariable(varName, varValue)
         return CodeResult.success
     }
 }

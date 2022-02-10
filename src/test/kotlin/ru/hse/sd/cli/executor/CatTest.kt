@@ -20,7 +20,7 @@ class CatTest : CommandExecutorTest() {
 
     @Test
     fun `No file cat test`() = withTestContext {
-        test("cat src/test/does-not-exist", error = "cat: src/test/does-not-exist: No such file or directory") {
+        test("cat ${FileContentResources.notExistsFilename}", error = "cat: ${FileContentResources.notExistsFilename}: No such file or directory") {
             assertTrue { it is CodeResult && it.code != 0 }
         }
     }
