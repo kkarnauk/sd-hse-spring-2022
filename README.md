@@ -25,13 +25,7 @@ It will create a jar in `build/libs/cli-fat-VERSION.jar` that can be run with Ja
 
 ### Running
 
-```bash
-java -jar /path/to/fatJar
-```
-
-(building the fatJar is described in the previous section)
-
-For example, if you built fatJar to `build/libs/cli-fat-1.0-SNAPSHOT.jar`, run:
+The previous command creates a `jar` in `build/libs/cli-fat-1.0-SNAPSHOT.jar`, so you can run with:
 ```bash
 java -jar build/libs/cli-fat-1.0-SNAPSHOT.jar 
 ```
