@@ -16,7 +16,7 @@ object CommandGrammar : Grammar<Command>() {
     internal val wsToken by regexToken("\\s+", ignore = true)
     internal val pipeToken by literalToken("|")
     internal val equalToken by literalToken("=")
-    internal val dollarToken by literalToken("$")
+    internal val substitutionToken by regexToken("\\$[^\\s=|\"'\$]+")
     internal val catToken by literalToken("cat")
     internal val echoToken by literalToken("echo")
     internal val wcToken by literalToken("wc")

@@ -1,7 +1,9 @@
 package ru.hse.sd.cli.command
 
+import com.github.h0tk3y.betterParse.lexer.TokenMatchesSequence
 import ru.hse.sd.cli.env.Environment
 import ru.hse.sd.cli.env.IoContext
+import ru.hse.sd.cli.lang.impl.CommandGrammar
 import ru.hse.sd.cli.lang.impl.CommandLexer
 import ru.hse.sd.cli.lang.impl.CommandParser
 import ru.hse.sd.cli.util.write
@@ -33,7 +35,31 @@ class CommandExecutor(
     private val lexer = CommandLexer()
     private val parser = CommandParser()
 
-    private fun parse(command: String): Command = parser.parse(lexer.tokenize(command))
+    private fun String.removeUselessQuotes(): String {
+        val afterRemoving = removeSurrounding(first().toString())
+        return if (afterRemoving.contains("[\\s\'\"|$]".toRegex())) {
+            this
+        } else {
+            afterRemoving
+        }
+    }
+
+
+    private fun processTokens(tokenMatchesSequence: TokenMatchesSequence, environment: Environment): String =
+        tokenMatchesSequence.map { token ->
+            when (token.type) {
+                CommandGrammar.substitutionToken -> environment[token.text.drop(1)]
+                CommandGrammar.quoteToken -> token.text.removeUselessQuotes()
+                CommandGrammar.doubleQuoteToken -> token.text.replace("\\$([^\\s$\"\']+)".toRegex()) {
+                    environment[it.groupValues.last()]
+                }.removeUselessQuotes()
+                else -> token.text
+            }
+        }.joinToString("")
+
+    private fun parse(command: String, environment: Environment): Command = parser.parse(
+        lexer.tokenize(processTokens(lexer.tokenize(command), environment))
+    )
 
     /**
      * Transforms [command] into [Command] and executes it.
@@ -41,7 +67,7 @@ class CommandExecutor(
      */
     fun execute(command: String): CommandResult {
         return try {
-            parse(command).execute(context, environment)
+            parse(command, environment).execute(context, environment)
         } catch (e: Throwable) {
             context.error.write("Internal error: ${e.message ?: "no message."}\n")
             CodeResult.internalError
