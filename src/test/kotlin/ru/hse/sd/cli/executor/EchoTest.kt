@@ -1,6 +1,5 @@
 package ru.hse.sd.cli.executor
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ru.hse.sd.cli.command.CodeResult
 
@@ -42,7 +41,6 @@ class EchoTest : CommandExecutorTest() {
     }
 
     @Test
-    @Disabled
     fun `Echo in quotes`() = withTestContext {
         test("\"echo\" hehe", "hehe")
     }

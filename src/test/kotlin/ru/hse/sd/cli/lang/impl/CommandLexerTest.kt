@@ -96,16 +96,13 @@ internal class CommandLexerTest {
                 "x=\$y", listOf(
                     CommandGrammar.identifierToken to "x",
                     CommandGrammar.equalToken to "=",
-                    CommandGrammar.dollarToken to "$",
-                    CommandGrammar.identifierToken to "y"
+                    CommandGrammar.substitutionToken to "\$y",
                 )
             ),
             Arguments.of(
                 "\$x\$y", listOf(
-                    CommandGrammar.dollarToken to "$",
-                    CommandGrammar.identifierToken to "x",
-                    CommandGrammar.dollarToken to "$",
-                    CommandGrammar.identifierToken to "y"
+                    CommandGrammar.substitutionToken to "\$x",
+                    CommandGrammar.substitutionToken to "\$y",
                 )
             )
         )
