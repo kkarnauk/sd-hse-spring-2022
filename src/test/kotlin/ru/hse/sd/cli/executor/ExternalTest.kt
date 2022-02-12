@@ -74,7 +74,7 @@ class WindowsExternalTest : ExternalTest() {
     fun `Pipe test`() = withTestContext {
         test(
             "powershell -command \"Get-Content -Head 1 ${FileContentResources.engLoremFilename}\" | wc",
-            "\t1\t6\t40"
+            "\t1\t6\t41"
         )
     }
 }
