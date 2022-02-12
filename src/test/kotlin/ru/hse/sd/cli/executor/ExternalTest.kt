@@ -16,15 +16,22 @@ abstract class ExternalTest : CommandExecutorTest() {
 class LinuxExternalTest : ExternalTest() {
     @Test
     fun `Simple external command test`() = withTestContext {
-        test("head -n 1 src/test/resources/lorem.txt", "Lorem ipsum dolor sit amet, consectetur")
+        test("head -n 1 ${FileContentResources.engLoremFilename}", "Lorem ipsum dolor sit amet, consectetur")
     }
 
     @Test
     fun `File not found external command test`() = withTestContext {
         test(
-            "head -n 1 src/test/resources/does-not-exist.txt",
-            error = "head: cannot open 'src/test/resources/does-not-exist.txt' for reading: No such file or directory",
+            "head -n 1 ${FileContentResources.notExistsFilename}",
+            error = "head: cannot open '${FileContentResources.notExistsFilename}' for reading: No such file or directory",
             expectedResult = CodeResult(1)
+        )
+    }
+
+    @Test
+    fun `Pipe test`() = withTestContext {
+        test(
+            "head -n 1 ${FileContentResources.engLoremFilename} | wc", "\t1\t6\t40"
         )
     }
 }
@@ -33,15 +40,22 @@ class LinuxExternalTest : ExternalTest() {
 class MacOSExternalTest : ExternalTest() {
     @Test
     fun `Simple external command test`() = withTestContext {
-        test("head -n 1 src/test/resources/lorem.txt", "Lorem ipsum dolor sit amet, consectetur")
+        test("head -n 1 ${FileContentResources.engLoremFilename}", "Lorem ipsum dolor sit amet, consectetur")
     }
 
     @Test
     fun `File not found external command test`() = withTestContext {
         test(
-            "head -n 1 src/test/resources/does-not-exist.txt",
-            error = "head: src/test/resources/does-not-exist.txt: No such file or directory",
+            "head -n 1 ${FileContentResources.notExistsFilename}",
+            error = "head: ${FileContentResources.notExistsFilename}: No such file or directory",
             expectedResult = CodeResult(1)
+        )
+    }
+
+    @Test
+    fun `Pipe test`() = withTestContext {
+        test(
+            "head -n 1 ${FileContentResources.engLoremFilename} | wc", "\t1\t6\t40"
         )
     }
 }
@@ -51,8 +65,16 @@ class WindowsExternalTest : ExternalTest() {
     @Test
     fun `Simple external command test`() = withTestContext {
         test(
-            "powershell -command \"Get-Content -Head 1 src/test/resources/lorem.txt\"",
+            "powershell -command \"Get-Content -Head 1 ${FileContentResources.engLoremFilename}\"",
             "Lorem ipsum dolor sit amet, consectetur"
+        )
+    }
+
+    @Test
+    fun `Pipe test`() = withTestContext {
+        test(
+            "powershell -command \"Get-Content -Head 1 ${FileContentResources.engLoremFilename}\" | wc",
+            "\t1\t6\t41"
         )
     }
 }

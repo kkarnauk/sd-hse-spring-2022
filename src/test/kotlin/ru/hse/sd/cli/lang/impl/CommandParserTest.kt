@@ -36,6 +36,24 @@ internal class CommandParserTest {
             Arguments.of("pwd", PwdCommand),
             Arguments.of("exit", ExitCommand),
             Arguments.of("cd myProject", ExternalCommand("cd", listOf("myProject"))),
+            Arguments.of(
+                "echo 1 | cat 2 | wc 3",
+                PipeCommand(
+                    PipeCommand(
+                        EchoCommand(listOf("1")),
+                        CatCommand("2")
+                    ),
+                    WcCommand("3")
+                )
+            ),
+            Arguments.of("x=y", AssignmentCommand("x", "y")),
+            Arguments.of("x =y", AssignmentCommand("x", "y")),
+            Arguments.of("x= y", AssignmentCommand("x", "y")),
+            Arguments.of("x = y", AssignmentCommand("x", "y")),
+            Arguments.of("echo=echo", AssignmentCommand("echo", "echo")),
+            Arguments.of("echo= echo", AssignmentCommand("echo", "echo")),
+            Arguments.of("echo =echo", AssignmentCommand("echo", "echo")),
+            Arguments.of("echo = echo", AssignmentCommand("echo", "echo")),
         )
     }
 }

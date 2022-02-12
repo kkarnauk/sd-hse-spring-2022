@@ -5,6 +5,8 @@ import ru.hse.sd.cli.env.IoContext
 import ru.hse.sd.cli.util.write
 import java.io.File
 import java.io.OutputStream
+import java.io.PipedInputStream
+import java.io.PipedOutputStream
 import java.nio.file.Path
 
 /**
@@ -183,4 +185,51 @@ data class ExternalCommand(
  */
 object EmptyCommand : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult = CodeResult.success
+}
+
+/**
+ * Represents the command that transfer the output of the [left] command to the input of [right] command
+ */
+data class PipeCommand(
+    /**
+     * Left command of the pipe
+     */
+    val left: Command,
+    /**
+     * Right command of the pipe
+     */
+    val right: Command
+) : Command() {
+    /**
+     * Executes the pipe command
+     *
+     * Data flows in the following way: `context.input` -> [left] -> [right] -> `context.output`
+     */
+    override fun execute(context: IoContext, env: Environment): CommandResult {
+        val leftOutput = PipedOutputStream()
+        val rightInput = PipedInputStream(leftOutput)
+
+        left.execute(IoContext(context.input, leftOutput, context.error), env)
+        leftOutput.close()
+        return right.execute(IoContext(rightInput, context.output, context.error), env)
+    }
+}
+
+/**
+ * Represents the command that assign [varValue] to the [varName] in the [Environment]
+ */
+data class AssignmentCommand(
+    /**
+     * Name of the variable
+     */
+    val varName: String,
+    /**
+     * Content to assign
+     */
+    val varValue: String
+) : Command() {
+    override fun execute(context: IoContext, env: Environment): CommandResult {
+        env.putVariable(varName, varValue)
+        return CodeResult.success
+    }
 }

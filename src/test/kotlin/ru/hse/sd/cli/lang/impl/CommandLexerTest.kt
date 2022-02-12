@@ -28,15 +28,15 @@ internal class CommandLexerTest {
             Arguments.of("wc", listOf(CommandGrammar.wcToken to "wc")),
             Arguments.of("pwd", listOf(CommandGrammar.pwdToken to "pwd")),
             Arguments.of("exit", listOf(CommandGrammar.exitToken to "exit")),
-            Arguments.of("firefox", listOf(CommandGrammar.identifier to "firefox")),
-            Arguments.of("chrome", listOf(CommandGrammar.identifier to "chrome")),
-            Arguments.of("telegram", listOf(CommandGrammar.identifier to "telegram")),
+            Arguments.of("firefox", listOf(CommandGrammar.identifierToken to "firefox")),
+            Arguments.of("chrome", listOf(CommandGrammar.identifierToken to "chrome")),
+            Arguments.of("telegram", listOf(CommandGrammar.identifierToken to "telegram")),
             Arguments.of("\n\r\t\n   echo       \n\r\n\t\n    ", listOf(CommandGrammar.echoToken to "echo")),
             Arguments.of(
                 "echo arg1 arg2", listOf(
                     CommandGrammar.echoToken to "echo",
-                    CommandGrammar.identifier to "arg1",
-                    CommandGrammar.identifier to "arg2",
+                    CommandGrammar.identifierToken to "arg1",
+                    CommandGrammar.identifierToken to "arg2",
                 )
             ),
             Arguments.of(
@@ -80,9 +80,31 @@ internal class CommandLexerTest {
             Arguments.of(
                 "cat abc/hello.txt", listOf(
                     CommandGrammar.catToken to "cat",
-                    CommandGrammar.identifier to "abc/hello.txt"
+                    CommandGrammar.identifierToken to "abc/hello.txt"
                 )
             ),
+            Arguments.of(
+                "cat a | echo b", listOf(
+                    CommandGrammar.catToken to "cat",
+                    CommandGrammar.identifierToken to "a",
+                    CommandGrammar.pipeToken to "|",
+                    CommandGrammar.echoToken to "echo",
+                    CommandGrammar.identifierToken to "b"
+                )
+            ),
+            Arguments.of(
+                "x=\$y", listOf(
+                    CommandGrammar.identifierToken to "x",
+                    CommandGrammar.equalToken to "=",
+                    CommandGrammar.substitutionToken to "\$y",
+                )
+            ),
+            Arguments.of(
+                "\$x\$y", listOf(
+                    CommandGrammar.substitutionToken to "\$x",
+                    CommandGrammar.substitutionToken to "\$y",
+                )
+            )
         )
     }
 }
