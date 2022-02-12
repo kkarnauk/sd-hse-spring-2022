@@ -1,16 +1,18 @@
 package ru.hse.sd.cli.executor
 
 import java.io.File
+import java.nio.file.Path
 
 object FileContentResources {
-    const val resourcesDirPath = "src/test/resources"
+    val resourcesDirPath = Path.of("src", "test", "resources").toString()
 
-    const val engLoremFilename = "$resourcesDirPath/lorem.txt"
+    val engLoremFilename = Path.of(resourcesDirPath, "lorem.txt").toString()
+
+    val rusLoremFilename = Path.of(resourcesDirPath, "лорем.txt").toString()
+
+    val notExistsFilename = Path.of(resourcesDirPath, "not-exists.txt").toString()
 
     val engLorem = File(engLoremFilename).readText()
-    const val rusLoremFilename = "$resourcesDirPath/лорем.txt"
 
     val rusLorem = File(rusLoremFilename).readText()
-
-    const val notExistsFilename = "$resourcesDirPath/not-exists.txt"
 }
