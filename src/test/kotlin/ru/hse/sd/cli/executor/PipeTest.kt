@@ -32,7 +32,7 @@ class PipeTest : CommandExecutorTest() {
 
     @Test
     fun `Echo and wc`() = withTestContext {
-        val echoWcResult = "\t1\t0\t${"".length.withNewLine}}"
+        val echoWcResult = "\t1\t0\t${"".length.withNewLine}"
         test("echo | wc", echoWcResult)
         val helloWorld = "Hello world"
         test("echo $helloWorld | wc", "\t1\t2\t${helloWorld.length.withNewLine}")
