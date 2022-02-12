@@ -32,9 +32,11 @@ class PipeTest : CommandExecutorTest() {
 
     @Test
     fun `Echo and wc`() = withTestContext {
-        test("echo | wc", "\t1\t0\t1")
-        test("echo Hello world | wc", "\t1\t2\t12")
-        test("echo | wc | wc", "\t1\t3\t7")
+        val echoWcResult = "\t1\t0\t1"
+        test("echo | wc", echoWcResult)
+        val helloWorld = "Hello world"
+        test("echo $helloWorld | wc", "\t1\t2\t${helloWorld.length.withNewLine}")
+        test("echo | wc | wc", "\t1\t3\t${echoWcResult.length.withNewLine}")
     }
 
     @Test
@@ -55,5 +57,9 @@ class PipeTest : CommandExecutorTest() {
             "echo Never gonna give you up | cat ${FileContentResources.notExistsFilename} | exit",
             expectedResult = ExitResult
         )
+    }
+
+    companion object {
+        private val Int.withNewLine get() = this + System.lineSeparator().length
     }
 }
