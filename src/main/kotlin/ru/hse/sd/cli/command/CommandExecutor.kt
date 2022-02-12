@@ -37,7 +37,7 @@ class CommandExecutor(
 
     private fun String.removeUselessQuotes(): String {
         val afterRemoving = removeSurrounding(first().toString())
-        return if (afterRemoving.contains("[\\s\'\"|$]".toRegex())) {
+        return if (afterRemoving.contains(requireQuote)) {
             this
         } else {
             afterRemoving
@@ -50,9 +50,11 @@ class CommandExecutor(
             when (token.type) {
                 CommandGrammar.substitutionToken -> environment[token.text.drop(1)]
                 CommandGrammar.quoteToken -> token.text.removeUselessQuotes()
-                CommandGrammar.doubleQuoteToken -> token.text.replace("\\$([^\\s$\"\']+)".toRegex()) {
-                    environment[it.groupValues.last()]
-                }.removeUselessQuotes()
+                CommandGrammar.doubleQuoteToken -> {
+                    token.text.replace(substitutionInDoubleQuote) {
+                        environment[it.groupValues.last()]
+                    }.removeUselessQuotes()
+                }
                 else -> token.text
             }
         }.joinToString("")
@@ -72,5 +74,10 @@ class CommandExecutor(
             context.error.write("Internal error: ${e.message ?: "no message."}\n")
             CodeResult.internalError
         }
+    }
+
+    companion object {
+        private val requireQuote = "[\\s\'\"|$]".toRegex()
+        private val substitutionInDoubleQuote = "\\$([^\\s$\"\']+)".toRegex()
     }
 }
