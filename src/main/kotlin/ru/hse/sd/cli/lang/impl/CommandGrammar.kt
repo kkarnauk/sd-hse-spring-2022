@@ -6,6 +6,7 @@ import com.github.h0tk3y.betterParse.lexer.literalToken
 import com.github.h0tk3y.betterParse.lexer.regexToken
 import com.github.h0tk3y.betterParse.parser.Parser
 import ru.hse.sd.cli.command.*
+import ru.hse.sd.cli.command.impl.*
 
 /**
  * Bash-like CLI command grammar.
