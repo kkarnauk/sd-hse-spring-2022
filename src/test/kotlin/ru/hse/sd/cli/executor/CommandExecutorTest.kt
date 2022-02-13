@@ -8,7 +8,7 @@ import java.io.Closeable
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
 import kotlin.test.assertEquals
-import ru.hse.sd.cli.command.ExternalCommand
+import ru.hse.sd.cli.command.impl.ExternalCommand
 
 abstract class CommandExecutorTest {
     fun TestContext.test(pair: Pair<String, String>) = test(pair.first, pair.second)
