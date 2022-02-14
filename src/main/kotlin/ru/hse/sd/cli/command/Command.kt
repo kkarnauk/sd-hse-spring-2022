@@ -26,19 +26,20 @@ abstract class Command {
      */
     abstract fun execute(context: IoContext, env: Environment): CommandResult
 
-    protected fun openAndValidateFile(
+    protected inline fun <R> openAndValidateFile(
         filename: String,
         error: OutputStream,
         env: Environment,
-        onSuccess: (File) -> CodeResult
-    ): CodeResult {
+        onFail: () -> R,
+        onSuccess: (File) -> R
+    ): R {
         val file = env.resolvePath(Path.of(filename)).toFile()
         return if (!file.exists()) {
             error.write("$name: ${filename}: No such file or directory${System.lineSeparator()}")
-            CodeResult(1)
+            onFail()
         } else if (!file.isFile) {
             error.write("$name: ${filename}: Is not a file${System.lineSeparator()}")
-            CodeResult(1)
+            onFail()
         } else {
             onSuccess(file)
         }
