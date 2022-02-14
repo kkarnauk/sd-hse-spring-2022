@@ -42,7 +42,7 @@ data class WcCommand(
 
     override fun execute(context: IoContext, env: Environment): CommandResult {
         return if (argument != null) {
-            openAndValidateFile(argument, context.error, env) { file ->
+            openAndValidateFile(argument, context.error, env, { CodeResult(1) }) { file ->
                 val wcResult = wc(file.readBytes())
                 context.output.write(wcResult.toString())
                 context.output.write(System.lineSeparator())

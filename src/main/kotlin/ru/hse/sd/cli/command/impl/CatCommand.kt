@@ -19,7 +19,7 @@ data class CatCommand(
 ) : Command() {
     override fun execute(context: IoContext, env: Environment): CommandResult {
         return if (argument != null) {
-            openAndValidateFile(argument, context.error, env) { file ->
+            openAndValidateFile(argument, context.error, env, { CodeResult(1) }) { file ->
                 context.output.write(file.readBytes())
                 CodeResult.success
             }
