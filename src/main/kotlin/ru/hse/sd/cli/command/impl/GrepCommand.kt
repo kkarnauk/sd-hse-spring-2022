@@ -51,7 +51,7 @@ data class GrepCommand(
             }
 
             if (index <= printUntil) {
-                context.output.write(line)
+                context.output.write(line + System.lineSeparator())
             }
         }
 
@@ -73,8 +73,8 @@ data class GrepCommand(
         if (!wordRegexp) {
             return true
         }
-        val first = input.getOrNull(match.range.first)
-        val last = input.getOrNull(match.range.last)
+        val first = input.getOrNull(match.range.first - 1)
+        val last = input.getOrNull(match.range.last + 1)
         return first?.isWordConstituent != true && last?.isWordConstituent != true
     }
 }
