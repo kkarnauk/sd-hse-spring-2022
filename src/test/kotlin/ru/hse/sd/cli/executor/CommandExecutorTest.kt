@@ -30,7 +30,7 @@ abstract class CommandExecutorTest {
         output: String? = null,
         error: String? = null,
         expectedResult: CommandResult = CodeResult.success
-    ) = test(command, output, error) { assertEquals(it, expectedResult) }
+    ) = test(command, output, error) { assertEquals(expectedResult, it) }
 
     open fun withTestContext(block: TestContext.() -> Unit) {
         PipedInputStream().use { input ->
