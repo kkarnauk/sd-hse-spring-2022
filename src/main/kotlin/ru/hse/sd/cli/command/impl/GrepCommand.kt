@@ -96,7 +96,10 @@ private class GrepArgumentsParser : CliktCommand() {
     private val filename by argument().optional()
 
     val grepArguments: GrepArguments
-        get() = GrepArguments(pattern, filename, ignoreCase, wordRegexp, afterContext)
+        get() = run {
+            require(afterContext >= 0) { "'After context' must be non-negative." }
+            GrepArguments(pattern, filename, ignoreCase, wordRegexp, afterContext)
+        }
 
     override fun run() = Unit
 }
