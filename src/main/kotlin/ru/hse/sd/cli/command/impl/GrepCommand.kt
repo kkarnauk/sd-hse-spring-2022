@@ -75,6 +75,7 @@ data class GrepCommand(
         }
         val first = input.getOrNull(match.range.first - 1)
         val last = input.getOrNull(match.range.last + 1)
+        println("text: $input, first: ${first?.isWordConstituent}, last: ${last?.isWordConstituent}")
         return first?.isWordConstituent != true && last?.isWordConstituent != true
     }
 }
