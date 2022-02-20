@@ -61,6 +61,7 @@ abstract class CommandExecutorTest {
                     }
                 }
         }
+        println(actualOutput)
         assertEquals(output, actualOutput)
     }
 

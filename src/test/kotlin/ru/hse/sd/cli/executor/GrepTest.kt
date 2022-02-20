@@ -101,6 +101,7 @@ class GrepTest : CommandExecutorTest() {
 
     @Test
     fun `Grep choose file over stream`() = withTestContext {
+        println("LOOK HERE:")
         testFullOutput("echo hello | grep -w -A 1 hello $hellosFilename", output = """
             Do you have any hello?
             I do.
