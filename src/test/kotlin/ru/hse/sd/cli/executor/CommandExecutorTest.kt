@@ -50,17 +50,8 @@ abstract class CommandExecutorTest {
     ) {
         val result = execute(command)
         assertEquals(expectedResult, result)
-        val actualOutput = buildString {
-            output
-                .windowed(System.lineSeparator().length)
-                .count { it == System.lineSeparator() }
-                .let {
-                    repeat(it) {
-                        append(outputLine())
-                        append(System.lineSeparator())
-                    }
-                }
-        }
+        val actualOutput = output.split(System.lineSeparator()).dropLast(1)
+            .joinToString(System.lineSeparator(), postfix = System.lineSeparator()) { outputLine() }
         println(actualOutput)
         assertEquals(output, actualOutput)
     }
