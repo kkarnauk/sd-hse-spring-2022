@@ -64,8 +64,7 @@ class GrepTest : CommandExecutorTest() {
             What the hhello??
             I want to get my helloo back!
             Do you have any hello?
-            
-        """.trimIndent())
+        """.trimIndent() + System.lineSeparator())
 
         testFullOutput("grep hello -w $hellosFilename", output = "Do you have any hello?$n")
 
@@ -73,8 +72,7 @@ class GrepTest : CommandExecutorTest() {
             Hello, my friend!
             HeLLo my friend!
             Do you have any hello?
-            
-        """.trimIndent())
+        """.trimIndent() + System.lineSeparator())
 
         testFullOutput("grep hello -A 2 $hellosFilename", output = """
             Looong helloooo my friend!
@@ -85,15 +83,13 @@ class GrepTest : CommandExecutorTest() {
             Do you have any hello?
             I do.
             No, I don't.
-            
-        """.trimIndent())
+        """.trimIndent() + System.lineSeparator())
 
         testFullOutput("grep hello -w $hellosFilename -A 10", output = """
             Do you have any hello?
             I do.
             No, I don't.
-            
-        """.trimIndent())
+        """.trimIndent() + System.lineSeparator())
     }
 
     @Test
@@ -108,7 +104,6 @@ class GrepTest : CommandExecutorTest() {
         testFullOutput("echo hello | grep -w -A 1 hello $hellosFilename", output = """
             Do you have any hello?
             I do.
-            
-        """.trimIndent())
+        """.trimIndent() + System.lineSeparator())
     }
 }
