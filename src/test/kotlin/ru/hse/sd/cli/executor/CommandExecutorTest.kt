@@ -50,7 +50,7 @@ abstract class CommandExecutorTest {
     ) {
         val result = execute(command)
         assertEquals(expectedResult, result)
-        println("EXPECTED OUTPUT: $output")
+        println("EXPECTED OUTPUT: $output, ${output.split(System.lineSeparator()).dropLast(1).size}")
         val actualOutput = output.split(System.lineSeparator()).dropLast(1)
             .joinToString(System.lineSeparator(), postfix = System.lineSeparator()) { outputLine() }
         println(actualOutput)
