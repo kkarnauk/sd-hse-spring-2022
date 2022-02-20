@@ -48,6 +48,7 @@ data class GrepCommand(
             val match = regex.find(line)
             if (match != null && grepArgs.matches(line, match)) {
                 printUntil = maxOf(printUntil, index + grepArgs.afterContext)
+                println("<<FOUND!>> $line, ${grepArgs.afterContext}")
             }
 
             if (index <= printUntil) {
