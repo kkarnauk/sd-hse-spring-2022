@@ -51,17 +51,14 @@ abstract class CommandExecutorTest {
         val result = execute(command)
         assertEquals(expectedResult, result)
         val actualOutput = buildString {
-            output
-                .windowed(System.lineSeparator().length)
-                .count { it == System.lineSeparator() }
-                .let {
-                    repeat(it) {
-                        append(outputLine())
-                        append(System.lineSeparator())
-                    }
+            output.lines().size.let {
+                repeat(maxOf(it - 1, 0)) {
+                    append(outputLine())
+                    append(System.lineSeparator())
                 }
+            }
         }
-        assertEquals(output, actualOutput)
+        assertEquals(output.lines(), actualOutput.lines())
     }
 
     @Suppress("unused")
