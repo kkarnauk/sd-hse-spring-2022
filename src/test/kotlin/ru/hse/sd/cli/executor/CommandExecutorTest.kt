@@ -75,7 +75,7 @@ abstract class CommandExecutorTest {
         private val fromOutput = PipedInputStream(output).bufferedReader()
         private val fromError = PipedInputStream(error).bufferedReader()
 
-        fun input(input: String) = toInput.write("$input\n")
+        fun input(input: String) = toInput.write(input + System.lineSeparator())
         fun outputLine(): String = fromOutput.readLine()
         fun errorLine(): String = fromError.readLine()
         fun execute(command: String) = executor.execute(command)

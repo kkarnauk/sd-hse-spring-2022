@@ -9,6 +9,8 @@ import ru.hse.sd.cli.executor.FileContentResources.rusLorem
 import ru.hse.sd.cli.executor.FileContentResources.rusLoremFilename
 
 class GrepTest : CommandExecutorTest() {
+    private val n = System.lineSeparator()
+
     @Test
     fun `Grep incorrect configuration`() = withTestContext {
         test(
@@ -40,9 +42,9 @@ class GrepTest : CommandExecutorTest() {
 
     @Test
     fun `Grep for file without flags`() = withTestContext {
-        testFullOutput("grep dolor $engLoremFilename", output = "Lorem ipsum dolor sit amet, consectetur\n")
-        testFullOutput("grep \\. $rusLoremFilename", output = "адиписсинг элит.\n")
-        testFullOutput("grep \"d.l.. sit\" $engLoremFilename", output = "Lorem ipsum dolor sit amet, consectetur\n")
+        testFullOutput("grep dolor $engLoremFilename", output = "Lorem ipsum dolor sit amet, consectetur$n")
+        testFullOutput("grep \\. $rusLoremFilename", output = "адиписсинг элит.$n")
+        testFullOutput("grep \"d.l.. sit\" $engLoremFilename", output = "Lorem ipsum dolor sit amet, consectetur$n")
         testFullOutput("grep . $rusLoremFilename", output = rusLorem)
         test(
             "grep hey $notExistsFilename",
@@ -53,7 +55,7 @@ class GrepTest : CommandExecutorTest() {
 
     @Test
     fun `Grep for file with flags`() = withTestContext {
-        testFullOutput("grep -i ЭлИт\\. $rusLoremFilename", output = "адиписсинг элит.\n")
+        testFullOutput("grep -i ЭлИт\\. $rusLoremFilename", output = "адиписсинг элит.$n")
 
         testFullOutput("grep hello -i $hellosFilename", output = """
             Hello, my friend!
@@ -65,7 +67,7 @@ class GrepTest : CommandExecutorTest() {
             
         """.trimIndent())
 
-        testFullOutput("grep hello -w $hellosFilename", output = "Do you have any hello?\n")
+        testFullOutput("grep hello -w $hellosFilename", output = "Do you have any hello?$n")
 
         testFullOutput("grep hello -w -i $hellosFilename", output = """
             Hello, my friend!
@@ -96,9 +98,9 @@ class GrepTest : CommandExecutorTest() {
 
     @Test
     fun `Grep for input stream`() = withTestContext {
-        testFullOutput("echo hey | grep hey", output = "hey\n")
-        testFullOutput("echo HeY | grep -i heY", output = "HeY\n")
-        testFullOutput("echo 'Hello my friend!' | grep -A 100 -i hell", output = "Hello my friend!\n" )
+        testFullOutput("echo hey | grep hey", output = "hey$n")
+        testFullOutput("echo HeY | grep -i heY", output = "HeY$n")
+        testFullOutput("echo 'Hello my friend!' | grep -A 100 -i hell", output = "Hello my friend!$n" )
     }
 
     @Test
