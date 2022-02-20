@@ -48,7 +48,6 @@ data class GrepCommand(
             val match = regex.find(line)
             if (match != null && grepArgs.matches(line, match)) {
                 printUntil = maxOf(printUntil, index + grepArgs.afterContext)
-                println("<<FOUND!>> $line, ${grepArgs.afterContext}")
             }
 
             if (index <= printUntil) {
@@ -76,7 +75,6 @@ data class GrepCommand(
         }
         val first = input.getOrNull(match.range.first - 1)
         val last = input.getOrNull(match.range.last + 1)
-        println("text: $input, first: ${first?.isWordConstituent}, last: ${last?.isWordConstituent}")
         return first?.isWordConstituent != true && last?.isWordConstituent != true
     }
 }
