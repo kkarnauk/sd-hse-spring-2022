@@ -35,10 +35,12 @@ class LinuxExternalTest : ExternalTest() {
         )
     }
 
+
     @Test
     fun `Pipe external command test`() = withTestContext {
-        test("echo 123 | /bin/cat > tmp", "")
-        test("cat tmp", "123")
+        test("echo 123 | /bin/cat", "123")
+        test("/bin/echo 123 | cat", "123")
+        test("/bin/echo 123 | /bin/cat", "123")
     }
 }
 
@@ -67,8 +69,9 @@ class MacOSExternalTest : ExternalTest() {
 
     @Test
     fun `Pipe external command test`() = withTestContext {
-        test("echo 123 | /bin/cat > tmp", "")
-        test("cat tmp", "123")
+        test("echo 123 | /bin/cat", "123")
+        test("/bin/echo 123 | cat", "123")
+        test("/bin/echo 123 | /bin/cat", "123")
     }
 }
 
@@ -92,7 +95,8 @@ class WindowsExternalTest : ExternalTest() {
 
     @Test
     fun `Pipe external command test`() = withTestContext {
-        test("echo 123 | type con > tmp", "")
-        test("cat tmp", "123")
+        test("echo 123 | type con", "123")
+        test("C:\\Windows\\System32\\cmd.exe /c echo 123 | cat", "123")
+        test("C:\\Windows\\System32\\cmd.exe /c echo 123 | type con", "123")
     }
 }
