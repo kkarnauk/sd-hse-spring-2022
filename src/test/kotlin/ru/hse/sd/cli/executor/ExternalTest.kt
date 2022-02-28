@@ -91,7 +91,7 @@ class WindowsExternalTest : ExternalTest() {
     @Test
     fun `Pipe external command test`() = withTestContext {
         test(
-            "echo 123 | type con",
+            "echo 123 | type con > con",
             "123"
         )
     }
