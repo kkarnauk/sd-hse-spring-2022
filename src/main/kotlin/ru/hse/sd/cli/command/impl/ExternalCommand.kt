@@ -26,6 +26,7 @@ data class ExternalCommand(
             environment() += env.variables
         }.start()
         context.input.transferTo(process.outputStream)
+        process.outputStream.close()
         process.waitFor()
         process.inputStream.transferTo(context.output)
         process.errorStream.transferTo(context.error)

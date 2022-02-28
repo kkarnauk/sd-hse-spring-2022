@@ -34,6 +34,11 @@ class LinuxExternalTest : ExternalTest() {
             "head -n 1 ${FileContentResources.engLoremFilename} | wc", "\t1\t6\t40"
         )
     }
+
+    @Test
+    fun `Pipe external command test`() = withTestContext {
+        test("echo 123 | /bin/cat", "123")
+    }
 }
 
 @EnabledOnOs(OS.MAC)
@@ -58,6 +63,11 @@ class MacOSExternalTest : ExternalTest() {
             "head -n 1 ${FileContentResources.engLoremFilename} | wc", "\t1\t6\t40"
         )
     }
+
+    @Test
+    fun `Pipe external command test`() = withTestContext {
+        test("echo 123 | /bin/cat", "123")
+    }
 }
 
 @EnabledOnOs(OS.WINDOWS)
@@ -75,6 +85,14 @@ class WindowsExternalTest : ExternalTest() {
         test(
             "powershell -command \"Get-Content -Head 1 ${FileContentResources.engLoremFilename}\" | wc",
             "\t1\t6\t41"
+        )
+    }
+
+    @Test
+    fun `Pipe external command test`() = withTestContext {
+        test(
+            "echo 123 | type con",
+            "123"
         )
     }
 }
