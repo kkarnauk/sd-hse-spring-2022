@@ -96,7 +96,7 @@ class WindowsExternalTest : ExternalTest() {
     @Test
     fun `Pipe external command test`() = withTestContext {
         test("echo 123 | findstr \"^\"", "123")
-//        test("C:\\Windows\\System32\\cmd.exe /c echo 123 | cat", "123")
-//        test("C:\\Windows\\System32\\cmd.exe /c echo 123 | type con", "123")
+        test("C:\\Windows\\System32\\cmd.exe /c echo 123 | cat", "123")
+        test("C:\\Windows\\System32\\cmd.exe /c echo 123 | findstr \"^\"", "123")
     }
 }
