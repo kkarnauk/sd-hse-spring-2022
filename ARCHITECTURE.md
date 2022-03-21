@@ -107,7 +107,7 @@ Rogue-like и критикуя студентов за их игры.
 
 ### Логическая структура
 
-![Components](img/Class Diagram WitchRogue.svg)
+![Classes](img/Class Diagram WitchRogue.svg)
 
 - InputHandler: детектирует клавиши и отправляет их в PlayerController. 
 - Timer: каждые Х времени (тик) вызывает метод invoke() у тех Action-ов, которые были зарегистрированы в нем.
@@ -178,7 +178,7 @@ Rogue-like и критикуя студентов за их игры.
 
 ### Взаимодействия
 
-![Components](img/Sequence Diagram WitchRogue.svg)
+![Sequence](img/Sequence Diagram WitchRogue.svg)
 
 Взаимодействие в игре построено на основе времени и тиков. Есть Timer, в котором разные сущности игры регистрируют события. 
 Эти события выполняются раз в тик (например, 1мс). Событие само понимает, когда ему надо что-то делать, а когда нет, 
@@ -201,7 +201,7 @@ Rogue-like и критикуя студентов за их игры.
 
 ## Глобальное состояние игрока
 
-![Components](img/State Machine WitchRogue.svg)
+![State](img/State Machine WitchRogue.svg)
 
 Глобально есть состояние MenuState - просто сидим в меню, состояние WalkState - просто идём по полю, состояние FightState -
 находимся в бою, состояние InventoryState - открыли инвентарь, состояние DeadState - умерли, состояние VictoryState - в бою убили босса
