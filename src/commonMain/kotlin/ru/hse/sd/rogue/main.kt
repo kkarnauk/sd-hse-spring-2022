@@ -1,3 +1,5 @@
+package ru.hse.sd.rogue
+
 import com.soywiz.klock.seconds
 import com.soywiz.korge.*
 import com.soywiz.korge.tween.*
