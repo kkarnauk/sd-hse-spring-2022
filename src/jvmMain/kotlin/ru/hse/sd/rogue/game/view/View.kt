@@ -1,6 +1,5 @@
 package ru.hse.sd.rogue.game.view
 
-import ru.hse.sd.rogue.game.logic.action.Action
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 
 interface View {
@@ -8,7 +7,7 @@ interface View {
 }
 
 class UpdateViewAction : IrreversibleAction {
-    override fun invoke(): Action.Result {
+    override fun invoke() {
         TODO("Not yet implemented")
     }
 }

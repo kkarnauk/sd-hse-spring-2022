@@ -34,5 +34,7 @@ abstract class CharacterState(
 
     protected abstract val controller: CharacterController
 
+    fun update(act: CharacterState.() -> Unit) = controller.action { act(this) }
+
     // TODO
 }
