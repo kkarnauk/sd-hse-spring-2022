@@ -1,14 +1,16 @@
 package ru.hse.sd.rogue.game.controller
 
-import ru.hse.sd.rogue.game.logic.action.Action
+import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 
-interface CharacterController : Controller {
-    // TODO()
+abstract class CharacterController(
+    protected val actionsManager: ActionsManager
+) : Controller {
+    fun action(act: () -> Unit) {
+        actionsManager.register(CharacterAction(act))
+    }
 }
 
-class CharacterAction : IrreversibleAction {
-    override fun invoke(): Action.Result {
-        TODO("Not yet implemented")
-    }
+class CharacterAction(private val action: () -> Unit) : IrreversibleAction {
+    override fun invoke() = action()
 }

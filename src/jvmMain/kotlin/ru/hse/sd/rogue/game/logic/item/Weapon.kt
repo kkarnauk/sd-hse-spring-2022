@@ -13,6 +13,8 @@ data class Weapon(
 
     override fun use(character: CharacterState) {
         super.use(character)
-        character.currentWeapon = this
+        character.update {
+            currentWeapon = this@Weapon
+        }
     }
 }
