@@ -1,5 +1,9 @@
 import com.soywiz.korge.gradle.*
 
+plugins {
+    kotlin("multiplatform") version "1.6.10"
+}
+
 buildscript {
     val korgePluginVersion: String by project
 
