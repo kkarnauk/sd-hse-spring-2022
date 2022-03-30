@@ -16,6 +16,9 @@ abstract class CharacterState(
     protected var meleeDamage: Damage,
     initItems: MutableList<Item> = mutableListOf()
 ) : State {
+    var isAlive: Boolean = true
+        private set
+
     protected val items: MutableList<Item> = initItems
 
     protected val weapons: List<Weapon>
@@ -34,7 +37,19 @@ abstract class CharacterState(
 
     protected abstract val controller: CharacterController
 
-    fun update(act: CharacterState.() -> Unit) = controller.action { act(this) }
+    fun update(act: CharacterState.() -> Unit) {
+        controller.action { act(this) }
+    }
+
+    fun takeDamage(damage: Damage) = update {
+        if (!isAlive) {
+            return@update
+        }
+        health.current -= damage.value
+        if (health.current <= 0) {
+            isAlive = false
+        }
+    }
 
     // TODO
 }
