@@ -1,6 +1,6 @@
 package ru.hse.sd.rogue.game.controller
 
-import ru.hse.sd.rogue.game.logic.movement.Direction
+import ru.hse.sd.rogue.game.logic.position.Direction
 
 class PlayerController : CharacterController {
     fun move(direction: Direction) {
