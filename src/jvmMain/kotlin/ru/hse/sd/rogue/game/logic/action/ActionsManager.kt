@@ -15,8 +15,8 @@ class ActionsManager(
     private var tick: Long = 0L
     private val lock = ReentrantLock()
 
-    private val registeredActions: MutableList<Action> = mutableListOf()
-    private val reversedActions: MutableList<Pair<Action, Long>> = mutableListOf()
+    private val registeredActions: MutableList<PrioritisedAction> = mutableListOf()
+    private val reversedActions: MutableList<Pair<PrioritisedAction, Long>> = mutableListOf()
 
     private fun invokeActions() {
         tick += invokePeriod
@@ -27,7 +27,7 @@ class ActionsManager(
             actions
         }
 
-        val leftReversedActions = mutableListOf<Pair<Action, Long>>()
+        val leftReversedActions = mutableListOf<Pair<PrioritisedAction, Long>>()
         for ((reversedAction, startTime) in reversedActions) {
             if (startTime <= tick) {
                 actions += reversedAction
@@ -39,25 +39,36 @@ class ActionsManager(
         reversedActions.clear()
         reversedActions += leftReversedActions
 
-        for (action in actions) {
+        val (highActions, normalActions) = actions.partition { (_, priority) -> priority == ActionPriority.High }
+
+        for ((action, priority) in (highActions + normalActions)) {
             action.invoke()
             if (action is ReversibleAction) {
-                reversedActions += action.reverse() to action.lifetime.time + tick
+                reversedActions += PrioritisedAction(action.reverse(), priority) to action.lifetime.time + tick
             }
         }
     }
 
-    fun register(action: Action) {
+    fun register(priority: ActionPriority, action: Action) {
         lock.withLock {
-            registeredActions += action
+            registeredActions += PrioritisedAction(action, priority)
         }
+    }
+
+    fun register(action: Action) {
+        register(ActionPriority.Normal, action)
     }
 
     fun unregister(action: Action) {
         lock.withLock {
-            require(registeredActions.remove(action)) {
+            require(registeredActions.removeIf { (currentAction, _) -> currentAction == action }) {
                 "Cannot unregister an action: it doesn't exist."
             }
         }
     }
 }
+
+private data class PrioritisedAction(
+    val action: Action,
+    val priority: ActionPriority
+)
