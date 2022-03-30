@@ -16,8 +16,8 @@ abstract class CharacterState(
     protected var meleeDamage: Damage,
     initItems: MutableList<Item> = mutableListOf()
 ) : State {
-    var isAlive: Boolean = true
-        private set
+    val isAlive: Boolean
+        get() = health.current > 0
 
     protected val items: MutableList<Item> = initItems
 
@@ -46,9 +46,6 @@ abstract class CharacterState(
             return@update
         }
         health.current -= damage.value
-        if (health.current <= 0) {
-            isAlive = false
-        }
     }
 
     // TODO
