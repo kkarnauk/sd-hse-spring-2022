@@ -23,6 +23,8 @@ apply<KorgeGradlePlugin>()
 korge {
     id = "ru.hse.sd.rogue"
 
+    jvmMainClassName = "mainKt"
+
     targetJvm()
     targetDesktop()
 }
