@@ -1,4 +1,4 @@
-package ru.hse.sd.rogue.game.logic.movement
+package ru.hse.sd.rogue.game.logic.position
 
 enum class Direction {
     Up,
