@@ -26,5 +26,4 @@ korge {
     jvmMainClassName = "mainKt"
 
     targetJvm()
-    targetDesktop()
 }
