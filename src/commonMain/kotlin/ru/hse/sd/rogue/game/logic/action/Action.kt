@@ -1,6 +1,6 @@
 package ru.hse.sd.rogue.game.logic.action
 
-interface Action {
+sealed interface Action {
     // TODO params
     fun invoke(): Result
 
