@@ -1,5 +1,6 @@
 package ru.hse.sd.rogue.game.state
 
+import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 
@@ -11,7 +12,7 @@ class GlobalState(
     }
 
     private fun registerCheckGame() {
-        actionsManager.register(IrreversibleAction {
+        actionsManager.register(ActionPriority.High, IrreversibleAction {
             checkGame()
             registerCheckGame()
         })
