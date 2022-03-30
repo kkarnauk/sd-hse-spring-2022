@@ -35,7 +35,7 @@ abstract class CharacterState(
     val damage: Damage
         get() = currentWeapon?.damage ?: meleeDamage
 
-    protected abstract val controller: CharacterController
+    abstract val controller: CharacterController
 
     fun update(act: CharacterState.() -> Unit) {
         controller.action { act(this) }
