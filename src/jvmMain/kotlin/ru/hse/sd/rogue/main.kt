@@ -25,7 +25,6 @@ private fun generateSimpleMap(): List<List<CellState>> {
         List(size) { y ->
             val content = when {
                 minOf(x, y) == 0 || maxOf(x, y) + 1 == size -> CellContent.Wall
-                x == size / 2 && y == size / 2 -> CellContent.Player
                 abs(x - size / 3) <= 1 && abs(y - size / 3) <= 1 -> CellContent.Wall
                 else -> CellContent.Space
             }
