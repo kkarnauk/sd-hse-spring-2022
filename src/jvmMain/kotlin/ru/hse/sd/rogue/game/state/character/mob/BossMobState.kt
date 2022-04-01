@@ -4,6 +4,6 @@ import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Health
 import ru.hse.sd.rogue.game.logic.position.Position
 
-class WitchMob(health: Health, position: Position, meleeDamage: Damage) : Mob(health, position, meleeDamage) {
+class BossMobState(health: Health, position: Position, meleeDamage: Damage) : MobState(health, position, meleeDamage) {
     // TODO
 }

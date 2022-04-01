@@ -12,7 +12,7 @@ import ru.hse.sd.rogue.game.logic.input.InputHandler
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.CellState
 import ru.hse.sd.rogue.game.state.MapState
-import ru.hse.sd.rogue.game.state.character.Player
+import ru.hse.sd.rogue.game.state.character.PlayerState
 import ru.hse.sd.rogue.game.view.MapView
 import ru.hse.sd.rogue.game.view.character.PlayerView
 import kotlin.math.abs
@@ -36,7 +36,7 @@ private fun generateSimpleMap(): List<List<CellState>> {
 suspend fun main() = Korge(width = 600, height = 600, virtualWidth = 512, virtualHeight = 512) {
     val actionsManager = ActionsManager(this, 30)
 
-    val player = Player(
+    val playerState = PlayerState(
         Health(100),
         Position(10, 10),
         Damage(100, 100)
@@ -46,7 +46,7 @@ suspend fun main() = Korge(width = 600, height = 600, virtualWidth = 512, virtua
 
     val playerController = PlayerController(
         actionsManager,
-        player
+        playerState
     )
     val mapController = MapController(
         actionsManager,
@@ -59,7 +59,7 @@ suspend fun main() = Korge(width = 600, height = 600, virtualWidth = 512, virtua
     }
 
     MapView(actionsManager, actionsManager.mapContainer, mapState)
-    PlayerView(actionsManager, actionsManager.characterContainer, player)
+    PlayerView(actionsManager, actionsManager.characterContainer, playerState)
 
     actionsManager.start()
 }
