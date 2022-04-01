@@ -1,6 +1,7 @@
 package ru.hse.sd.rogue.game.controller.character
 
 import ru.hse.sd.rogue.game.controller.Controller
+import ru.hse.sd.rogue.game.controller.MapController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
@@ -10,7 +11,8 @@ import ru.hse.sd.rogue.game.state.character.CharacterState
 
 abstract class CharacterController(
     protected val actionsManager: ActionsManager,
-    protected open val state: CharacterState
+    protected open val state: CharacterState,
+    protected val mapController: MapController
 ) : Controller {
     abstract fun move(direction: Direction)
 
