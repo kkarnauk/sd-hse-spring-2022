@@ -3,13 +3,13 @@ package ru.hse.sd.rogue.game.state
 import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
-import ru.hse.sd.rogue.game.state.character.Player
-import ru.hse.sd.rogue.game.state.character.mob.BossMob
+import ru.hse.sd.rogue.game.state.character.PlayerState
+import ru.hse.sd.rogue.game.state.character.mob.BossMobState
 
 class GlobalState(
     private val actionsManager: ActionsManager,
-    private val player: Player,
-    private val boss: BossMob
+    private val player: PlayerState,
+    private val boss: BossMobState
 ) : State {
     init {
         actionsManager.registerRepeatable(ActionPriority.High) {

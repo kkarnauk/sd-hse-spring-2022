@@ -2,11 +2,11 @@ package ru.hse.sd.rogue.game.controller.character
 
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.position.Direction
-import ru.hse.sd.rogue.game.state.character.Player
+import ru.hse.sd.rogue.game.state.character.PlayerState
 
 class PlayerController(
     actionsManager: ActionsManager,
-    override val state: Player
+    override val state: PlayerState
 ) : CharacterController(actionsManager, state) {
     override fun move(direction: Direction) {
         when (direction) {
