@@ -44,13 +44,14 @@ suspend fun main() = Korge(width = 600, height = 600, virtualWidth = 512, virtua
 
     val mapState = MapState(generateSimpleMap())
 
-    val playerController = PlayerController(
-        actionsManager,
-        playerState
-    )
     val mapController = MapController(
         actionsManager,
         mapState
+    )
+    val playerController = PlayerController(
+        actionsManager,
+        playerState,
+        mapController
     )
     val globalController = GlobalController()
 
