@@ -11,7 +11,7 @@ import ru.hse.sd.rogue.game.state.State
 
 abstract class CharacterState(
     val health: Health,
-    var position: Position,
+    val position: Position,
     protected var meleeDamage: Damage,
     initItems: List<Item> = emptyList()
 ) : State {

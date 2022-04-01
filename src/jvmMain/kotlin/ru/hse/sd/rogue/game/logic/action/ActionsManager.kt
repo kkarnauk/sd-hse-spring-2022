@@ -84,6 +84,20 @@ class ActionsManager(
     }
 }
 
+fun ActionsManager.registerRepeatable(action: IrreversibleAction) {
+    registerRepeatable(ActionPriority.Normal, action)
+}
+
+fun ActionsManager.registerRepeatable(priority: ActionPriority, action: IrreversibleAction) {
+    fun register() {
+        register(priority, IrreversibleAction {
+            action.invoke()
+            register()
+        })
+    }
+    register()
+}
+
 private data class PrioritisedAction(
     val action: Action,
     val priority: ActionPriority
