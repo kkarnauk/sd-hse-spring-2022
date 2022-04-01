@@ -6,9 +6,12 @@ import ru.hse.sd.rogue.game.controller.MapController
 import ru.hse.sd.rogue.game.controller.PlayerController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.cell.CellContent
+import ru.hse.sd.rogue.game.logic.characteristics.Damage
+import ru.hse.sd.rogue.game.logic.characteristics.Health
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.CellState
 import ru.hse.sd.rogue.game.state.MapState
+import ru.hse.sd.rogue.game.state.character.Player
 import kotlin.math.abs
 
 
@@ -32,7 +35,12 @@ suspend fun main() = Korge(width = 600, height = 600, virtualWidth = 512, virtua
     val actionsManager = ActionsManager(this, 30)
 
     val playerController = PlayerController(
-        actionsManager
+        actionsManager,
+        Player(
+            Health(100),
+            Position(10, 10),
+            Damage(100, 100)
+        )
     )
     val mapController = MapController(
         actionsManager,
