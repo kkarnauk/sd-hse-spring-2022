@@ -13,6 +13,8 @@ import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.CellState
 import ru.hse.sd.rogue.game.state.MapState
 import ru.hse.sd.rogue.game.state.character.Player
+import ru.hse.sd.rogue.game.view.MapView
+import ru.hse.sd.rogue.game.view.character.PlayerView
 import kotlin.math.abs
 
 
@@ -45,14 +47,16 @@ suspend fun main() = Korge(width = 600, height = 600, virtualWidth = 512, virtua
     )
     val mapController = MapController(
         actionsManager,
-        MapState(generateSimpleMap()),
-        playerController.state
+        MapState(generateSimpleMap())
     )
     val globalController = GlobalController()
 
     val inputHandler = InputHandler(playerController).apply {
         mapKeys()
     }
+
+    MapView(actionsManager, actionsManager.mapContainer, mapController.state)
+    PlayerView(actionsManager, actionsManager.characterContainer, playerController.state)
 
     actionsManager.start()
 }
