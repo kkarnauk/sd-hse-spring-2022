@@ -1,4 +1,4 @@
-package ru.hse.sd.rogue.game.controller
+package ru.hse.sd.rogue.game.controller.character
 
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.position.Direction

@@ -1,6 +1,6 @@
 package ru.hse.sd.rogue.game.logic.item
 
-import ru.hse.sd.rogue.game.controller.CharacterController
+import ru.hse.sd.rogue.game.controller.character.CharacterController
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Durability
 
@@ -14,7 +14,7 @@ data class Weapon(
     override fun use(character: CharacterController) {
         super.use(character)
         character.update {
-            state.currentWeapon = this@Weapon
+            takeWeapon(this@Weapon)
         }
     }
 }
