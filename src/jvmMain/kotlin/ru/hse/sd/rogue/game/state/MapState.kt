@@ -43,6 +43,4 @@ class MapState(
     override fun iterator(): Iterator<CellState> {
         return cells.flatten().iterator()
     }
-
-    val playerCell = filter { it.content == CellContent.Player }.singleOrNull()
 }
