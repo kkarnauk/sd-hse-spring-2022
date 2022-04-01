@@ -1,16 +1,19 @@
 package ru.hse.sd.rogue.game.logic.action
 
-import java.util.*
+import com.soywiz.klock.timesPerSecond
+import com.soywiz.korge.view.Container
+import com.soywiz.korge.view.Stage
+import com.soywiz.korge.view.addFixedUpdater
+import com.soywiz.korge.view.container
 import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.schedule
 import kotlin.concurrent.withLock
 
 class ActionsManager(
-    private val invokePeriod: Long
+    private val stage: Stage,
+    private val invokePeriod: Int
 ) {
-    init {
-        Timer(true).schedule(delay = invokePeriod, period = invokePeriod) { invokeActions() }
-    }
+
+    private var started = false
 
     private var tick: Long = 0L
     private val lock = ReentrantLock()
@@ -49,6 +52,9 @@ class ActionsManager(
         }
     }
 
+    val mapContainer: Container = stage.container()
+    val characterContainer: Container = stage.container()
+
     fun register(priority: ActionPriority, action: Action) {
         lock.withLock {
             registeredActions += PrioritisedAction(action, priority)
@@ -64,6 +70,16 @@ class ActionsManager(
             require(registeredActions.removeIf { (currentAction, _) -> currentAction == action }) {
                 "Cannot unregister an action: it doesn't exist."
             }
+        }
+    }
+
+    fun start() {
+        if (started) {
+            throw IllegalStateException()
+        }
+        started = true
+        stage.addFixedUpdater(invokePeriod.timesPerSecond) {
+            invokeActions()
         }
     }
 }
