@@ -9,7 +9,12 @@ class PlayerController(
     override val state: Player
 ) : CharacterController(actionsManager, state) {
     override fun move(direction: Direction) {
-        TODO()
+        when (direction) {
+            Direction.Up -> state.position.y--
+            Direction.Down -> state.position.y++
+            Direction.Left -> state.position.x--
+            Direction.Right -> state.position.x++
+        }
     }
 
     fun openInventory() {

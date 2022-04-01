@@ -8,6 +8,7 @@ import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Health
+import ru.hse.sd.rogue.game.logic.input.InputHandler
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.CellState
 import ru.hse.sd.rogue.game.state.MapState
@@ -44,9 +45,14 @@ suspend fun main() = Korge(width = 600, height = 600, virtualWidth = 512, virtua
     )
     val mapController = MapController(
         actionsManager,
-        MapState(generateSimpleMap())
+        MapState(generateSimpleMap()),
+        playerController.state
     )
     val globalController = GlobalController()
+
+    val inputHandler = InputHandler(playerController).apply {
+        mapKeys()
+    }
 
     actionsManager.start()
 }

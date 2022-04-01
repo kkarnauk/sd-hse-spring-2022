@@ -2,7 +2,7 @@ package ru.hse.sd.rogue.game.state
 
 import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
-import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
+import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.state.character.Player
 import ru.hse.sd.rogue.game.state.character.mob.BossMob
 
@@ -12,14 +12,9 @@ class GlobalState(
     private val boss: BossMob
 ) : State {
     init {
-        registerCheckGame()
-    }
-
-    private fun registerCheckGame() {
-        actionsManager.register(ActionPriority.High, IrreversibleAction {
+        actionsManager.registerRepeatable(ActionPriority.High) {
             checkGame()
-            registerCheckGame()
-        })
+        }
     }
 
     private fun checkGame() {
