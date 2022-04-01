@@ -1,11 +1,10 @@
 package ru.hse.sd.rogue.game.state
 
-import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.position.Position
 
 class MapState(
     initCells: List<List<CellState>>
-) : State, Sequence<CellState> {
+) : State, Iterable<CellState> {
     private val cells: MutableList<MutableList<CellState>> = initCells.map { it.toMutableList() }.toMutableList()
 
     init {
