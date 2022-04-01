@@ -8,7 +8,7 @@ class PlayerController(
     actionsManager: ActionsManager,
     override val state: PlayerState
 ) : CharacterController(actionsManager, state) {
-    override fun move(direction: Direction) {
+    override fun move(direction: Direction) = update {
         when (direction) {
             Direction.Up -> state.position.y--
             Direction.Down -> state.position.y++
