@@ -1,13 +1,5 @@
 package ru.hse.sd.rogue.game.view
 
-import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
+const val cellSize = 16
 
-interface View {
-    // TODO
-}
-
-class UpdateViewAction : IrreversibleAction {
-    override fun invoke() {
-        TODO("Not yet implemented")
-    }
-}
+interface View

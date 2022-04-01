@@ -1,28 +1,44 @@
 package ru.hse.sd.rogue
 
-import com.soywiz.klock.seconds
-import com.soywiz.korge.*
-import com.soywiz.korge.tween.*
-import com.soywiz.korge.view.*
-import com.soywiz.korim.color.Colors
-import com.soywiz.korim.format.*
-import com.soywiz.korio.file.std.*
-import com.soywiz.korma.geom.degrees
-import com.soywiz.korma.interpolation.Easing
+import com.soywiz.korge.Korge
+import ru.hse.sd.rogue.game.controller.GlobalController
+import ru.hse.sd.rogue.game.controller.MapController
+import ru.hse.sd.rogue.game.controller.PlayerController
+import ru.hse.sd.rogue.game.logic.action.ActionsManager
+import ru.hse.sd.rogue.game.logic.cell.CellContent
+import ru.hse.sd.rogue.game.logic.position.Position
+import ru.hse.sd.rogue.game.state.CellState
+import ru.hse.sd.rogue.game.state.MapState
+import kotlin.math.abs
 
-suspend fun main() = Korge(width = 512, height = 512, bgcolor = Colors["#2b2b2b"]) {
-    val minDegrees = (-16).degrees
-    val maxDegrees = (+16).degrees
 
-    val image = image(resourcesVfs["korge.png"].readBitmap()) {
-        rotation = maxDegrees
-        anchor(.5, .5)
-        scale(.8)
-        position(256, 256)
+// TODO remove after implementing map generator and loader in hw3
+private fun generateSimpleMap(): List<List<CellState>> {
+    val size = 20
+    return List(size) { x ->
+        List(size) { y ->
+            val content = when {
+                minOf(x, y) == 0 || maxOf(x, y) + 1 == size -> CellContent.Wall
+                x == size / 2 && y == size / 2 -> CellContent.Player
+                abs(x - size / 3) <= 1 && abs(y - size / 3) <= 1 -> CellContent.Wall
+                else -> CellContent.Space
+            }
+            CellState(Position(x, y), content)
+        }
     }
+}
 
-    while (true) {
-        image.tween(image::rotation[minDegrees], time = 1.seconds, easing = Easing.EASE_IN_OUT)
-        image.tween(image::rotation[maxDegrees], time = 1.seconds, easing = Easing.EASE_IN_OUT)
-    }
+suspend fun main() = Korge(width = 600, height = 600, virtualWidth = 512, virtualHeight = 512) {
+    val actionsManager = ActionsManager(this, 30)
+
+    val playerController = PlayerController(
+        actionsManager
+    )
+    val mapController = MapController(
+        actionsManager,
+        MapState(generateSimpleMap())
+    )
+    val globalController = GlobalController()
+
+    actionsManager.start()
 }
