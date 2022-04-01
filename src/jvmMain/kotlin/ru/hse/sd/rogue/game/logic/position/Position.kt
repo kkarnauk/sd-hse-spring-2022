@@ -1,19 +1,38 @@
 package ru.hse.sd.rogue.game.logic.position
 
-data class Position(
-    var x: Int,
-    var y: Int
+open class Position(
+    open val x: Int,
+    open val y: Int
 ) {
-    fun replaceWith(other: Position) {
+    operator fun component1(): Int = x
+
+    operator fun component2(): Int = y
+
+    override fun equals(other: Any?): Boolean {
+        return other is Position && other.x == x && other.y == y
+    }
+
+    override fun hashCode(): Int {
+        var result = x
+        result = 31 * result + y
+        return result
+    }
+}
+
+class MutablePosition(
+    override var x: Int,
+    override var y: Int
+) : Position(x, y) {
+    fun replaceWith(other: MutablePosition) {
         x = other.x
         y = other.y
     }
 
-    fun incX(): Position = Position(x + 1, y)
+    fun incX(): MutablePosition = MutablePosition(x + 1, y)
 
-    fun decX(): Position = Position(x - 1, y)
+    fun decX(): MutablePosition = MutablePosition(x - 1, y)
 
-    fun incY(): Position = Position(x, y + 1)
+    fun incY(): MutablePosition = MutablePosition(x, y + 1)
 
-    fun decY(): Position = Position(x, y - 1)
+    fun decY(): MutablePosition = MutablePosition(x, y - 1)
 }

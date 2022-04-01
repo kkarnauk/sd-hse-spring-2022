@@ -2,11 +2,11 @@ package ru.hse.sd.rogue.game.state.character.mob
 
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Health
-import ru.hse.sd.rogue.game.logic.position.Position
+import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.state.character.CharacterState
 
 open class MobState(
     health: Health,
-    position: Position,
+    position: MutablePosition,
     meleeDamage: Damage
 ) : CharacterState(health, position, meleeDamage)
