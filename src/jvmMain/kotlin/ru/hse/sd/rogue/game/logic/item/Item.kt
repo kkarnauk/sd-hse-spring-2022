@@ -1,6 +1,6 @@
 package ru.hse.sd.rogue.game.logic.item
 
-import ru.hse.sd.rogue.game.controller.CharacterController
+import ru.hse.sd.rogue.game.controller.character.CharacterController
 
 sealed class Item {
     abstract val usable: Boolean

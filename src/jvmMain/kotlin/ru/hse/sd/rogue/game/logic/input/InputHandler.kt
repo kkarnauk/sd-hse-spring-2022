@@ -3,7 +3,7 @@ package ru.hse.sd.rogue.game.logic.input
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
 import com.soywiz.korge.view.Stage
-import ru.hse.sd.rogue.game.controller.PlayerController
+import ru.hse.sd.rogue.game.controller.character.PlayerController
 import ru.hse.sd.rogue.game.logic.position.Direction
 
 class InputHandler(private val playerController: PlayerController) {

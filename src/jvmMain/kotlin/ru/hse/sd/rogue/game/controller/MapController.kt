@@ -5,5 +5,5 @@ import ru.hse.sd.rogue.game.state.MapState
 
 class MapController(
     actionsManager: ActionsManager,
-    val state: MapState
+    private val state: MapState
 ) : Controller
