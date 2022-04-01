@@ -19,7 +19,7 @@ class MapState(
         cells.forEachIndexed { x, yLine ->
             yLine.forEachIndexed { y, cellState ->
                 val requirePosition = Position(x, y)
-                require(cellState.position == Position(x, y)) {
+                require(cellState.position == requirePosition) {
                     "The cell at $requirePosition stores incorrect coordinates ${cellState.position}"
                 }
             }

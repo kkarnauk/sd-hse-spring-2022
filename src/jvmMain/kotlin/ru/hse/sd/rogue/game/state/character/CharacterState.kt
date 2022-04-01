@@ -6,12 +6,12 @@ import ru.hse.sd.rogue.game.logic.item.Armor
 import ru.hse.sd.rogue.game.logic.item.Item
 import ru.hse.sd.rogue.game.logic.item.Potion
 import ru.hse.sd.rogue.game.logic.item.Weapon
-import ru.hse.sd.rogue.game.logic.position.Position
+import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.state.State
 
 abstract class CharacterState(
     val health: Health,
-    val position: Position,
+    val position: MutablePosition,
     protected var meleeDamage: Damage,
     initItems: List<Item> = emptyList()
 ) : State {

@@ -9,6 +9,7 @@ import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Health
 import ru.hse.sd.rogue.game.logic.input.InputHandler
+import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.CellState
 import ru.hse.sd.rogue.game.state.MapState
@@ -38,7 +39,7 @@ suspend fun main() = Korge(width = 600, height = 600, virtualWidth = 512, virtua
 
     val playerState = PlayerState(
         Health(100),
-        Position(10, 10),
+        MutablePosition(10, 10),
         Damage(100, 100)
     )
 
