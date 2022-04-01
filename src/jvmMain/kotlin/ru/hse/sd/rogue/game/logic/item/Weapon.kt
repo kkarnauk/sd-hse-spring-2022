@@ -1,8 +1,8 @@
 package ru.hse.sd.rogue.game.logic.item
 
+import ru.hse.sd.rogue.game.controller.CharacterController
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Durability
-import ru.hse.sd.rogue.game.state.character.CharacterState
 
 data class Weapon(
     val damage: Damage,
@@ -11,10 +11,10 @@ data class Weapon(
     override val usable: Boolean
         get() = durability.current > 0
 
-    override fun use(character: CharacterState) {
+    override fun use(character: CharacterController) {
         super.use(character)
         character.update {
-            currentWeapon = this@Weapon
+            state.currentWeapon = this@Weapon
         }
     }
 }

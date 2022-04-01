@@ -1,6 +1,5 @@
 package ru.hse.sd.rogue.game.state.character
 
-import ru.hse.sd.rogue.game.controller.CharacterController
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Health
 import ru.hse.sd.rogue.game.logic.item.Armor
@@ -14,12 +13,12 @@ abstract class CharacterState(
     val health: Health,
     var position: Position,
     protected var meleeDamage: Damage,
-    initItems: MutableList<Item> = mutableListOf()
+    initItems: List<Item> = emptyList()
 ) : State {
     val isAlive: Boolean
         get() = health.current > 0
 
-    protected val items: MutableList<Item> = initItems
+    protected val items: MutableList<Item> = initItems.toMutableList()
 
     protected val weapons: List<Weapon>
         get() = items.filterIsInstance<Weapon>()
@@ -34,19 +33,4 @@ abstract class CharacterState(
 
     val damage: Damage
         get() = currentWeapon?.damage ?: meleeDamage
-
-    abstract val controller: CharacterController
-
-    fun update(act: CharacterState.() -> Unit) {
-        controller.action { act(this) }
-    }
-
-    fun takeDamage(damage: Damage) = update {
-        if (!isAlive) {
-            return@update
-        }
-        health.current -= damage.value
-    }
-
-    // TODO
 }
