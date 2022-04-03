@@ -4,12 +4,12 @@ import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.state.character.PlayerState
-import ru.hse.sd.rogue.game.state.character.mob.BossMobState
+import ru.hse.sd.rogue.game.state.character.mob.boss.BigDemonMobState
 
 class GlobalState(
     private val actionsManager: ActionsManager,
     private val player: PlayerState,
-    private val boss: BossMobState
+    private val boss: BigDemonMobState
 ) : State {
     init {
         actionsManager.registerRepeatable(ActionPriority.High) {

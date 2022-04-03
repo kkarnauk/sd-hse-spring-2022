@@ -3,6 +3,7 @@ package ru.hse.sd.rogue.game.controller.character
 import ru.hse.sd.rogue.game.controller.MapController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.position.Direction
+import ru.hse.sd.rogue.game.logic.position.LookDirection
 import ru.hse.sd.rogue.game.state.character.PlayerState
 
 class PlayerController(
@@ -17,11 +18,18 @@ class PlayerController(
             Direction.Left -> state.position.decX()
             Direction.Right -> state.position.incX()
         }
-        if (mapController.canMoveTo(newPosition)) {
-            update {
+        val newLookDirection = when (direction) {
+            Direction.Left -> LookDirection.Left
+            Direction.Right -> LookDirection.Right
+            else -> state.lookDirection
+        }
+        update {
+            if (mapController.canMoveTo(newPosition)) {
                 state.position.replaceWith(newPosition)
             }
+            state.lookDirection = newLookDirection
         }
+
     }
 
     fun openInventory() {
