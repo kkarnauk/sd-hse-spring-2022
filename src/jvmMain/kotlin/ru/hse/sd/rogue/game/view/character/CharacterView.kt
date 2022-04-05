@@ -2,7 +2,6 @@ package ru.hse.sd.rogue.game.view.character
 
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.Sprite
-import com.soywiz.korge.view.position
 import com.soywiz.korma.geom.plus
 import com.soywiz.korma.geom.radians
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
@@ -12,7 +11,7 @@ import ru.hse.sd.rogue.game.logic.position.LookDirection
 import ru.hse.sd.rogue.game.logic.position.opposite
 import ru.hse.sd.rogue.game.state.character.CharacterState
 import ru.hse.sd.rogue.game.view.View
-import ru.hse.sd.rogue.game.view.cellSize
+import ru.hse.sd.rogue.game.view.container.position
 import kotlin.math.PI
 
 abstract class CharacterView(
@@ -36,7 +35,7 @@ abstract class CharacterView(
     }
 
     override fun invoke() {
-        sprite.position(characterState.position.x * cellSize, characterState.position.y * cellSize)
+        sprite.position(characterState.position)
         if (characterState.lookDirection != currentLookDirection) {
             rotate()
         }
