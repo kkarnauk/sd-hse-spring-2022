@@ -2,15 +2,13 @@ package ru.hse.sd.rogue.game.logic.action
 
 import com.soywiz.klock.timesPerSecond
 import com.soywiz.korge.view.Container
-import com.soywiz.korge.view.Stage
 import com.soywiz.korge.view.addFixedUpdater
-import com.soywiz.korge.view.container
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
 class ActionsManager(
-    private val stage: Stage,
-    private val invokePeriod: Int
+    private val container: Container,
+    private val timesPerSecond: Int
 ) {
 
     private var started = false
@@ -22,7 +20,7 @@ class ActionsManager(
     private val reversedActions: MutableList<Pair<PrioritisedAction, Long>> = mutableListOf()
 
     private fun invokeActions() {
-        tick += invokePeriod
+        tick++
 
         val actions = lock.withLock {
             val actions = registeredActions.toMutableList()
@@ -42,18 +40,13 @@ class ActionsManager(
         reversedActions.clear()
         reversedActions += leftReversedActions
 
-        val (highActions, normalActions) = actions.partition { (_, priority) -> priority == ActionPriority.High }
-
-        for ((action, priority) in (highActions + normalActions)) {
+        for ((action, priority) in actions.sortedByDescending { it.priority }) {
             action.invoke()
             if (action is ReversibleAction) {
                 reversedActions += PrioritisedAction(action.reverse(), priority) to action.lifetime.time + tick
             }
         }
     }
-
-    val mapContainer: Container = stage.container()
-    val characterContainer: Container = stage.container()
 
     fun register(priority: ActionPriority, action: Action) {
         lock.withLock {
@@ -78,7 +71,7 @@ class ActionsManager(
             throw IllegalStateException()
         }
         started = true
-        stage.addFixedUpdater(invokePeriod.timesPerSecond) {
+        container.addFixedUpdater(timesPerSecond.timesPerSecond) {
             invokeActions()
         }
     }
