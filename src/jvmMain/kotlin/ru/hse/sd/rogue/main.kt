@@ -43,10 +43,10 @@ import ru.hse.sd.rogue.game.view.container.ContainersManager
 import ru.hse.sd.rogue.game.view.ui.InterfaceView
 import ru.hse.sd.rogue.game.view.item.weapon.LootAxView
 import ru.hse.sd.rogue.game.view.item.weapon.LootSwordView
-import kotlin.math.abs
 import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
 import ru.hse.sd.rogue.game.logic.common.Confusion
 import ru.hse.sd.rogue.game.logic.item.Potion
+import ru.hse.sd.rogue.game.logic.level.level
 import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
 import ru.hse.sd.rogue.game.view.item.potion.LootBluePotionView
 
@@ -72,18 +72,17 @@ val mapWindowSize = mapSize.asKorge()
 
 // TODO remove after implementing map generator and loader in hw3
 private fun generateSimpleMap(): List<List<CellState>> {
-    val size = 50
-    return List(size) { x ->
-        List(size) { y ->
-            val content = when {
-                minOf(x, y) == 0 || maxOf(x, y) + 1 == size -> CellContent.Wall
-                x % 8 == 0 && y % 13 == 0 -> CellContent.Wall
-                abs(x - size / 3) <= 1 && abs(y - size / 3) <= 1 -> CellContent.Wall
-                else -> CellContent.Space
-            }
-            CellState(Position(x, y), content)
+    return level {
+        generate {
+            map.width = mapSize.width
+            map.height = mapSize.height
+            map.border = 1
+            map.corridorThickness = 0 to 1
+            map.corridorWobbling = 0.05
+            map.minRoomSize = 7
+            map.splitNumIterations = 4
         }
-    }
+    }.cells
 }
 
 suspend operator fun Korge.invoke(mapSize: KorgeSize, cameraSize: KorgeSize, entry: Stage.() -> Unit) {
@@ -114,7 +113,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
 
     val playerState = PlayerState(
         Health(6),
-        MutablePosition(10, 10),
+        mapState.last { it.content == CellContent.Space }.position.asMutable(),
         Damage(3, 5),
         inventoryState
     )
