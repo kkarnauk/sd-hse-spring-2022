@@ -1,16 +1,18 @@
 package ru.hse.sd.rogue.game.controller.character
 
-import ru.hse.sd.rogue.game.controller.MapController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.position.Direction
 import ru.hse.sd.rogue.game.logic.position.LookDirection
 import ru.hse.sd.rogue.game.state.character.PlayerState
 
+/**
+ * Responsible for controlling the player.
+ */
 class PlayerController(
     actionsManager: ActionsManager,
     override val state: PlayerState,
-    mapController: MapController
-) : CharacterController(actionsManager, state, mapController) {
+    movementController: MovementController
+) : CharacterController(actionsManager, state, movementController) {
     override fun move(direction: Direction) {
         val newPosition = when (direction) {
             Direction.Up -> state.position.decY()
@@ -24,7 +26,7 @@ class PlayerController(
             else -> state.lookDirection
         }
         update {
-            if (mapController.canMoveTo(newPosition)) {
+            if (movementController.canMoveTo(newPosition)) {
                 state.position.replaceWith(newPosition)
             }
             state.lookDirection = newLookDirection

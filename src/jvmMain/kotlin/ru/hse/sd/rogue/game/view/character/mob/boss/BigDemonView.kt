@@ -8,6 +8,9 @@ import ru.hse.sd.rogue.game.state.character.mob.boss.BigDemonMobState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
+/**
+ * View of the boss.
+ */
 class BigDemonView(
     actionsManager: ActionsManager,
     container: Container,

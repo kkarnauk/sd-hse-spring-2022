@@ -7,10 +7,25 @@ import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.logic.size.Size
 import ru.hse.sd.rogue.game.view.container.position
 
+/**
+ * Responsible to correctly move and adjust [camera].
+ */
 class CameraView(
+    /**
+     * [Size] of the whole game window.
+     */
     private val windowSize: Size,
+    /**
+     * [Size] of this camera.
+     */
     private val cameraSize: Size,
+    /**
+     * Container of the camera.
+     */
     private val camera: Camera,
+    /**
+     * Position used to calculate positions of this camera.
+     */
     private val positionAnchor: () -> Position
 ) : View, IrreversibleAction {
     private val topLeft: MutablePosition = MutablePosition(0, 0)

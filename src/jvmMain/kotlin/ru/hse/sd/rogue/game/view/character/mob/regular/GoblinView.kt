@@ -8,6 +8,9 @@ import ru.hse.sd.rogue.game.state.character.mob.regular.GoblinMobState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
+/**
+ * View of a goblin.
+ */
 class GoblinView(
     actionsManager: ActionsManager,
     container: Container,

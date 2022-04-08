@@ -8,6 +8,9 @@ import ru.hse.sd.rogue.game.state.character.PlayerState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
+/**
+ * View of the player.
+ */
 class PlayerView(
     actionsManager: ActionsManager,
     container: Container,

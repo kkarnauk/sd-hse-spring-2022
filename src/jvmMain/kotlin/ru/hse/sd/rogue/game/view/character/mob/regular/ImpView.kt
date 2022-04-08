@@ -8,6 +8,9 @@ import ru.hse.sd.rogue.game.state.character.mob.regular.ImpMobState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
+/**
+ * View of an impl.
+ */
 class ImpView(
     actionsManager: ActionsManager,
     container: Container,
