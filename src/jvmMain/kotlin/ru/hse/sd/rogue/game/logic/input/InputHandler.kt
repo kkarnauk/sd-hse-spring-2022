@@ -6,7 +6,13 @@ import com.soywiz.korge.view.Stage
 import ru.hse.sd.rogue.game.controller.character.PlayerController
 import ru.hse.sd.rogue.game.logic.position.Direction
 
+/**
+ * Maps keys for controlling the player.
+ */
 class InputHandler(private val playerController: PlayerController) {
+    /**
+     * Maps keys for controlling the player.
+     */
     fun Stage.mapKeys() {
         keys {
             down(Key.W) {

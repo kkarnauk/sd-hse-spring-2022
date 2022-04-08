@@ -14,12 +14,23 @@ import ru.hse.sd.rogue.game.view.View
 import ru.hse.sd.rogue.game.view.container.position
 import kotlin.math.PI
 
+/**
+ * View of a character.
+ */
 abstract class CharacterView(
+    /**
+     * General actions' manager to update views of this character.
+     */
     actionsManager: ActionsManager,
+    /**
+     * [Container] to contain a sprite of a character.
+     */
     protected val container: Container,
+    /**
+     * [CharacterState] of this character.
+     */
     protected val characterState: CharacterState
 ) : View, IrreversibleAction {
-
     init {
         actionsManager.registerRepeatable(this)
     }

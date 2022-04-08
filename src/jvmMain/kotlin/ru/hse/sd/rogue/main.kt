@@ -4,6 +4,7 @@ import com.soywiz.korge.Korge
 import com.soywiz.korge.view.Stage
 import ru.hse.sd.rogue.game.controller.GlobalController
 import ru.hse.sd.rogue.game.controller.MapController
+import ru.hse.sd.rogue.game.controller.character.MovementController
 import ru.hse.sd.rogue.game.controller.character.PlayerController
 import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
@@ -29,10 +30,24 @@ import ru.hse.sd.rogue.game.view.character.player.PlayerView
 import ru.hse.sd.rogue.game.view.container.ContainersManager
 import kotlin.math.abs
 
+/**
+ * Size of camera used for the game.
+ */
 val cameraSize = Size(30, 30)
+
+/**
+ * Size of the game window.
+ */
 val windowSize = Size(50, 50)
 
+/**
+ * Size of camera used for KorGE API.
+ */
 val cameraKorgeSize = cameraSize.asKorge()
+
+/**
+ * Size of the game window for KorGE API.
+ */
 val windowKorgeSize = windowSize.asKorge()
 
 // TODO remove after implementing map generator and loader in hw3
@@ -86,7 +101,7 @@ suspend fun main() = Korge(windowKorgeSize, cameraKorgeSize) {
     val playerController = PlayerController(
         actionsManager,
         playerState,
-        mapController
+        MovementController(mapController)
     )
     val globalController = GlobalController()
 
@@ -102,8 +117,8 @@ suspend fun main() = Korge(windowKorgeSize, cameraKorgeSize) {
 
     GoblinView(actionsManager, containersManager.characterContainer, GoblinMobState(MutablePosition(4, 4)))
     ImpView(actionsManager, containersManager.characterContainer, ImpMobState(MutablePosition(20, 20)))
-    NecromanterView(actionsManager, containersManager.characterContainer, NecromanterMobState(MutablePosition(8, 8)))
-    SkeletView(actionsManager, containersManager.characterContainer, SkeletMobState(MutablePosition(33, 10)))
+    NecromancerView(actionsManager, containersManager.characterContainer, NecromancerMobState(MutablePosition(8, 8)))
+    SkeletonView(actionsManager, containersManager.characterContainer, SkeletonMobState(MutablePosition(33, 10)))
     TinyZombieView(actionsManager, containersManager.characterContainer, TinyZombieMobState(MutablePosition(12, 12)))
 
     actionsManager.start()

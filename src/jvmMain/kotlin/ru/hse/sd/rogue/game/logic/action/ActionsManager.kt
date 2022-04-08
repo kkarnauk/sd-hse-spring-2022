@@ -6,8 +6,19 @@ import com.soywiz.korge.view.addFixedUpdater
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
+/**
+ * Manages and invoke actions on every 'tick'.
+ *
+ * On each 'tick' invokes all collected actions with respect to their [ActionPriority].
+ */
 class ActionsManager(
+    /**
+     * [Container] to be used for registering timer.
+     */
     private val container: Container,
+    /**
+     * Number of 'ticks' per second.
+     */
     private val timesPerSecond: Int
 ) {
 
@@ -43,29 +54,30 @@ class ActionsManager(
         for ((action, priority) in actions.sortedByDescending { it.priority }) {
             action.invoke()
             if (action is ReversibleAction) {
-                reversedActions += PrioritisedAction(action.reverse(), priority) to action.lifetime.time + tick
+                reversedActions += PrioritisedAction(action.reverse(), priority) to action.lifetime.ticks + tick
             }
         }
     }
 
+    /**
+     * Registers new [action] with its [priority].
+     */
     fun register(priority: ActionPriority, action: Action) {
         lock.withLock {
             registeredActions += PrioritisedAction(action, priority)
         }
     }
 
+    /**
+     * Registers new [action] with [ActionPriority.Normal] priority.
+     */
     fun register(action: Action) {
         register(ActionPriority.Normal, action)
     }
 
-    fun unregister(action: Action) {
-        lock.withLock {
-            require(registeredActions.removeIf { (currentAction, _) -> currentAction == action }) {
-                "Cannot unregister an action: it doesn't exist."
-            }
-        }
-    }
-
+    /**
+     * Starts managing and invoking of actions.
+     */
     fun start() {
         if (started) {
             throw IllegalStateException()
@@ -77,10 +89,16 @@ class ActionsManager(
     }
 }
 
+/**
+ * Registers [action] with [ActionPriority.Normal] priority that invokes on **each** tick.
+ */
 fun ActionsManager.registerRepeatable(action: IrreversibleAction) {
     registerRepeatable(ActionPriority.Normal, action)
 }
 
+/**
+ * Registers [action] with [priority] that invokes on **each** tick.
+ */
 fun ActionsManager.registerRepeatable(priority: ActionPriority, action: IrreversibleAction) {
     fun register() {
         register(priority, IrreversibleAction {

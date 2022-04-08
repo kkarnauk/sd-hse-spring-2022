@@ -5,12 +5,21 @@ import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Contains tiles for different parts of the game.
+ */
 object Tiles {
     private val dungeonTileset2 = runBlocking {
         resourcesVfs["0x72_DungeonTilesetII_v1.4.png"].readBitmap()
     }
 
+    /**
+     * Tiles for a map.
+     */
     object Map {
+        /**
+         * Tile for an empty cell.
+         */
         val space = SpriteAnimation(
             spriteMap = dungeonTileset2,
             spriteWidth = 16,
@@ -18,6 +27,10 @@ object Tiles {
             marginTop = 64,
             marginLeft = 16
         )
+
+        /**
+         * Tile for a wall-cell.
+         */
         val wall = SpriteAnimation(
             spriteMap = dungeonTileset2,
             spriteWidth = 16,
@@ -27,6 +40,9 @@ object Tiles {
         )
     }
 
+    /**
+     * Tile for the player.
+     */
     object Player {
         val idle = SpriteAnimation(
             spriteMap = dungeonTileset2,
@@ -38,7 +54,13 @@ object Tiles {
         )
     }
 
+    /**
+     * Tiles for mobs.
+     */
     object Mobs {
+        /**
+         * Tile for the boss.
+         */
         object BigDemon {
             val idle = SpriteAnimation(
                 spriteMap = dungeonTileset2,
@@ -50,6 +72,9 @@ object Tiles {
             )
         }
 
+        /**
+         * Tile for an impl.
+         */
         object Imp {
             val idle = SpriteAnimation(
                 spriteMap = dungeonTileset2,
@@ -61,6 +86,9 @@ object Tiles {
             )
         }
 
+        /**
+         * Tile for a goblin.
+         */
         object Goblin {
             val idle = SpriteAnimation(
                 spriteMap = dungeonTileset2,
@@ -72,6 +100,9 @@ object Tiles {
             )
         }
 
+        /**
+         * Tile for a tiny zombie.
+         */
         object TinyZombie {
             val idle = SpriteAnimation(
                 spriteMap = dungeonTileset2,
@@ -83,7 +114,10 @@ object Tiles {
             )
         }
 
-        object Skelet {
+        /**
+         * Tile for a skeleton.
+         */
+        object Skeleton {
             val idle = SpriteAnimation(
                 spriteMap = dungeonTileset2,
                 spriteWidth = 16,
@@ -94,6 +128,9 @@ object Tiles {
             )
         }
 
+        /**
+         * Tile for a necromancer.
+         */
         object Necromancer {
             val idle = SpriteAnimation(
                 spriteMap = dungeonTileset2,

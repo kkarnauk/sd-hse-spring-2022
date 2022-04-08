@@ -9,10 +9,21 @@ import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.state.MapState
 import ru.hse.sd.rogue.game.view.container.position
 
-
+/**
+ * View of a map.
+ */
 class MapView(
+    /**
+     * General actions' manager to update this view.
+     */
     actionsManager: ActionsManager,
+    /**
+     * [Container] to contain sprites of cells for this map.
+     */
     container: Container,
+    /**
+     * State of this map.
+     */
     mapState: MapState
 ) : View, IrreversibleAction {
     init {
