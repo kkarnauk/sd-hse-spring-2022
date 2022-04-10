@@ -6,7 +6,7 @@ import ru.hse.sd.rogue.game.logic.position.Position
 /**
  * State of a cell on a map.
  */
-class CellState(
+data class CellState(
     /**
      * [Position] of this cell.
      */
