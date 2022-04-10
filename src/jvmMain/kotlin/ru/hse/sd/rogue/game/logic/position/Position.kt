@@ -31,6 +31,11 @@ open class Position(
     operator fun minus(other: Position): Position = Position(x - other.x, y - other.y)
 
     /**
+     * Component-wise addition of [other] from this position
+     */
+    operator fun plus(other: Position): Position = Position(x + other.x, y + other.y)
+
+    /**
      * Negates the coordinates.
      */
     operator fun unaryMinus(): Position = Position(-x, -y)

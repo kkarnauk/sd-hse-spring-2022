@@ -4,6 +4,7 @@ import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
 import com.soywiz.korge.view.Stage
 import ru.hse.sd.rogue.game.controller.character.PlayerController
+import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.position.Direction
 
 /**
@@ -34,6 +35,10 @@ class InputHandler(private val playerController: PlayerController) {
                 playerController.update {
                     move(Direction.Right)
                 }
+            }
+            // TODO: remove it later
+            down(Key.F) {
+                playerController.takeDamage(Damage(10, 10))
             }
         }
     }

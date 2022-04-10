@@ -12,9 +12,9 @@ import ru.hse.sd.rogue.game.view.container.position
  */
 class CameraView(
     /**
-     * [Size] of the whole game window.
+     * [Size] of the whole map (i.e. game window).
      */
-    private val windowSize: Size,
+    private val mapSize: Size,
     /**
      * [Size] of this camera.
      */
@@ -44,8 +44,8 @@ class CameraView(
     }
 
     private fun MutablePosition.fixWithLimits(): MutablePosition = apply {
-        x = maxOf(0, minOf(x, windowSize.width - cameraSize.width))
-        y = maxOf(0, minOf(y, windowSize.height - cameraSize.height))
+        x = maxOf(0, minOf(x, mapSize.width - cameraSize.width))
+        y = maxOf(0, minOf(y, mapSize.height - cameraSize.height))
     }
 
     private fun updateTopLeft(): Position {
