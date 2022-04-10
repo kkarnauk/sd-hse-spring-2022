@@ -1,8 +1,7 @@
 package ru.hse.sd.rogue.game.controller.character
 
 import com.soywiz.korge.view.Container
-import org.junit.Ignore
-import org.junit.Test
+import kotlin.test.Test
 import ru.hse.sd.rogue.game.controller.MapController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.cell.CellContent
@@ -64,9 +63,9 @@ internal class PlayerControllerTest {
         }
     }
 
-    @Test
-    @Ignore
-    fun openInventory() {
-        TODO()
-    }
+//    @Test
+//    @Ignore
+//    fun openInventory() {
+//        TODO()
+//    }
 }

@@ -1,7 +1,7 @@
 package ru.hse.sd.rogue.game.logic.action
 
 import com.soywiz.korge.view.Container
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 

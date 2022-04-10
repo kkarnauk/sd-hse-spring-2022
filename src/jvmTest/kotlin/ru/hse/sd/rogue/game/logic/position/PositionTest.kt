@@ -1,8 +1,8 @@
 package ru.hse.sd.rogue.game.logic.position
 
-import org.junit.Test
-import ru.hse.sd.rogue.game.logic.size.cellSize
 import kotlin.test.assertEquals
+import kotlin.test.Test
+import ru.hse.sd.rogue.game.logic.size.cellSize
 
 
 internal class PositionTest {

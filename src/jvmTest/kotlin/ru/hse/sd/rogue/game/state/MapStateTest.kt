@@ -1,10 +1,10 @@
 package ru.hse.sd.rogue.game.state
 
-import org.junit.Test
-import ru.hse.sd.rogue.game.logic.cell.CellContent
-import ru.hse.sd.rogue.game.logic.position.Position
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
+import kotlin.test.Test
+import ru.hse.sd.rogue.game.logic.cell.CellContent
+import ru.hse.sd.rogue.game.logic.position.Position
 
 
 internal class MapStateTest {

@@ -1,6 +1,6 @@
 package ru.hse.sd.rogue.game.logic.characteristics
 
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertTrue
 
 internal class DamageTest {

@@ -2,10 +2,10 @@ package ru.hse.sd.rogue.game.view
 
 import com.soywiz.korge.view.Camera
 import com.soywiz.korma.geom.Point
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.Test
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.logic.size.Size
-import kotlin.test.assertEquals
 
 
 internal class CameraViewTest {
