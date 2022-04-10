@@ -23,7 +23,7 @@ apply<KorgeGradlePlugin>()
 korge {
     id = "ru.hse.sd.rogue"
 
-    jvmMainClassName = "mainKt"
+    jvmMainClassName = "ru.hse.sd.rogue.MainKt"
 
     targetJvm()
 }
