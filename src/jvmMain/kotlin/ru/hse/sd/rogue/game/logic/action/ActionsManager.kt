@@ -51,7 +51,7 @@ class ActionsManager(
         reversedActions.clear()
         reversedActions += leftReversedActions
 
-        for ((action, priority) in actions.sortedBy { it.priority }) {
+        for ((action, priority) in actions.sortedByDescending { it.priority }) {
             action.invoke()
             if (action is ReversibleAction) {
                 reversedActions += PrioritisedAction(action.reverse(), priority) to action.lifetime.ticks + tick

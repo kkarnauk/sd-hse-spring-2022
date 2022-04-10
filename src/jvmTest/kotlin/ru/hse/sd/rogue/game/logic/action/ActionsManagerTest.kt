@@ -17,6 +17,6 @@ internal class ActionsManagerTest {
             register(ActionPriority.Normal, IrreversibleAction { list.add(3) })
             manualInvoke()
         }
-        assertEquals(listOf(0, 3, 5), list)
+        assertEquals(listOf(5, 3, 0), list)
     }
 }
