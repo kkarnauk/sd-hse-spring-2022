@@ -143,4 +143,34 @@ object Tiles {
         }
     }
 
+    /**
+     * Tiles for interface
+     */
+    object Interface {
+        object Heart {
+            val full = SpriteAnimation(
+                spriteMap = dungeonTileset2,
+                spriteWidth = 13,
+                spriteHeight = 12,
+                marginLeft = 289,
+                marginTop = 258
+            )
+
+            val half = SpriteAnimation(
+                spriteMap = dungeonTileset2,
+                spriteWidth = 13,
+                spriteHeight = 12,
+                marginLeft = 305,
+                marginTop = 258
+            )
+
+            val empty = SpriteAnimation(
+                spriteMap = dungeonTileset2,
+                spriteWidth = 13,
+                spriteHeight = 12,
+                marginLeft = 321,
+                marginTop = 258
+            )
+        }
+    }
 }

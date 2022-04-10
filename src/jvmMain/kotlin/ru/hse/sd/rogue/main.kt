@@ -29,6 +29,8 @@ import ru.hse.sd.rogue.game.view.character.mob.regular.*
 import ru.hse.sd.rogue.game.view.character.player.PlayerView
 import ru.hse.sd.rogue.game.view.container.ContainersManager
 import kotlin.math.abs
+import ru.hse.sd.rogue.game.state.InterfaceState
+import ru.hse.sd.rogue.game.view.interfaze.InterfaceView
 
 /**
  * Size of camera used for the game.
@@ -38,7 +40,7 @@ val cameraSize = Size(30, 30)
 /**
  * Size of the game window.
  */
-val windowSize = Size(50, 50)
+val mapSize = Size(50, 50)
 
 /**
  * Size of camera used for KorGE API.
@@ -48,7 +50,7 @@ val cameraKorgeSize = cameraSize.asKorge()
 /**
  * Size of the game window for KorGE API.
  */
-val windowKorgeSize = windowSize.asKorge()
+val mapWindowSize = mapSize.asKorge()
 
 // TODO remove after implementing map generator and loader in hw3
 private fun generateSimpleMap(): List<List<CellState>> {
@@ -66,17 +68,17 @@ private fun generateSimpleMap(): List<List<CellState>> {
     }
 }
 
-suspend operator fun Korge.invoke(windowSize: KorgeSize, cameraSize: KorgeSize, entry: Stage.() -> Unit) {
+suspend operator fun Korge.invoke(mapSize: KorgeSize, cameraSize: KorgeSize, entry: Stage.() -> Unit) {
     return invoke(
-        width = windowSize.width,
-        height = windowSize.height,
+        width = mapSize.width,
+        height = mapSize.height,
         virtualWidth = cameraSize.width,
         virtualHeight = cameraSize.height,
         entry = entry
     )
 }
 
-suspend fun main() = Korge(windowKorgeSize, cameraKorgeSize) {
+suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val containersManager = ContainersManager(this)
     val actionsManager = ActionsManager(containersManager.camera, 30)
 
@@ -86,7 +88,7 @@ suspend fun main() = Korge(windowKorgeSize, cameraKorgeSize) {
         Damage(100, 100)
     )
 
-    val cameraView = CameraView(windowSize, cameraSize, containersManager.camera) {
+    val cameraView = CameraView(mapSize, cameraSize, containersManager.camera) {
         playerState.position
     }
 
@@ -113,8 +115,10 @@ suspend fun main() = Korge(windowKorgeSize, cameraKorgeSize) {
 
     MapView(actionsManager, containersManager.mapContainer, mapState)
     PlayerView(actionsManager, containersManager.characterContainer, playerState)
-    BigDemonView(actionsManager, containersManager.characterContainer, bossState)
 
+    InterfaceView(actionsManager, containersManager.interfaceContainer, InterfaceState(playerState.health), cameraSize)
+
+    BigDemonView(actionsManager, containersManager.characterContainer, bossState)
     GoblinView(actionsManager, containersManager.characterContainer, GoblinMobState(MutablePosition(4, 4)))
     ImpView(actionsManager, containersManager.characterContainer, ImpMobState(MutablePosition(20, 20)))
     NecromancerView(actionsManager, containersManager.characterContainer, NecromancerMobState(MutablePosition(8, 8)))

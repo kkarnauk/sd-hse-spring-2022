@@ -25,4 +25,9 @@ class ContainersManager(
      * [Container] for drawing characters.
      */
     val characterContainer: Container = camera.container()
+
+    /**
+     * [Container] for drawing interface
+     */
+    val interfaceContainer: Container = stage.container()
 }

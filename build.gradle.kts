@@ -20,6 +20,21 @@ buildscript {
 
 apply<KorgeGradlePlugin>()
 
+tasks {
+    val javaVersion = "11"
+
+    withType<JavaCompile>().configureEach {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+    }
+
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = javaVersion
+        }
+    }
+}
+
 korge {
     id = "ru.hse.sd.rogue"
 
