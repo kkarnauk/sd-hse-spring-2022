@@ -1,6 +1,7 @@
 package ru.hse.sd.rogue.game.logic.position
 
 import ru.hse.sd.rogue.game.logic.size.cellSize
+import kotlin.math.abs
 
 /**
  * Immutable position to be used directly for the game.
@@ -15,6 +16,9 @@ open class Position(
      */
     open val y: Int
 ) {
+    val length: Int
+        get() = abs(x) + abs(y)
+
     /**
      * @return [x]
      */
@@ -39,6 +43,20 @@ open class Position(
      * Negates the coordinates.
      */
     operator fun unaryMinus(): Position = Position(-x, -y)
+
+    fun directionsTo(other: Position) = buildList {
+        if (x < other.x) {
+            add(Direction.Right)
+        } else if (x > other.x) {
+            add(Direction.Left)
+        }
+
+        if (y < other.y) {
+            add(Direction.Down)
+        } else if (y > other.y) {
+            add(Direction.Up)
+        }
+    }
 
     /**
      * Copies and transforms this position into [MutablePosition].

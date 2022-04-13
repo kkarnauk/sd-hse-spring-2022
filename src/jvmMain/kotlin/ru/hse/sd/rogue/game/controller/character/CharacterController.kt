@@ -3,9 +3,11 @@ package ru.hse.sd.rogue.game.controller.character
 import ru.hse.sd.rogue.game.controller.Controller
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
+import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.position.Direction
+import ru.hse.sd.rogue.game.logic.position.LookDirection
 import ru.hse.sd.rogue.game.state.character.CharacterState
 
 /**
@@ -31,14 +33,40 @@ abstract class CharacterController(
     /**
      * Tries to move a character into [direction].
      */
-    abstract fun move(direction: Direction)
+    fun move(direction: Direction) {
+        val newPosition = when (direction) {
+            Direction.Up -> state.position.decY()
+            Direction.Down -> state.position.incY()
+            Direction.Left -> state.position.decX()
+            Direction.Right -> state.position.incX()
+        }
+        val newLookDirection = when (direction) {
+            Direction.Left -> LookDirection.Left
+            Direction.Right -> LookDirection.Right
+            else -> state.lookDirection
+        }
+        update {
+            if (movementController.canMoveTo(newPosition)) {
+                state.position.replaceWith(newPosition)
+            }
+            state.lookDirection = newLookDirection
+        }
+    }
 
     /**
      * Use this method if you want to change a state of a character somehow.
-     * It's forbidden to change anything without calling [update].
+     * It's forbidden to change anything without calling [update] or [updateRepeatable].
      */
     fun update(act: CharacterController.() -> Unit) {
         actionsManager.register(IrreversibleAction { act(this) })
+    }
+
+    /**
+     * Use this method if you want to change a state of a character somehow repeatable.
+     * It's forbidden to change anything without calling [update] or [updateRepeatable].
+     */
+    fun updateRepeatable(act: CharacterController.() -> Unit) {
+        actionsManager.registerRepeatable { act(this) }
     }
 
     /**

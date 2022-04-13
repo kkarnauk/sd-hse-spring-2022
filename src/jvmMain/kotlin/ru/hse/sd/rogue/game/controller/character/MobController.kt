@@ -1,7 +1,7 @@
 package ru.hse.sd.rogue.game.controller.character
 
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
-import ru.hse.sd.rogue.game.logic.position.Direction
+import ru.hse.sd.rogue.game.logic.ai.MobStrategy
 import ru.hse.sd.rogue.game.state.character.CharacterState
 
 /**
@@ -10,11 +10,12 @@ import ru.hse.sd.rogue.game.state.character.CharacterState
 class MobController(
     actionsManager: ActionsManager,
     state: CharacterState,
-    movementController: MovementController
+    movementController: MovementController,
+    private val mobStrategy: MobStrategy
 ) : CharacterController(actionsManager, state, movementController) {
-    // TODO
-
-    override fun move(direction: Direction) {
-        TODO("Not yet implemented")
+    init {
+        updateRepeatable {
+            mobStrategy.nextMovement()?.let { move(it) }
+        }
     }
 }
