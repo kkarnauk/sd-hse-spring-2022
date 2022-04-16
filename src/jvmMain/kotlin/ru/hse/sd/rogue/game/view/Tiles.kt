@@ -173,4 +173,24 @@ object Tiles {
             )
         }
     }
+    
+    object Items {
+        object Weapons {
+            val sword = SpriteAnimation(
+                spriteMap = dungeonTileset2,
+                spriteWidth = 16,
+                spriteHeight = 32,
+                marginLeft = 336,
+                marginTop = 24
+            )
+
+            val ax = SpriteAnimation(
+                spriteMap = dungeonTileset2,
+                spriteWidth = 16,
+                spriteHeight = 32,
+                marginLeft = 336,
+                marginTop = 82
+            )
+        }
+    }
 }
