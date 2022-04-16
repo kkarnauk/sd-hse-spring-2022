@@ -53,6 +53,22 @@ class InputHandler(private val playerController: PlayerController) {
             }
         }
 
+        down(Key.B) {
+            playerController.update {
+                playerController.state.inventoryState.dropWeapon()
+            }
+        }
+        down(Key.N) {
+            playerController.update {
+                playerController.state.inventoryState.dropArmor()
+            }
+        }
+        down(Key.M) {
+            playerController.update {
+                playerController.state.inventoryState.dropPotion()
+            }
+        }
+
         down(Key.NUMPAD1) {
             playerController.updateInventory {
                 currentWeaponIndex = 0

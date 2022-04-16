@@ -38,13 +38,14 @@ class InventoryView(
         }
     }
 
+    @Suppress("unused")
     private val availablePlaceSprites: List<Sprite> = drawPlaces(Tiles.Interface.ItemPlace.available, true)
 
     private val chosenPlaceSprites: List<Sprite> = drawPlaces(Tiles.Interface.ItemPlace.chosen, false)
 
     private val currentChosenPositions: MutableList<Int> = mutableListOf()
 
-    fun updatePlaces() {
+    private fun updatePlaces() {
         currentChosenPositions.forEach { chosenPlaceSprites[it].visible = false }
 
         val chosenPositions = listOfNotNull(
@@ -59,21 +60,35 @@ class InventoryView(
         currentChosenPositions.addAll(chosenPositions)
     }
 
+    private val lastItems = mutableListOf<InventoryItemView>()
+    private var lastInventoryVersion = inventoryState.version
+
     private fun drawItems(items: List<Item>, positions: List<Position>) {
         items.zip(positions).forEach { (item, position) ->
-            item.toView(position).invoke()
+            item.toView(position).apply {
+                invoke()
+                lastItems += this
+            }
         }
     }
 
     private fun updateItems() {
+        for (item in lastItems) {
+            item.remove()
+        }
+        lastItems.clear()
+
         drawItems(inventoryState.weapons, weaponPositions)
         drawItems(inventoryState.armors, armorPositions)
         drawItems(inventoryState.potions, potionPositions)
     }
 
     override fun invoke() {
-        updatePlaces()
-        updateItems()
+        if (inventoryState.hasChangedSince(lastInventoryVersion)) {
+            lastInventoryVersion = inventoryState.version
+            updatePlaces()
+            updateItems()
+        }
     }
 
     private fun Item.toView(position: Position): InventoryItemView {

@@ -4,11 +4,12 @@ import ru.hse.sd.rogue.game.logic.item.Armor
 import ru.hse.sd.rogue.game.logic.item.Item
 import ru.hse.sd.rogue.game.logic.item.Potion
 import ru.hse.sd.rogue.game.logic.item.Weapon
+import kotlin.properties.Delegates
 
 /**
  * State of an inventory of a character.
  */
-class InventoryState : State {
+class InventoryState : VersionableState() {
     private val myWeapons = mutableListOf<Weapon>()
     private val myArmors = mutableListOf<Armor>()
     private val myPotions = mutableListOf<Potion>()
@@ -17,9 +18,17 @@ class InventoryState : State {
     val armors: List<Armor> get() = myArmors
     val potions: List<Potion> get() = myPotions
 
-    var currentWeaponIndex: Int? = null
-    var currentArmorIndex: Int? = null
-    var currentPotionIndex: Int? = null
+    var currentWeaponIndex: Int? by Delegates.observable(null) { _, _, _ ->
+        updateVersion()
+    }
+
+    var currentArmorIndex: Int? by Delegates.observable(null) { _, _, _ ->
+        updateVersion()
+    }
+
+    var currentPotionIndex: Int? by Delegates.observable(null) { _, _, _ ->
+        updateVersion()
+    }
 
     val currentWeapon: Weapon?
         get() = currentWeaponIndex?.let { weapons.getOrNull(it) }
@@ -34,8 +43,12 @@ class InventoryState : State {
         get() = 3
 
     private fun <T : Item> MutableList<T>.addItem(element: T): Boolean {
-        if (size >= maxSize) return false
+        if (size >= maxSize) {
+            return false
+        }
+
         this += element
+        updateVersion()
         return true
     }
 
@@ -46,4 +59,17 @@ class InventoryState : State {
             is Potion -> myPotions.addItem(item)
         }
     }
+
+    private fun <T : Item> MutableList<T>.dropItem(index: Int?) {
+        if (index != null && size > index) {
+            removeAt(index)
+            updateVersion()
+        }
+    }
+
+    fun dropWeapon() = myWeapons.dropItem(currentWeaponIndex)
+
+    fun dropArmor() = myWeapons.dropItem(currentArmorIndex)
+
+    fun dropPotion() = myWeapons.dropItem(currentPotionIndex)
 }
