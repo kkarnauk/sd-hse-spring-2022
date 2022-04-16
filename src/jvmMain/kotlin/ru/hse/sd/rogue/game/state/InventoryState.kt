@@ -32,22 +32,25 @@ class InventoryState : VersionableState() {
     /**
      * Index of the currently chosen weapon.
      */
-    var currentWeaponIndex: Int? by Delegates.observable(null) { _, _, _ ->
-        updateVersion()
+    var currentWeaponIndex: Int? by Delegates.vetoable(null) { _, oldValue, newValue ->
+        if (oldValue != newValue) updateVersion()
+        newValue == null || newValue in 0 until maxSize
     }
 
     /**
      * Index of the currently chosen armor.
      */
-    var currentArmorIndex: Int? by Delegates.observable(null) { _, _, _ ->
-        updateVersion()
+    var currentArmorIndex: Int? by Delegates.vetoable(null) { _, oldValue, newValue ->
+        if (oldValue != newValue) updateVersion()
+        newValue == null || newValue in 0 until maxSize
     }
 
     /**
      * Index of the currently chosen potion.
      */
-    var currentPotionIndex: Int? by Delegates.observable(null) { _, _, _ ->
-        updateVersion()
+    var currentPotionIndex: Int? by Delegates.vetoable(null) { _, oldValue, newValue ->
+        if (oldValue != newValue) updateVersion()
+        newValue == null || newValue in 0 until maxSize
     }
 
     /**
