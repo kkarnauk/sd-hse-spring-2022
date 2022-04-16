@@ -12,5 +12,5 @@ class InventorySwordView(
     item: Weapon,
     position: Position
 ) : InventoryWeaponView(container, item, position) {
-    override val sprite: Sprite = container.sprite(Tiles.Items.Weapons.sword, anchorY = 0.2)
+    override val sprite: Sprite = container.sprite(Tiles.Items.Weapons.sword, anchorY = 0.2, anchorX = -0.1)
 }
