@@ -17,9 +17,18 @@ class InventoryState : State {
     val armors: List<Armor> get() = myArmors
     val potions: List<Potion> get() = myPotions
 
-    var currentWeapon: Int? = null
-    var currentArmor: Int? = null
-    var currentPotion: Int? = null
+    var currentWeaponIndex: Int? = null
+    var currentArmorIndex: Int? = null
+    var currentPotionIndex: Int? = null
+
+    val currentWeapon: Weapon?
+        get() = currentWeaponIndex?.let { weapons.getOrNull(it) }
+
+    val currentArmor: Armor?
+        get() = currentArmorIndex?.let { armors.getOrNull(it) }
+
+    val currentPotion: Potion?
+        get() = currentPotionIndex?.let { potions.getOrNull(it) }
 
     val maxSize: Int
         get() = 3

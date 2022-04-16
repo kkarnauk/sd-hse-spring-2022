@@ -48,9 +48,9 @@ class InventoryView(
         currentChosenPositions.forEach { chosenPlaceSprites[it].visible = false }
 
         val chosenPositions = listOfNotNull(
-            inventoryState.currentWeapon,
-            inventoryState.currentArmor?.let { it + inventoryState.maxSize },
-            inventoryState.currentPotion?.let { it + 2 * inventoryState.maxSize }
+            inventoryState.currentWeaponIndex,
+            inventoryState.currentArmorIndex?.let { it + inventoryState.maxSize },
+            inventoryState.currentPotionIndex?.let { it + 2 * inventoryState.maxSize }
         )
 
         chosenPositions.forEach { chosenPlaceSprites[it].visible = true }
