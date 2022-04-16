@@ -1,5 +1,6 @@
 package ru.hse.sd.rogue.game.controller.character
 
+import ru.hse.sd.rogue.game.controller.CollisableController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.ai.MobStrategy
 import ru.hse.sd.rogue.game.state.character.CharacterState
@@ -16,6 +17,12 @@ class MobController(
     init {
         updateRepeatable {
             mobStrategy.nextMovement()?.let { move(it) }
+        }
+    }
+
+    override fun collideWith(other: CollisableController) {
+        if (other is PlayerController) {
+            other.takeDamage(state.damage)
         }
     }
 }

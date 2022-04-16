@@ -97,7 +97,6 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
 
     val mapState = MapState(generateSimpleMap())
     val mapController = MapController(
-        actionsManager,
         mapState
     )
     val movementController = MovementController(mapController)
@@ -109,7 +108,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val playerState = PlayerState(
         Health(100),
         MutablePosition(10, 10),
-        Damage(100, 100),
+        Damage(5, 10),
         inventoryState
     )
     val playerController = PlayerController(

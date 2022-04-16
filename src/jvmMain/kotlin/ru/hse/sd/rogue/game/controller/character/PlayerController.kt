@@ -34,9 +34,11 @@ class PlayerController(
     }
 
     override fun collideWith(other: CollisableController) {
-        super.collideWith(other)
-
         lootCandidate = (other as? LootItemController)?.state
+
+        if (other is CharacterController) {
+            other.takeDamage(state.damage)
+        }
     }
 
     fun updateInventory(action: InventoryState.() -> Unit) {

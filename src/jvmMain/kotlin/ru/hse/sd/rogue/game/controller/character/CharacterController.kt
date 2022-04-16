@@ -79,9 +79,5 @@ abstract class CharacterController(
         state.health.current -= damage.value
     }
 
-    override fun collideWith(other: CollisableController) {
-        Unit // TODO
-    }
-
     override fun noCollisions() = Unit
 }

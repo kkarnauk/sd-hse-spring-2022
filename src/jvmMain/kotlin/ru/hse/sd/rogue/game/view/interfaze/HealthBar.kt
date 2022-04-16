@@ -39,7 +39,7 @@ class HealthBar(
     }
 
     fun update() {
-        val ratio = interfaceState.health.current.toDouble() / interfaceState.health.maximum.toDouble()
+        val ratio = maxOf(0.0, interfaceState.health.current.toDouble() / interfaceState.health.maximum.toDouble())
         val filledHalves = (10.0 * ratio).toIntCeil()
         val halfFilled = filledHalves % 2 == 1
         val completelyFilled = (filledHalves - halfFilled.toInt()) / 2

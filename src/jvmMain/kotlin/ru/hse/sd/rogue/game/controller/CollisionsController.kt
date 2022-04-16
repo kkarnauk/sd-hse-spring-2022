@@ -27,15 +27,17 @@ class CollisionsController(
         }
 
         for ((_, controllers) in positionToControllers) {
-            if (controllers.size == 1) {
-                controllers.first().noCollisions()
-            } else {
-                for (first in controllers) {
-                    for (second in controllers) {
-                        first.collideWith(second)
-                        second.collideWith(first)
+            if (controllers.size != 1) {
+                for ((i, first) in controllers.withIndex()) {
+                    for ((j, second) in controllers.withIndex()) {
+                        if (i != j) {
+                            first.collideWith(second)
+                            second.collideWith(first)
+                        }
                     }
                 }
+            } else {
+                controllers.first().noCollisions()
             }
         }
     }
