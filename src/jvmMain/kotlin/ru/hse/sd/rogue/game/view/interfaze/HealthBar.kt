@@ -38,7 +38,7 @@ class HealthBar(
         container.sprite(Tiles.Interface.Heart.empty).position(position(index)).also { it.visible = false }
     }
 
-    fun invoke() {
+    fun update() {
         val ratio = interfaceState.health.current.toDouble() / interfaceState.health.maximum.toDouble()
         val filledHalves = (10.0 * ratio).toIntCeil()
         val halfFilled = filledHalves % 2 == 1
