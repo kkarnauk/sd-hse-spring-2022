@@ -15,7 +15,8 @@ data class Weapon(
     /**
      * [Durability] of this weapon.
      */
-    val durability: Durability
+    val durability: Durability,
+    val type: Type
 ) : Item() {
     override val usable: Boolean
         get() = durability.current > 0
@@ -25,5 +26,10 @@ data class Weapon(
         character.update {
             takeWeapon(this@Weapon)
         }
+    }
+
+    enum class Type {
+        Sword,
+        Ax
     }
 }
