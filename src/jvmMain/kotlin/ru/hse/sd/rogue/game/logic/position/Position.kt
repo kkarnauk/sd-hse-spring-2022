@@ -44,6 +44,16 @@ open class Position(
      */
     operator fun unaryMinus(): Position = Position(-x, -y)
 
+    operator fun rangeTo(other: Position): List<Position> {
+        return sequence {
+            for (i in x..other.x) {
+                for (j in y..other.y) {
+                    yield(Position(i, j))
+                }
+            }
+        }.toList()
+    }
+
     fun directionsTo(other: Position) = buildList {
         if (x < other.x) {
             add(Direction.Right)

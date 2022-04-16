@@ -8,6 +8,7 @@ import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.logic.size.Size
 import ru.hse.sd.rogue.game.state.InterfaceState
 import ru.hse.sd.rogue.game.view.View
+import ru.hse.sd.rogue.game.view.interfaze.inventory.InventoryView
 
 /**
  * View of the interface.
@@ -30,10 +31,18 @@ class InterfaceView(
      */
     cameraSize: Size
 ) : View, IrreversibleAction {
+    private val height: Int = cameraSize.height - 2
+
     private val healthBar = HealthBar(
         container,
-        Position(2, cameraSize.height - 2),
+        Position(2, height),
         interfaceState
+    )
+
+    private val inventoryView = InventoryView(
+        container,
+        interfaceState.inventoryState,
+        Position(8, height)
     )
 
     init {
@@ -41,6 +50,7 @@ class InterfaceView(
     }
 
     override fun invoke() {
-        healthBar.invoke()
+        healthBar.update()
+        inventoryView.invoke()
     }
 }

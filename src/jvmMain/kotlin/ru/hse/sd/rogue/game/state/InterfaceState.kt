@@ -4,4 +4,5 @@ import ru.hse.sd.rogue.game.logic.characteristics.Health
 
 class InterfaceState(
     val health: Health,
+    val inventoryState: InventoryState
 ) : State
