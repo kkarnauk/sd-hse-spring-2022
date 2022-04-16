@@ -9,6 +9,7 @@ import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.position.LookDirection
 import ru.hse.sd.rogue.game.logic.position.opposite
+import ru.hse.sd.rogue.game.logic.position.takeAway
 import ru.hse.sd.rogue.game.state.character.CharacterState
 import ru.hse.sd.rogue.game.view.View
 import ru.hse.sd.rogue.game.view.container.position
@@ -46,6 +47,10 @@ abstract class CharacterView(
     }
 
     override fun invoke() {
+        if (!characterState.isAlive) {
+            characterState.position.takeAway()
+        }
+
         sprite.position(characterState.position)
         if (characterState.lookDirection != currentLookDirection) {
             rotate()

@@ -36,7 +36,7 @@ class MapState(
     /**
      * @return [CellState] of a cell on ([x], [y]).
      */
-    operator fun get(x: Int, y: Int): CellState = cells[x][y]
+    operator fun get(x: Int, y: Int): CellState? = cells.getOrNull(x)?.getOrNull(y)
 
     /**
      * Sets [cell] for a cell on ([x], [y]).
@@ -49,7 +49,7 @@ class MapState(
     /**
      * @return [CellState] of a cell on [position].
      */
-    operator fun get(position: Position): CellState = get(position.x, position.y)
+    operator fun get(position: Position): CellState? = get(position.x, position.y)
 
     /**
      * Sets [cell] for a cell on [position]
