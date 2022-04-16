@@ -2,11 +2,13 @@ package ru.hse.sd.rogue
 
 import com.soywiz.korge.Korge
 import com.soywiz.korge.view.Stage
+import ru.hse.sd.rogue.game.controller.CollisionsController
 import ru.hse.sd.rogue.game.controller.GlobalController
 import ru.hse.sd.rogue.game.controller.MapController
 import ru.hse.sd.rogue.game.controller.character.MobController
 import ru.hse.sd.rogue.game.controller.character.MovementController
 import ru.hse.sd.rogue.game.controller.character.PlayerController
+import ru.hse.sd.rogue.game.controller.item.LootItemController
 import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
@@ -14,18 +16,22 @@ import ru.hse.sd.rogue.game.logic.ai.AggressiveStrategy
 import ru.hse.sd.rogue.game.logic.ai.CowardlyStrategy
 import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
+import ru.hse.sd.rogue.game.logic.characteristics.Durability
 import ru.hse.sd.rogue.game.logic.characteristics.Health
 import ru.hse.sd.rogue.game.logic.input.InputHandler
+import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.logic.size.KorgeSize
 import ru.hse.sd.rogue.game.logic.size.Size
 import ru.hse.sd.rogue.game.state.CellState
 import ru.hse.sd.rogue.game.state.InterfaceState
+import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.state.MapState
 import ru.hse.sd.rogue.game.state.character.PlayerState
 import ru.hse.sd.rogue.game.state.character.mob.boss.BigDemonMobState
 import ru.hse.sd.rogue.game.state.character.mob.regular.*
+import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.CameraView
 import ru.hse.sd.rogue.game.view.MapView
 import ru.hse.sd.rogue.game.view.character.mob.boss.BigDemonView
@@ -33,6 +39,8 @@ import ru.hse.sd.rogue.game.view.character.mob.regular.*
 import ru.hse.sd.rogue.game.view.character.player.PlayerView
 import ru.hse.sd.rogue.game.view.container.ContainersManager
 import ru.hse.sd.rogue.game.view.interfaze.InterfaceView
+import ru.hse.sd.rogue.game.view.item.weapon.LootAxView
+import ru.hse.sd.rogue.game.view.item.weapon.LootSwordView
 import kotlin.math.abs
 
 /**
@@ -95,16 +103,21 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val movementController = MovementController(mapController)
     MapView(actionsManager, containersManager.mapContainer, mapState)
 
+    val collisionsController = CollisionsController(actionsManager)
+    val inventoryState = InventoryState()
+
     val playerState = PlayerState(
         Health(100),
         MutablePosition(10, 10),
-        Damage(100, 100)
+        Damage(100, 100),
+        inventoryState
     )
     val playerController = PlayerController(
         actionsManager,
         playerState,
         movementController
-    )
+    ).apply { collisionsController.register(this) }
+
     PlayerView(actionsManager, containersManager.characterContainer, playerState)
     InputHandler(playerController).apply {
         mapKeys()
@@ -122,7 +135,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             actionsManager, state, movementController, AggressiveStrategy(
                 playerState, state, movementController, 5
             )
-        )
+        ).apply { collisionsController.register(this) }
     }
 
     run {
@@ -132,7 +145,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
             )
-        )
+        ).apply { collisionsController.register(this) }
     }
     run {
         val state = ImpMobState(MutablePosition(20, 20))
@@ -141,7 +154,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
             )
-        )
+        ).apply { collisionsController.register(this) }
     }
     run {
         val state = NecromancerMobState(MutablePosition(8, 8))
@@ -150,7 +163,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
             )
-        )
+        ).apply { collisionsController.register(this) }
     }
     run {
         val state = TinyZombieMobState(MutablePosition(12, 12))
@@ -159,7 +172,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
             )
-        )
+        ).apply { collisionsController.register(this) }
     }
 
     run {
@@ -169,10 +182,30 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             actionsManager, state, movementController, AggressiveStrategy(
                 playerState, state, movementController, 3
             )
+        ).apply { collisionsController.register(this) }
+    }
+
+    run {
+        InterfaceView(
+            actionsManager,
+            containersManager.interfaceContainer,
+            InterfaceState(playerState.health, inventoryState),
+            cameraSize
         )
     }
 
-    InterfaceView(actionsManager, containersManager.interfaceContainer, InterfaceState(playerState.health), cameraSize)
+    run {
+        val ax = Weapon(Damage(10, 20), Durability(100), Weapon.Type.Ax)
+        val sword = Weapon(Damage(10, 20), Durability(100), Weapon.Type.Sword)
+        val swordState = LootWeaponState(sword, MutablePosition(10, 10))
+        val axState = LootWeaponState(ax, MutablePosition(13, 13))
+
+        LootItemController(swordState).apply { collisionsController.register(this) }
+        LootItemController(axState).apply { collisionsController.register(this) }
+
+        LootSwordView(actionsManager, containersManager.itemsContainer, swordState).invoke()
+        LootAxView(actionsManager, containersManager.itemsContainer, axState).invoke()
+    }
 
     actionsManager.start()
 }
