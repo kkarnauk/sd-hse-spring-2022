@@ -173,6 +173,9 @@ object Tiles {
             )
         }
 
+        /**
+         * Tiles for cells in the inventory for items.
+         */
         object ItemPlace {
             val chosen = SpriteAnimation(
                 spriteMap = dungeonTileset2,
@@ -192,6 +195,9 @@ object Tiles {
         }
     }
 
+    /**
+     * Tiles for items (whether in the inventory or on the field).
+     */
     object Items {
         object Weapons {
             val sword = SpriteAnimation(

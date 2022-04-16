@@ -19,7 +19,12 @@ class PlayerController(
 ) : CharacterController(actionsManager, state, movementController) {
     private var lootCandidate: LootItemState? = null
 
-    fun putCandidateInInventory() {
+    /**
+     * `Loot candidate` is an item that will be put into the inventory if a player down the corresponding key.
+     *
+     * This method put the candidate (if it exists) into the inventory.
+     */
+    fun putLootCandidateInInventory() {
         lootCandidate?.let {
             if (state.inventoryState.addItem(it.item)) {
                 it.position.takeAway()
@@ -41,6 +46,9 @@ class PlayerController(
         }
     }
 
+    /**
+     * Invokes [action] on [InventoryState] of the player.
+     */
     fun updateInventory(action: InventoryState.() -> Unit) {
         actionsManager.register(IrreversibleAction { action(state.inventoryState) })
     }

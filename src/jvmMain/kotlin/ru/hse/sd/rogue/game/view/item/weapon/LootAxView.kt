@@ -7,6 +7,9 @@ import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.Tiles
 
+/**
+ * Represents a view of an ax on the field.
+ */
 class LootAxView(
     actionsManager: ActionsManager,
     container: Container,

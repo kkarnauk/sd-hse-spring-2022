@@ -127,4 +127,7 @@ class MutablePosition(
     fun decY(): MutablePosition = MutablePosition(x, y - 1)
 }
 
+/**
+ * Takes this position away from the field.
+ */
 fun MutablePosition.takeAway() = replaceWith(Position(-1, -1))

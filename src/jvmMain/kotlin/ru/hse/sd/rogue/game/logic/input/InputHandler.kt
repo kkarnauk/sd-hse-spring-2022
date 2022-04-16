@@ -49,7 +49,7 @@ class InputHandler(private val playerController: PlayerController) {
     private fun KeysEvents.mapInventoryController() {
         down(Key.SPACE) {
             playerController.update {
-                playerController.putCandidateInInventory()
+                playerController.putLootCandidateInInventory()
             }
         }
 

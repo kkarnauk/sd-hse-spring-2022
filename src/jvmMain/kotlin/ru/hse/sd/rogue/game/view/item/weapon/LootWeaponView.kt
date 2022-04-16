@@ -5,6 +5,9 @@ import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.item.LootItemView
 
+/**
+ * Represents a view of weapon ax on the field.
+ */
 abstract class LootWeaponView(
     actionsManager: ActionsManager,
     container: Container,

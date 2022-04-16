@@ -28,7 +28,7 @@ abstract class CharacterController(
      * Checks whether this character can move to one or another position.
      */
     protected val movementController: MovementController
-) : CollisableController() {
+) : CollisableController {
     /**
      * Tries to move a character into [direction].
      */

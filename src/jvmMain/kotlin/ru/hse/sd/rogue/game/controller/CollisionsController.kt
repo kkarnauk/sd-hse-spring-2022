@@ -5,7 +5,19 @@ import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.position.Position
 
+/**
+ * Handles all the collision in the game.
+ *
+ * On each tick:
+ * * Collects all positions of [CollisableController].
+ * * If a controller is the only one on a position, then [CollisableController.noCollisions] is called.
+ * * If there are several controllers on the same position, then [CollisableController.collideWith]
+ * is called on each pair of them (except pairs with the same controllers)
+ */
 class CollisionsController(
+    /**
+     * Actions manager to be used to register handles of collisions.
+     */
     actionsManager: ActionsManager
 ) : Controller, IrreversibleAction {
     init {
@@ -14,6 +26,9 @@ class CollisionsController(
 
     private val collisableControllers = mutableListOf<CollisableController>()
 
+    /**
+     * Registers new [controller] to be being handled.
+     */
     fun register(controller: CollisableController) {
         collisableControllers += controller
     }

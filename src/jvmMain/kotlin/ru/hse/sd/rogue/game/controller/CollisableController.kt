@@ -2,10 +2,22 @@ package ru.hse.sd.rogue.game.controller
 
 import ru.hse.sd.rogue.game.state.CollisableState
 
-abstract class CollisableController : Controller {
-    abstract val state: CollisableState
+/**
+ * Represents a controller that can handle collisions.
+ */
+interface CollisableController : Controller {
+    /**
+     * State of this controller.
+     */
+    val state: CollisableState
 
-    abstract fun collideWith(other: CollisableController)
+    /**
+     * Handle collision with [other].
+     */
+    fun collideWith(other: CollisableController)
 
-    abstract fun noCollisions()
+    /**
+     * Handle no collision on this time.
+     */
+    fun noCollisions()
 }
