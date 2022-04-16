@@ -19,4 +19,8 @@ abstract class InventoryItemView(
     override fun invoke() {
         sprite.position(position).size(12, 24)
     }
+
+    fun remove() {
+        sprite.removeFromParent()
+    }
 }
