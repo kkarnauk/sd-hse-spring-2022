@@ -11,6 +11,6 @@ class LootSwordView(
     actionsManager: ActionsManager,
     container: Container,
     item: LootWeaponState
-) : LootWeaponView(container, item) {
+) : LootWeaponView(actionsManager, container, item) {
     override val sprite: Sprite = container.sprite(Tiles.Items.Weapons.sword, anchorY = 0.3)
 }

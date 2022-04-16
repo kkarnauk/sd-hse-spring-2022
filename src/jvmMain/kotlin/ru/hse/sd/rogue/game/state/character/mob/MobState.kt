@@ -12,4 +12,7 @@ open class MobState(
     health: Health,
     position: MutablePosition,
     meleeDamage: Damage
-) : CharacterState(health, position, meleeDamage)
+) : CharacterState(health, position, meleeDamage) {
+    override val damage: Damage
+        get() = meleeDamage
+}

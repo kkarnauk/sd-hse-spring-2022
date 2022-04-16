@@ -2,10 +2,9 @@ package ru.hse.sd.rogue.game.state.character
 
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Health
-import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.position.LookDirection
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
-import ru.hse.sd.rogue.game.state.State
+import ru.hse.sd.rogue.game.state.CollisableState
 
 /**
  * General state of a character.
@@ -18,7 +17,7 @@ abstract class CharacterState(
     /**
      * Current position for this character.
      */
-    val position: MutablePosition,
+    override val position: MutablePosition,
     /**
      * [Damage] of this character without any weapon.
      */
@@ -27,7 +26,7 @@ abstract class CharacterState(
      * Current [LookDirection] of this character.
      */
     var lookDirection: LookDirection = LookDirection.Right
-) : State {
+) : CollisableState {
     /**
      * Whether this character is alive or not.
      */
@@ -35,13 +34,7 @@ abstract class CharacterState(
         get() = health.current > 0
 
     /**
-     * Current [Weapon] of this character.
-     */
-    var currentWeapon: Weapon? = null
-
-    /**
      * Current [Damage] of this character.
      */
-    val damage: Damage
-        get() = currentWeapon?.damage ?: meleeDamage
+    abstract val damage: Damage
 }

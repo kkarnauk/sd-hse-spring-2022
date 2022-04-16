@@ -47,6 +47,12 @@ class InputHandler(private val playerController: PlayerController) {
     }
 
     private fun KeysEvents.mapInventoryController() {
+        down(Key.SPACE) {
+            playerController.update {
+                playerController.putCandidateInInventory()
+            }
+        }
+
         down(Key.NUMPAD1) {
             playerController.updateInventory {
                 currentWeaponIndex = 0
