@@ -13,7 +13,7 @@ class AggressiveStrategy(
 ) : MobStrategy {
     override fun nextMovement(): Direction? {
         val difference = playerState.position - mobState.position
-        if (difference.length > sensitiveDistance) {
+        if (difference.distanceToZero > sensitiveDistance) {
             return null
         }
         val directionsToPlayer = mobState.position.directionsTo(playerState.position)

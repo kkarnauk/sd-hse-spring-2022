@@ -16,7 +16,7 @@ open class Position(
      */
     open val y: Int
 ) {
-    val length: Int
+    val distanceToZero: Int
         get() = abs(x) + abs(y)
 
     /**

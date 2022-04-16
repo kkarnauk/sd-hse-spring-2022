@@ -13,7 +13,7 @@ class CowardlyStrategy(
 ) : MobStrategy {
     override fun nextMovement(): Direction? {
         val difference = playerState.position - mobState.position
-        if (difference.length >= safeDistance) {
+        if (difference.distanceToZero >= safeDistance) {
             return null
         }
         val directionsFromPlayer = playerState.position.directionsTo(mobState.position)
