@@ -5,6 +5,7 @@ import kotlin.test.assertFails
 import kotlin.test.Test
 import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.position.Position
+import kotlin.test.assertNull
 
 
 internal class MapStateTest {
@@ -43,9 +44,7 @@ internal class MapStateTest {
     fun get(): Unit = with(smallMap()) {
         assertEquals(CellState(Position(0, 0), CellContent.Space), get(Position(0, 0)))
         assertEquals(CellState(Position(0, 1), CellContent.Wall), get(Position(0, 1)))
-        assertFails {
-            get(Position(-1, -1))
-        }
+        assertNull(get(Position(-1, -1)))
     }
 
 

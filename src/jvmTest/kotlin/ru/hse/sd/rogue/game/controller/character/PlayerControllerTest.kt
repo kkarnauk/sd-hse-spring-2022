@@ -1,7 +1,6 @@
 package ru.hse.sd.rogue.game.controller.character
 
 import com.soywiz.korge.view.Container
-import kotlin.test.Test
 import ru.hse.sd.rogue.game.controller.MapController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.cell.CellContent
@@ -11,10 +10,11 @@ import ru.hse.sd.rogue.game.logic.position.Direction
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.CellState
+import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.state.MapState
 import ru.hse.sd.rogue.game.state.character.PlayerState
+import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
 
 internal class PlayerControllerTest {
 
@@ -22,13 +22,18 @@ internal class PlayerControllerTest {
     fun move() {
         val actionsManager = ActionsManager(Container(), 30)
         actionsManager.start()
-        val playerState = PlayerState(Health(10), MutablePosition(0, 0), Damage(0, 1))
+        val playerState = PlayerState(
+            Health(10),
+            MutablePosition(0, 0),
+            Damage(0, 1),
+            InventoryState()
+        )
         val playerController = PlayerController(
             actionsManager,
             playerState,
             MovementController(
                 MapController(
-                    actionsManager, MapState(
+                    MapState(
                         listOf(
                             listOf(
                                 CellState(Position(0, 0), CellContent.Space),
@@ -58,9 +63,7 @@ internal class PlayerControllerTest {
         assertEquals(Position(0, 0), playerState.position)
 
         playerController.move(Direction.Up)
-        assertFails {
-            actionsManager.manualInvoke()
-        }
+        assertEquals(Position(0, 0), playerState.position)
     }
 
 //    @Test
