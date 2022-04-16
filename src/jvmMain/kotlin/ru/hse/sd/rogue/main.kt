@@ -202,8 +202,8 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         LootItemController(swordState).apply { collisionsController.register(this) }
         LootItemController(axState).apply { collisionsController.register(this) }
 
-        LootSwordView(actionsManager, containersManager.itemsContainer, swordState).invoke()
-        LootAxView(actionsManager, containersManager.itemsContainer, axState).invoke()
+        LootSwordView(actionsManager, containersManager.lootItemsContainer, swordState).invoke()
+        LootAxView(actionsManager, containersManager.lootItemsContainer, axState).invoke()
     }
 
     actionsManager.start()

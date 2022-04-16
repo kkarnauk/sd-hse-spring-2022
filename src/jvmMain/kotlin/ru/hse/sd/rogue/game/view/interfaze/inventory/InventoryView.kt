@@ -16,9 +16,21 @@ import ru.hse.sd.rogue.game.view.interfaze.inventory.item.InventoryItemView
 import ru.hse.sd.rogue.game.view.interfaze.inventory.item.weapon.InventoryAxView
 import ru.hse.sd.rogue.game.view.interfaze.inventory.item.weapon.InventorySwordView
 
+/**
+ * Represents a view of the inventory.
+ */
 class InventoryView(
+    /**
+     * Container to draw the inventory.
+     */
     private val container: Container,
+    /**
+     * State of the inventory.
+     */
     private val inventoryState: InventoryState,
+    /**
+     * Absolute position of the start of the inventory.
+     */
     startPosition: Position
 ) : View, IrreversibleAction {
     private val weaponPositions =

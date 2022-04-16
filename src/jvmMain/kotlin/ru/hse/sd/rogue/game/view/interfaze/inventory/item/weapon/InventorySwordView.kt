@@ -7,6 +7,9 @@ import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.view.Tiles
 
+/**
+ * Represents a view of a sword in the inventory.
+ */
 class InventorySwordView(
     container: Container,
     item: Weapon,

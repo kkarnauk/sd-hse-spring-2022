@@ -16,11 +16,17 @@ data class Weapon(
      * [Durability] of this weapon.
      */
     val durability: Durability,
+    /**
+     * [Type] of this weapon.
+     */
     val type: Type
 ) : Item() {
     override val usable: Boolean
         get() = durability.current > 0
 
+    /**
+     * Different types of [Weapon].
+     */
     enum class Type {
         Sword,
         Ax
