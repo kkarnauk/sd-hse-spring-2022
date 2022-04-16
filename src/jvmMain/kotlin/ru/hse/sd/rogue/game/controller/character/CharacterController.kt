@@ -1,11 +1,10 @@
 package ru.hse.sd.rogue.game.controller.character
 
-import ru.hse.sd.rogue.game.controller.Controller
+import ru.hse.sd.rogue.game.controller.CollisableController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.position.Direction
 import ru.hse.sd.rogue.game.logic.position.LookDirection
 import ru.hse.sd.rogue.game.state.character.CharacterState
@@ -24,12 +23,12 @@ abstract class CharacterController(
     /**
      * [CharacterState] of this character.
      */
-    protected open val state: CharacterState,
+    override val state: CharacterState,
     /**
      * Checks whether this character can move to one or another position.
      */
     protected val movementController: MovementController
-) : Controller {
+) : CollisableController() {
     /**
      * Tries to move a character into [direction].
      */
@@ -70,13 +69,6 @@ abstract class CharacterController(
     }
 
     /**
-     * Changes [CharacterState.currentWeapon] to [newWeapon].
-     */
-    fun takeWeapon(newWeapon: Weapon) {
-        state.currentWeapon = newWeapon
-    }
-
-    /**
      * Updates current [CharacterState.health] with considering one application of [damage].
      * Updates [CharacterState.isAlive] depending on the result health.
      */
@@ -86,4 +78,10 @@ abstract class CharacterController(
         }
         state.health.current -= damage.value
     }
+
+    override fun collideWith(other: CollisableController) {
+        Unit // TODO
+    }
+
+    override fun noCollisions() = Unit
 }

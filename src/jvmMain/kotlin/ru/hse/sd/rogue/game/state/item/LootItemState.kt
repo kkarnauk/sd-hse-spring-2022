@@ -1,10 +1,10 @@
 package ru.hse.sd.rogue.game.state.item
 
 import ru.hse.sd.rogue.game.logic.item.Item
-import ru.hse.sd.rogue.game.logic.position.Position
-import ru.hse.sd.rogue.game.state.State
+import ru.hse.sd.rogue.game.logic.position.MutablePosition
+import ru.hse.sd.rogue.game.state.CollisableState
 
 abstract class LootItemState(
     open val item: Item,
-    val position: Position
-) : State
+    override val position: MutablePosition
+) : CollisableState

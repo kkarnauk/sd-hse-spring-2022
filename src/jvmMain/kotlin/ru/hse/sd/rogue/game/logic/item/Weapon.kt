@@ -21,13 +21,6 @@ data class Weapon(
     override val usable: Boolean
         get() = durability.current > 0
 
-    override fun use(character: CharacterController) {
-        super.use(character)
-        character.update {
-            takeWeapon(this@Weapon)
-        }
-    }
-
     enum class Type {
         Sword,
         Ax

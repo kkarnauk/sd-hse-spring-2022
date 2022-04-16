@@ -13,4 +13,7 @@ class PlayerState(
     position: MutablePosition,
     meleeDamage: Damage,
     val inventoryState: InventoryState
-) : CharacterState(health, position, meleeDamage)
+) : CharacterState(health, position, meleeDamage) {
+    override val damage: Damage
+        get() = inventoryState.currentWeapon?.damage ?: meleeDamage
+}

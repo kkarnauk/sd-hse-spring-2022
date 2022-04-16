@@ -21,12 +21,12 @@ class ContainersManager(
      */
     val mapContainer: Container = camera.container()
 
+    val itemsContainer: Container = camera.container()
+
     /**
      * [Container] for drawing characters.
      */
     val characterContainer: Container = camera.container()
-
-    val itemsContainer: Container = camera.container()
 
     /**
      * [Container] for drawing interface
