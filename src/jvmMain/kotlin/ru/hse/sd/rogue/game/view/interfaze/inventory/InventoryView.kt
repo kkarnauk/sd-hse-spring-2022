@@ -7,6 +7,7 @@ import ru.hse.sd.rogue.game.logic.item.Item
 import ru.hse.sd.rogue.game.logic.item.Potion
 import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.position.Position
+import ru.hse.sd.rogue.game.logic.size.cellSize
 import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.View
@@ -34,7 +35,13 @@ class InventoryView(
     private fun drawPlaces(spriteAnimation: SpriteAnimation, visible: Boolean) = buildList {
         val positions = listOf(weaponPositions, armorPositions, potionPositions).flatten()
         for (pos in positions) {
-            add(container.sprite(spriteAnimation).position(pos).visible(visible))
+            val sprite = container.sprite(spriteAnimation)
+                .position(pos)
+                .visible(visible)
+                .size(cellSize * 1.4, cellSize * 1.4)
+            sprite.anchorX = 0.15
+            sprite.anchorY = 0.25
+            add(sprite)
         }
     }
 
