@@ -172,8 +172,26 @@ object Tiles {
                 marginTop = 258
             )
         }
+
+        object ItemPlace {
+            val chosen = SpriteAnimation(
+                spriteMap = dungeonTileset2,
+                spriteWidth = 16,
+                spriteHeight = 16,
+                marginLeft = 32,
+                marginTop = 192
+            )
+
+            val available = SpriteAnimation(
+                spriteMap = dungeonTileset2,
+                spriteWidth = 16,
+                spriteHeight = 16,
+                marginLeft = 64,
+                marginTop = 192
+            )
+        }
     }
-    
+
     object Items {
         object Weapons {
             val sword = SpriteAnimation(
