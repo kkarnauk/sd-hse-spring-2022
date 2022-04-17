@@ -1,5 +1,6 @@
 package ru.hse.sd.rogue.game.controller.character
 
+import com.soywiz.kmem.toIntCeil
 import ru.hse.sd.rogue.game.controller.CollisableController
 import ru.hse.sd.rogue.game.controller.item.LootItemController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
@@ -8,6 +9,8 @@ import ru.hse.sd.rogue.game.logic.position.takeAway
 import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.state.character.PlayerState
 import ru.hse.sd.rogue.game.state.item.LootItemState
+import kotlin.math.log2
+import kotlin.random.Random
 
 /**
  * Responsible for controlling the player.
@@ -43,6 +46,29 @@ class PlayerController(
 
         if (other is CharacterController) {
             other.takeDamage(state.damage)
+            if (!other.state.isAlive) {
+                addExperience(other.xpForKilling)
+
+            }
+        }
+    }
+
+    private fun addExperience(xp: Int) {
+        state.experience.xp += xp
+        val newLevel = log2(1 + state.experience.xp.div(10).toDouble()).toIntCeil()
+        repeat(newLevel - state.experience.level) {
+            levelUp()
+        }
+    }
+
+    private fun levelUp() {
+        state.experience.level++
+        if (Random.nextInt() % 2 == 0) {
+            state.health.maximum += 2
+            state.health.current += 2
+        } else {
+            state.damage.minimum += 1
+            state.damage.maximum += 1
         }
     }
 
