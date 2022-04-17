@@ -38,7 +38,7 @@ import ru.hse.sd.rogue.game.view.character.mob.boss.BigDemonView
 import ru.hse.sd.rogue.game.view.character.mob.regular.*
 import ru.hse.sd.rogue.game.view.character.player.PlayerView
 import ru.hse.sd.rogue.game.view.container.ContainersManager
-import ru.hse.sd.rogue.game.view.interfaze.InterfaceView
+import ru.hse.sd.rogue.game.view.ui.InterfaceView
 import ru.hse.sd.rogue.game.view.item.weapon.LootAxView
 import ru.hse.sd.rogue.game.view.item.weapon.LootSwordView
 import kotlin.math.abs
@@ -106,9 +106,9 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val inventoryState = InventoryState()
 
     val playerState = PlayerState(
-        Health(100),
+        Health(6),
         MutablePosition(10, 10),
-        Damage(5, 10),
+        Damage(3, 5),
         inventoryState
     )
     val playerController = PlayerController(
@@ -188,7 +188,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         InterfaceView(
             actionsManager,
             containersManager.interfaceContainer,
-            InterfaceState(playerState.health, inventoryState),
+            InterfaceState(playerState.health, inventoryState, playerState.experience, playerState.damage),
             cameraSize
         )
     }

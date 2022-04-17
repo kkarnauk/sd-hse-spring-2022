@@ -1,4 +1,4 @@
-package ru.hse.sd.rogue.game.view.interfaze.inventory.item
+package ru.hse.sd.rogue.game.view.ui.inventory.item
 
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.Sprite

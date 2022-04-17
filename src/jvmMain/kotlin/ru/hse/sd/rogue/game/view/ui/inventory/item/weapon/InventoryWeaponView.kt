@@ -1,9 +1,9 @@
-package ru.hse.sd.rogue.game.view.interfaze.inventory.item.weapon
+package ru.hse.sd.rogue.game.view.ui.inventory.item.weapon
 
 import com.soywiz.korge.view.Container
 import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.position.Position
-import ru.hse.sd.rogue.game.view.interfaze.inventory.item.InventoryItemView
+import ru.hse.sd.rogue.game.view.ui.inventory.item.InventoryItemView
 
 /**
  * Represents a view of a weapon in the inventory.

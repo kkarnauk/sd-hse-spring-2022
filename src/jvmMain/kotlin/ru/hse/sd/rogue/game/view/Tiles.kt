@@ -12,6 +12,13 @@ object Tiles {
     private val dungeonTileset2 = runBlocking {
         resourcesVfs["0x72_DungeonTilesetII_v1.4.png"].readBitmap()
     }
+    private val gui1 = runBlocking {
+        resourcesVfs["gui1.png"].readBitmap()
+    }
+
+    private val kyrises = runBlocking {
+        resourcesVfs["Kyrises_Free_16x16_RPG_Icon_Pack.png"].readBitmap()
+    }
 
     /**
      * Tiles for a map.
@@ -147,6 +154,26 @@ object Tiles {
      * Tiles for interface
      */
     object Interface {
+        object Damage {
+            val icon = SpriteAnimation(
+                spriteMap = gui1,
+                spriteWidth = 36,
+                spriteHeight = 36,
+                marginLeft = 319,
+                marginTop = 256
+            )
+        }
+
+        object Experience {
+            val levelIcon = SpriteAnimation(
+                spriteMap = gui1,
+                spriteWidth = 36,
+                spriteHeight = 36,
+                marginLeft = 415,
+                marginTop = 256
+            )
+        }
+
         object Heart {
             val full = SpriteAnimation(
                 spriteMap = dungeonTileset2,
@@ -177,6 +204,30 @@ object Tiles {
          * Tiles for cells in the inventory for items.
          */
         object ItemPlace {
+            val weaponsIcon = SpriteAnimation(
+                spriteMap = kyrises,
+                spriteWidth = 16,
+                spriteHeight = 16,
+                marginLeft = 175,
+                marginTop = 159,
+            )
+
+            val armorsIcon = SpriteAnimation(
+                spriteMap = kyrises,
+                spriteWidth = 16,
+                spriteHeight = 16,
+                marginLeft = 95,
+                marginTop = 287,
+            )
+
+            val poisonsIcon = SpriteAnimation(
+                spriteMap = kyrises,
+                spriteWidth = 16,
+                spriteHeight = 16,
+                marginLeft = 128,
+                marginTop = 223,
+            )
+
             val chosen = SpriteAnimation(
                 spriteMap = dungeonTileset2,
                 spriteWidth = 16,

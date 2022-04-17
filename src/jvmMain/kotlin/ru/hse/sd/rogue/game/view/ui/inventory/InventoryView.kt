@@ -1,4 +1,4 @@
-package ru.hse.sd.rogue.game.view.interfaze.inventory
+package ru.hse.sd.rogue.game.view.ui.inventory
 
 import com.soywiz.korge.view.*
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
@@ -12,9 +12,9 @@ import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.View
 import ru.hse.sd.rogue.game.view.container.position
-import ru.hse.sd.rogue.game.view.interfaze.inventory.item.InventoryItemView
-import ru.hse.sd.rogue.game.view.interfaze.inventory.item.weapon.InventoryAxView
-import ru.hse.sd.rogue.game.view.interfaze.inventory.item.weapon.InventorySwordView
+import ru.hse.sd.rogue.game.view.ui.inventory.item.InventoryItemView
+import ru.hse.sd.rogue.game.view.ui.inventory.item.weapon.InventoryAxView
+import ru.hse.sd.rogue.game.view.ui.inventory.item.weapon.InventorySwordView
 
 /**
  * Represents a view of the inventory.
@@ -33,15 +33,22 @@ class InventoryView(
      */
     startPosition: Position
 ) : View, IrreversibleAction {
+    init {
+        container.sprite(Tiles.Interface.ItemPlace.weaponsIcon).position(startPosition)
+        container.sprite(Tiles.Interface.ItemPlace.armorsIcon).position(startPosition + Position(0, 1))
+        container.sprite(Tiles.Interface.ItemPlace.poisonsIcon).position(startPosition + Position(0, 2))
+    }
+
+    private val placePosition = startPosition + Position(1, 0)
     private val weaponPositions =
-        startPosition..Position(startPosition.x + inventoryState.maxSize - 1, startPosition.y)
+        placePosition..Position(placePosition.x + inventoryState.maxSize - 1, placePosition.y)
 
     private val armorPositions = weaponPositions.last().let { last ->
-        Position(last.x + 2, last.y)..Position(last.x + inventoryState.maxSize + 1, last.y)
+        Position(placePosition.x, last.y + 1)..Position(placePosition.x + inventoryState.maxSize - 1, last.y + 1)
     }
 
     private val potionPositions = armorPositions.last().let { last ->
-        Position(last.x + 2, last.y)..Position(last.x + inventoryState.maxSize + 1, last.y)
+        Position(placePosition.x, last.y + 1)..Position(placePosition.x + inventoryState.maxSize - 1, last.y + 1)
     }
 
     private fun drawPlaces(spriteAnimation: SpriteAnimation, visible: Boolean) = buildList {
