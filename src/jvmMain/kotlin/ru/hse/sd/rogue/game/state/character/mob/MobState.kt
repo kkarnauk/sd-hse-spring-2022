@@ -10,11 +10,15 @@ import ru.hse.sd.rogue.game.state.character.CharacterState
  * General state of a mob.
  */
 open class MobState(
-    health: Health,
-    position: MutablePosition,
-    meleeDamage: Damage
-) : CharacterState(health, position, meleeDamage) {
+        health: Health,
+        position: MutablePosition,
+        meleeDamage: Damage
+) : CharacterState(health, position, meleeDamage), Cloneable {
     override val damage: Damage
         get() = meleeDamage
     override val effects: List<Effect> = emptyList()
+
+    public override fun clone(): MobState {
+        throw CloneNotSupportedException()
+    }
 }

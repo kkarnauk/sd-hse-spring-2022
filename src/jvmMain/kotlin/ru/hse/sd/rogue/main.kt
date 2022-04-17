@@ -11,8 +11,13 @@ import ru.hse.sd.rogue.game.controller.character.PlayerController
 import ru.hse.sd.rogue.game.controller.item.LootItemController
 import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
+import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.ai.AggressiveStrategy
+import ru.hse.sd.rogue.game.logic.ai.CowardlyStrategy
+import ru.hse.sd.rogue.game.logic.ai.StandingStrategy
+import ru.hse.sd.rogue.game.logic.ai.randomlyRepeat
+import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Durability
@@ -39,6 +44,7 @@ import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
 import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.CameraView
 import ru.hse.sd.rogue.game.view.MapView
+import ru.hse.sd.rogue.game.view.character.mob.ReproductingMoldView
 import ru.hse.sd.rogue.game.view.character.mob.boss.BigDemonView
 import ru.hse.sd.rogue.game.view.character.mob.boss.RinoView
 import ru.hse.sd.rogue.game.view.character.mob.regular.*
@@ -181,6 +187,17 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
+    }
+    run {
+        val state = ReproductingMoldMobState(MutablePosition(15, 15))
+        ReproductingMoldView(actionsManager, containersManager.characterContainer, state)
+        MobController(
+                actionsManager, state, movementController, StandingStrategy().randomlyRepeat(
+                    10, 0.5, actionsManager, IrreversibleAction {
+//                        state.clone().position.
+                }
+                )
+        ).apply { collisionsController.register(this) }
     }
 
     run {
