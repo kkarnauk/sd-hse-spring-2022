@@ -10,4 +10,7 @@ import ru.hse.sd.rogue.game.state.character.mob.MobState
  */
 class BigDemonMobState(position: MutablePosition) : MobState(Health(100), position, Damage(3, 5)) {
     // TODO
+    override fun clone(): BigDemonMobState {
+        return BigDemonMobState(MutablePosition(position.x, position.y))
+    }
 }

@@ -159,6 +159,20 @@ object Tiles {
         }
 
         /**
+         * Tile for a skeleton.
+         */
+        object ReproductingMold {
+            val idle = SpriteAnimation(
+                    spriteMap = dungeonTileset2,
+                    spriteWidth = 16,
+                    spriteHeight = 16,
+                    marginTop = 112,
+                    marginLeft = 368,
+                    columns = 4
+            )
+        }
+
+        /**
          * Tile for the angry pig.
          */
         object AngryPig {
