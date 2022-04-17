@@ -13,10 +13,7 @@ import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
-import ru.hse.sd.rogue.game.logic.ai.AggressiveStrategy
-import ru.hse.sd.rogue.game.logic.ai.CowardlyStrategy
-import ru.hse.sd.rogue.game.logic.ai.StandingStrategy
-import ru.hse.sd.rogue.game.logic.ai.randomlyRepeat
+import ru.hse.sd.rogue.game.logic.ai.*
 import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
@@ -190,15 +187,18 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             .also { it.register() }
             .apply { collisionsController.register(this) }
     }
+
     run {
-        val state = ReproductingMoldMobState(MutablePosition(15, 15))
+        val state = ReproductingMoldMobState(MutablePosition(14, 15))
         ReproductingMoldView(actionsManager, containersManager.characterContainer, state)
         MobController(
-                actionsManager, state, movementController, StandingStrategy().randomlyRepeat(
-                    10, 0.5, actionsManager, IrreversibleAction {
-//                        state.clone().position.
-                }
-                )
+                actionsManager, state, movementController, ReproductiveStrategy(state,
+                10,
+                0.5,
+                movementController,
+                actionsManager,
+                collisionsController,
+                containersManager)
         ).apply { collisionsController.register(this) }
     }
 
