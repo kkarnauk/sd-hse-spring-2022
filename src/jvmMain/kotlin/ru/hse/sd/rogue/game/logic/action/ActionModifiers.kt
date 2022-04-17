@@ -2,8 +2,11 @@ package ru.hse.sd.rogue.game.logic.action
 
 import kotlin.random.Random
 
-fun Action.repeatEach(frequency: Long): Action {
-    assert(frequency > 0)
+/**
+ * Execute this action only each [frequency] ticks
+ */
+fun IrreversibleAction.executeEach(frequency: Long): IrreversibleAction {
+    require(frequency > 0)
     return object : IrreversibleAction {
         var currentTimer: Long = 0
 
@@ -11,13 +14,16 @@ fun Action.repeatEach(frequency: Long): Action {
             currentTimer++
             if (currentTimer >= frequency) {
                 currentTimer = 0
-                this@repeatEach.invoke()
+                this@executeEach.invoke()
             }
         }
     }
 }
 
-fun Action.probably(probability: Double): Action {
-    assert(probability in 0.0..1.0)
+/**
+ * Execute this action with probability [probability]
+ */
+fun IrreversibleAction.probably(probability: Double): IrreversibleAction {
+    require(probability in 0.0..1.0)
     return IrreversibleAction { if (Random.nextFloat() < probability) this@probably.invoke() }
 }

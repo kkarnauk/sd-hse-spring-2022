@@ -1,21 +1,18 @@
 package ru.hse.sd.rogue.game.logic.ai
 
-import ru.hse.sd.rogue.game.logic.action.Action
-import ru.hse.sd.rogue.game.logic.action.ActionsManager
-import ru.hse.sd.rogue.game.logic.action.probably
-import ru.hse.sd.rogue.game.logic.action.repeatEach
+import ru.hse.sd.rogue.game.logic.action.*
 
 fun MobStrategy.repeat(frequency: Long,
                        actionsManager: ActionsManager,
-                       action: Action): MobStrategy {
-    actionsManager.register(action.repeatEach(frequency))
+                       action: IrreversibleAction): MobStrategy {
+    actionsManager.register(action.executeEach(frequency))
     return this
 }
 
 fun MobStrategy.randomlyRepeat(frequency: Long,
                                probability: Double,
                                actionsManager: ActionsManager,
-                               action: Action): MobStrategy {
-    actionsManager.register(action.probably(probability).repeatEach(frequency))
+                               action: IrreversibleAction): MobStrategy {
+    actionsManager.registerRepeatable(action.probably(probability).executeEach(frequency))
     return this
 }
