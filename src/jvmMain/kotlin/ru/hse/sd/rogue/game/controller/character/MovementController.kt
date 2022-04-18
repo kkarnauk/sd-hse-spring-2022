@@ -2,11 +2,27 @@ package ru.hse.sd.rogue.game.controller.character
 
 import ru.hse.sd.rogue.game.controller.Controller
 import ru.hse.sd.rogue.game.controller.MapController
+import ru.hse.sd.rogue.game.logic.position.Direction
 import ru.hse.sd.rogue.game.logic.position.Position
 
 /**
  * Responsible for tracking whether it's permitted to move to one or another position.
  */
 class MovementController(private val mapController: MapController) : Controller {
+    /**
+     * Tells whether it's possible or not to move to [newPosition].
+     */
     fun canMoveTo(newPosition: Position): Boolean = mapController.canMoveTo(newPosition)
+
+    /**
+     * @return all possible [Direction] that one can go from [position].
+     */
+    fun canMoveFrom(position: Position): List<Direction> = listOf<Pair<Direction, Position>>(
+        Direction.Up to position.asMutable().decY(),
+        Direction.Down to position.asMutable().incY(),
+        Direction.Left to position.asMutable().decX(),
+        Direction.Right to position.asMutable().incX(),
+    ).filter {
+        canMoveTo(it.second)
+    }.map { it.first }
 }

@@ -1,6 +1,7 @@
 package ru.hse.sd.rogue.game.logic.input
 
 import com.soywiz.korev.Key
+import com.soywiz.korge.input.KeysEvents
 import com.soywiz.korge.input.keys
 import com.soywiz.korge.view.Stage
 import ru.hse.sd.rogue.game.controller.character.PlayerController
@@ -16,30 +17,120 @@ class InputHandler(private val playerController: PlayerController) {
      */
     fun Stage.mapKeys() {
         keys {
-            down(Key.W) {
-                playerController.update {
-                    move(Direction.Up)
+            mapMovementController()
+            mapInventoryController()
+            mapHelps()
+        }
+    }
+
+    private fun KeysEvents.mapMovementController() {
+        down(Key.W) {
+            playerController.update {
+                move(Direction.Up)
+            }
+        }
+        down(Key.S) {
+            playerController.update {
+                move(Direction.Down)
+            }
+        }
+        down(Key.A) {
+            playerController.update {
+                move(Direction.Left)
+            }
+        }
+        down(Key.D) {
+            playerController.update {
+                move(Direction.Right)
+            }
+        }
+    }
+
+    private fun KeysEvents.mapInventoryController() {
+        down(Key.SPACE) {
+            playerController.update {
+                playerController.putLootCandidateInInventory()
+            }
+        }
+
+        down(Key.B) {
+            playerController.update {
+                playerController.state.inventoryState.dropWeapon()
+            }
+        }
+        down(Key.N) {
+            playerController.update {
+                playerController.state.inventoryState.dropArmor()
+            }
+        }
+        down(Key.M) {
+            playerController.update {
+                playerController.state.inventoryState.dropPotion()
+            }
+        }
+
+        down(Key.E) {
+            playerController.state.inventoryState.currentWeapon?.let { weapon ->
+                playerController.state.inventoryState.currentPotion?.let { potion ->
+                    // TODO: maybe remove potion from inventory
+                    weapon.effects.add(potion.effect)
                 }
             }
-            down(Key.S) {
-                playerController.update {
-                    move(Direction.Down)
-                }
+        }
+
+        down(Key.NUMPAD1) {
+            playerController.updateInventory {
+                currentWeaponIndex = 0
             }
-            down(Key.A) {
-                playerController.update {
-                    move(Direction.Left)
-                }
+        }
+        down(Key.NUMPAD2) {
+            playerController.updateInventory {
+                currentWeaponIndex = 1
             }
-            down(Key.D) {
-                playerController.update {
-                    move(Direction.Right)
-                }
+        }
+        down(Key.NUMPAD3) {
+            playerController.updateInventory {
+                currentWeaponIndex = 2
             }
-            // TODO: remove it later
-            down(Key.F) {
-                playerController.takeDamage(Damage(10, 10))
+        }
+
+        down(Key.NUMPAD4) {
+            playerController.updateInventory {
+                currentArmorIndex = 0
             }
+        }
+        down(Key.NUMPAD5) {
+            playerController.updateInventory {
+                currentArmorIndex = 1
+            }
+        }
+        down(Key.NUMPAD6) {
+            playerController.updateInventory {
+                currentArmorIndex = 2
+            }
+        }
+
+        down(Key.NUMPAD7) {
+            playerController.updateInventory {
+                currentPotionIndex = 0
+            }
+        }
+        down(Key.NUMPAD8) {
+            playerController.updateInventory {
+                currentPotionIndex = 1
+            }
+        }
+        down(Key.NUMPAD9) {
+            playerController.updateInventory {
+                currentPotionIndex = 2
+            }
+        }
+    }
+
+    // TODO remove
+    private fun KeysEvents.mapHelps() {
+        down(Key.F) {
+            playerController.takeDamage(Damage(10, 10), emptyList())
         }
     }
 }

@@ -22,6 +22,11 @@ class ContainersManager(
     val mapContainer: Container = camera.container()
 
     /**
+     * [Container] to draw loot items.
+     */
+    val lootItemsContainer: Container = camera.container()
+
+    /**
      * [Container] for drawing characters.
      */
     val characterContainer: Container = camera.container()

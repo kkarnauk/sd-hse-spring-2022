@@ -7,4 +7,12 @@ class Armor : Item() {
     // TODO
     override val usable: Boolean
         get() = TODO("Not yet implemented")
+
+    /**
+     * Different types of armor.
+     */
+    enum class Type {
+        Iron,
+        Golden
+    }
 }
