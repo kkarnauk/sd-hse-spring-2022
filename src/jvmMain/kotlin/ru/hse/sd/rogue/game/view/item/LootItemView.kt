@@ -14,10 +14,6 @@ import ru.hse.sd.rogue.game.view.container.position
  */
 abstract class LootItemView(
     /**
-     * Actions manager to register drawing.
-     */
-    actionsManager: ActionsManager,
-    /**
      * [Container] to draw this view.
      */
     protected val container: Container,
@@ -26,13 +22,13 @@ abstract class LootItemView(
      */
     protected open val item: LootItemState
 ) : View, IrreversibleAction {
-    init {
-        actionsManager.registerRepeatable(this)
-    }
-
     protected abstract val sprite: Sprite
 
     override fun invoke() {
         sprite.position(item.position)
+    }
+
+    override fun register(actionsManager: ActionsManager) {
+        actionsManager.registerRepeatable(this)
     }
 }

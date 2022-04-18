@@ -8,4 +8,9 @@ sealed interface Action {
      * Directly the action to be invoked.
      */
     fun invoke()
+
+    /**
+     * Registers Action in [ActionsManager] if needed
+     */
+    fun register(actionsManager: ActionsManager) = Unit
 }

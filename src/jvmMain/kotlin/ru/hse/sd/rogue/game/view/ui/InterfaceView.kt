@@ -15,10 +15,6 @@ import ru.hse.sd.rogue.game.view.ui.inventory.InventoryView
  */
 class InterfaceView(
     /**
-     * General actions' manager to update this view.
-     */
-    actionsManager: ActionsManager,
-    /**
      * [Container] to contain sprites of interface's parts.
      */
     container: Container,
@@ -55,7 +51,8 @@ class InterfaceView(
         Position(cameraSize.width - 4, 0)
     )
 
-    init {
+
+    override fun register(actionsManager: ActionsManager) {
         actionsManager.registerRepeatable(this)
     }
 

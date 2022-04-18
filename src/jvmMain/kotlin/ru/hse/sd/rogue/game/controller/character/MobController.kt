@@ -14,15 +14,15 @@ class MobController(
     movementController: MovementController,
     private val mobStrategy: MobStrategy
 ) : CharacterController(actionsManager, state, movementController) {
-    init {
-        updateRepeatable {
-            mobStrategy.nextMovement()?.let { move(it) }
-        }
-    }
-
     override fun collideWith(other: CollisableController) {
         if (other is PlayerController) {
             other.takeDamage(state.damage)
+        }
+    }
+
+    fun register() {
+        updateRepeatable {
+            mobStrategy.nextMovement()?.let { move(it) }
         }
     }
 }

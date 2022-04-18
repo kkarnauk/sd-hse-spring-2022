@@ -18,12 +18,7 @@ import kotlin.math.PI
 /**
  * View of a character.
  */
-abstract class CharacterView(
-    /**
-     * General actions' manager to update views of this character.
-     */
-    actionsManager: ActionsManager,
-    /**
+abstract class CharacterView(/**
      * [Container] to contain a sprite of a character.
      */
     protected val container: Container,
@@ -32,10 +27,6 @@ abstract class CharacterView(
      */
     protected val characterState: CharacterState
 ) : View, IrreversibleAction {
-    init {
-        actionsManager.registerRepeatable(this)
-    }
-
     protected abstract val sprite: Sprite
     protected var currentLookDirection: LookDirection = LookDirection.Right
 
@@ -55,5 +46,9 @@ abstract class CharacterView(
         if (characterState.lookDirection != currentLookDirection) {
             rotate()
         }
+    }
+
+    override fun register(actionsManager: ActionsManager) {
+        actionsManager.registerRepeatable(this)
     }
 }

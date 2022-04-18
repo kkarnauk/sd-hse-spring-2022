@@ -14,19 +14,17 @@ import ru.hse.sd.rogue.game.view.container.position
  */
 class MapView(
     /**
-     * General actions' manager to update this view.
-     */
-    actionsManager: ActionsManager,
-    /**
      * [Container] to contain sprites of cells for this map.
      */
-    container: Container,
+    private val container: Container,
     /**
      * State of this map.
      */
-    mapState: MapState
+    private val mapState: MapState
 ) : View, IrreversibleAction {
-    init {
+    override fun invoke() = Unit
+
+    override fun register(actionsManager: ActionsManager) {
         mapState.forEach { mapCell ->
             when (mapCell.content) {
                 CellContent.Wall -> {
@@ -44,6 +42,4 @@ class MapView(
 
         actionsManager.registerRepeatable(this)
     }
-
-    override fun invoke() = Unit
 }

@@ -14,16 +14,7 @@ import ru.hse.sd.rogue.game.logic.position.Position
  * * If there are several controllers on the same position, then [CollisableController.collideWith]
  * is called on each pair of them (except pairs with the same controllers)
  */
-class CollisionsController(
-    /**
-     * Actions manager to be used to register handles of collisions.
-     */
-    actionsManager: ActionsManager
-) : Controller, IrreversibleAction {
-    init {
-        actionsManager.registerRepeatable(this)
-    }
-
+class CollisionsController : Controller, IrreversibleAction {
     private val collisableControllers = mutableListOf<CollisableController>()
 
     /**
@@ -55,5 +46,9 @@ class CollisionsController(
                 controllers.first().noCollisions()
             }
         }
+    }
+
+    override fun register(actionsManager: ActionsManager) {
+        actionsManager.registerRepeatable(this)
     }
 }

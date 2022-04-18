@@ -93,16 +93,16 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val containersManager = ContainersManager(this)
     val actionsManager = ActionsManager(containersManager.camera, 30)
 
-    val globalController = GlobalController()
+    @Suppress("UNUSED_VARIABLE") val globalController = GlobalController()
 
     val mapState = MapState(generateSimpleMap())
     val mapController = MapController(
         mapState
     )
     val movementController = MovementController(mapController)
-    MapView(actionsManager, containersManager.mapContainer, mapState)
+    MapView(containersManager.mapContainer, mapState).also { it.register(actionsManager) }
 
-    val collisionsController = CollisionsController(actionsManager)
+    val collisionsController = CollisionsController().also { it.register(actionsManager) }
     val inventoryState = InventoryState()
 
     val playerState = PlayerState(
@@ -117,7 +117,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         movementController
     ).apply { collisionsController.register(this) }
 
-    PlayerView(actionsManager, containersManager.characterContainer, playerState)
+    PlayerView(containersManager.characterContainer, playerState).also { it.register(actionsManager) }
     InputHandler(playerController).apply {
         mapKeys()
     }
@@ -129,68 +129,81 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
 
     run {
         val state = BigDemonMobState(MutablePosition(2, 2))
-        BigDemonView(actionsManager, containersManager.characterContainer, state)
+        BigDemonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
         MobController(
             actionsManager, state, movementController, AggressiveStrategy(
                 playerState, state, movementController, 5
             )
-        ).apply { collisionsController.register(this) }
+        )
+            .also { it.register() }
+            .apply { collisionsController.register(this) }
     }
 
     run {
         val state = GoblinMobState(MutablePosition(4, 4))
-        GoblinView(actionsManager, containersManager.characterContainer, state)
+        GoblinView(containersManager.characterContainer, state).also { it.register(actionsManager) }
         MobController(
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
             )
-        ).apply { collisionsController.register(this) }
+        )
+            .also { it.register() }
+            .apply { collisionsController.register(this) }
     }
     run {
         val state = ImpMobState(MutablePosition(20, 20))
-        ImpView(actionsManager, containersManager.characterContainer, state)
+        ImpView(containersManager.characterContainer, state).also { it.register(actionsManager) }
         MobController(
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
             )
-        ).apply { collisionsController.register(this) }
+        )
+            .also { it.register() }
+            .apply { collisionsController.register(this) }
     }
     run {
         val state = NecromancerMobState(MutablePosition(8, 8))
-        NecromancerView(actionsManager, containersManager.characterContainer, state)
+        NecromancerView(containersManager.characterContainer, state).also { it.register(actionsManager) }
         MobController(
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
             )
-        ).apply { collisionsController.register(this) }
+        )
+            .also { it.register() }
+            .apply { collisionsController.register(this) }
     }
     run {
         val state = TinyZombieMobState(MutablePosition(12, 12))
-        TinyZombieView(actionsManager, containersManager.characterContainer, state)
+        TinyZombieView(containersManager.characterContainer, state).also { it.register(actionsManager) }
         MobController(
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
             )
-        ).apply { collisionsController.register(this) }
+        )
+            .also { it.register() }
+            .apply { collisionsController.register(this) }
     }
 
     run {
         val state = SkeletonMobState(MutablePosition(33, 10))
-        SkeletonView(actionsManager, containersManager.characterContainer, state)
+        SkeletonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
         MobController(
             actionsManager, state, movementController, AggressiveStrategy(
                 playerState, state, movementController, 3
             )
-        ).apply { collisionsController.register(this) }
+        )
+            .also { it.register() }
+            .apply { collisionsController.register(this) }
     }
 
     run {
         InterfaceView(
-            actionsManager,
             containersManager.interfaceContainer,
             InterfaceState(playerState.health, inventoryState, playerState.experience, playerState.damage),
             cameraSize
-        )
+        ).also {
+            it.register(actionsManager)
+        }
     }
 
     run {
@@ -202,8 +215,8 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         LootItemController(swordState).apply { collisionsController.register(this) }
         LootItemController(axState).apply { collisionsController.register(this) }
 
-        LootSwordView(actionsManager, containersManager.lootItemsContainer, swordState).invoke()
-        LootAxView(actionsManager, containersManager.lootItemsContainer, axState).invoke()
+        LootSwordView(containersManager.lootItemsContainer, swordState).also { it.register(actionsManager) }.invoke()
+        LootAxView(containersManager.lootItemsContainer, axState).also { it.register(actionsManager) }.invoke()
     }
 
     actionsManager.start()
