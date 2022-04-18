@@ -25,16 +25,20 @@ class CowardlyStrategy(
      * Determines how close the mob should be to start following.
      */
     private val safeDistance: Int,
-) : MobStrategy {
+) : MobStrategy() {
     override fun nextMovement(): Direction? {
-        val difference = playerState.position - mobState.position
-        if (difference.distanceToZero >= safeDistance) {
-            return null
+        return when (val strategy = effect?.strategy) {
+            null -> {
+                val difference = playerState.position - mobState.position
+                if (difference.distanceToZero >= safeDistance) {
+                    return null
+                }
+                val directionsFromPlayer = playerState.position.directionsTo(mobState.position)
+                val directions = movementController.canMoveFrom(mobState.position)
+                    .filter { it in directionsFromPlayer }
+                return directions.randomOrNull()
+            }
+            else -> strategy.nextMovement()
         }
-        val directionsFromPlayer = playerState.position.directionsTo(mobState.position)
-        val directions = movementController.canMoveFrom(mobState.position)
-            .filter { it in directionsFromPlayer }
-        return directions.randomOrNull()
     }
-
 }

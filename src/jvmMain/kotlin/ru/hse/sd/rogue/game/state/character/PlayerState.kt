@@ -1,7 +1,6 @@
 package ru.hse.sd.rogue.game.state.character
 
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.characteristics.Experience
 import ru.hse.sd.rogue.game.logic.characteristics.Health
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.state.InventoryState
@@ -19,4 +18,7 @@ class PlayerState(
         get() = inventoryState.currentWeapon?.damage ?: meleeDamage
 
     val experience = Experience(0, 1)
+
+    override val effects: List<Effect>
+        get() = inventoryState.currentWeapon?.effects ?: emptyList()
 }

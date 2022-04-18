@@ -42,6 +42,7 @@ import ru.hse.sd.rogue.game.view.ui.InterfaceView
 import ru.hse.sd.rogue.game.view.item.weapon.LootAxView
 import ru.hse.sd.rogue.game.view.item.weapon.LootSwordView
 import kotlin.math.abs
+import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
 
 /**
  * Size of camera used for the game.
@@ -133,7 +134,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         MobController(
             actionsManager, state, movementController, AggressiveStrategy(
                 playerState, state, movementController, 5
-            )
+            ).withExpirableEffects()
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
@@ -145,7 +146,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         MobController(
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
-            )
+            ).withExpirableEffects()
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
@@ -156,7 +157,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         MobController(
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
-            )
+            ).withExpirableEffects()
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
@@ -167,7 +168,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         MobController(
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
-            )
+            ).withExpirableEffects()
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
@@ -178,7 +179,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         MobController(
             actionsManager, state, movementController, CowardlyStrategy(
                 playerState, state, movementController, 7
-            )
+            ).withExpirableEffects()
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
@@ -190,7 +191,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         MobController(
             actionsManager, state, movementController, AggressiveStrategy(
                 playerState, state, movementController, 3
-            )
+            ).withExpirableEffects()
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }

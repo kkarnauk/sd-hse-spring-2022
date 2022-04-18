@@ -25,16 +25,21 @@ class AggressiveStrategy(
      * Determines how close the mob should be to start following.
      */
     private val sensitiveDistance: Int
-) : MobStrategy {
+) : MobStrategy() {
     override fun nextMovement(): Direction? {
-        val difference = playerState.position - mobState.position
-        if (difference.distanceToZero > sensitiveDistance) {
-            return null
+        return when (val strategy = effect?.strategy) {
+            null -> {
+                val difference = playerState.position - mobState.position
+                if (difference.distanceToZero > sensitiveDistance) {
+                    return null
+                }
+                val directionsToPlayer = mobState.position.directionsTo(playerState.position)
+                val directions = movementController.canMoveFrom(mobState.position)
+                    .filter { it in directionsToPlayer }
+                directions.randomOrNull()
+            }
+            else -> strategy.nextMovement()
         }
-        val directionsToPlayer = mobState.position.directionsTo(playerState.position)
-        val directions = movementController.canMoveFrom(mobState.position)
-            .filter { it in directionsToPlayer }
-        return directions.randomOrNull()
     }
 
 }

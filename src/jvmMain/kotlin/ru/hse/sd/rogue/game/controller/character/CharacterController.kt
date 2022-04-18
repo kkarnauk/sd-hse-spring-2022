@@ -5,6 +5,7 @@ import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
+import ru.hse.sd.rogue.game.logic.common.Effect
 import ru.hse.sd.rogue.game.logic.position.Direction
 import ru.hse.sd.rogue.game.logic.position.LookDirection
 import ru.hse.sd.rogue.game.state.character.CharacterState
@@ -76,12 +77,15 @@ abstract class CharacterController(
      * Updates current [CharacterState.health] with considering one application of [damage].
      * Updates [CharacterState.isAlive] depending on the result health.
      */
-    fun takeDamage(damage: Damage) = update {
+    fun takeDamage(damage: Damage, effects: List<Effect>) = update {
         if (!state.isAlive) {
             return@update
         }
         state.health.current -= damage.value
+        effects.forEach { apply(it) }
     }
 
     override fun noCollisions() = Unit
+
+    abstract fun apply(effect: Effect)
 }

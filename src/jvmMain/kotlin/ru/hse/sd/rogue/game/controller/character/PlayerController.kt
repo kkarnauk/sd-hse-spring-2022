@@ -5,6 +5,7 @@ import ru.hse.sd.rogue.game.controller.CollisableController
 import ru.hse.sd.rogue.game.controller.item.LootItemController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
+import ru.hse.sd.rogue.game.logic.common.Effect
 import ru.hse.sd.rogue.game.logic.position.takeAway
 import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.state.character.PlayerState
@@ -41,11 +42,13 @@ class PlayerController(
         lootCandidate = null
     }
 
+    override fun apply(effect: Effect) = Unit // effects can only be applied to mobs, not player
+
     override fun collideWith(other: CollisableController) {
         lootCandidate = (other as? LootItemController)?.state
 
         if (other is CharacterController) {
-            other.takeDamage(state.damage)
+            other.takeDamage(state.damage, state.effects)
             if (!other.state.isAlive) {
                 addExperience(other.xpForKilling)
 
@@ -69,6 +72,7 @@ class PlayerController(
         } else {
             state.damage.minimum += 1
             state.damage.maximum += 1
+            other.takeDamage(state.damage, state.effects)
         }
     }
 

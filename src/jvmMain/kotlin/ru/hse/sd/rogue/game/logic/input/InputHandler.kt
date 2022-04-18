@@ -121,7 +121,7 @@ class InputHandler(private val playerController: PlayerController) {
     // TODO remove
     private fun KeysEvents.mapHelps() {
         down(Key.F) {
-            playerController.takeDamage(Damage(10, 10))
+            playerController.takeDamage(Damage(10, 10), emptyList())
         }
     }
 }
