@@ -1,13 +1,11 @@
-package ru.hse.sd.rogue.game.view.interfaze.inventory.item.potion
+package ru.hse.sd.rogue.game.view.ui.inventory.item.ui
 
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.Sprite
 import com.soywiz.korge.view.sprite
 import ru.hse.sd.rogue.game.logic.item.Potion
-import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.view.Tiles
-import ru.hse.sd.rogue.game.view.interfaze.inventory.item.weapon.InventoryWeaponView
 
 /**
  * Represents a view of a blue potion in the inventory.

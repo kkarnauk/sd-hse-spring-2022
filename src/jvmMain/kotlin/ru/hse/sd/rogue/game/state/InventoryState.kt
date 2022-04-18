@@ -96,6 +96,7 @@ class InventoryState : VersionableState() {
             is Weapon -> myWeapons.addItem(item)
             is Armor -> myArmors.addItem(item)
             is Potion -> myPotions.addItem(item)
+            else -> TODO("investigate compilation error")
         }
     }
 

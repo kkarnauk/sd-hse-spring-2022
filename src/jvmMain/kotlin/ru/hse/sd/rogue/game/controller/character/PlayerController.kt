@@ -72,7 +72,6 @@ class PlayerController(
         } else {
             state.damage.minimum += 1
             state.damage.maximum += 1
-            other.takeDamage(state.damage, state.effects)
         }
     }
 
