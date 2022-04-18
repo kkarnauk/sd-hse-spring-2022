@@ -69,6 +69,15 @@ class InputHandler(private val playerController: PlayerController) {
             }
         }
 
+        down(Key.E) {
+            playerController.state.inventoryState.currentWeapon?.let { weapon ->
+                playerController.state.inventoryState.currentPotion?.let { potion ->
+                    // TODO: maybe remove potion from inventory
+                    weapon.effects.add(potion.effect)
+                }
+            }
+        }
+
         down(Key.NUMPAD1) {
             playerController.updateInventory {
                 currentWeaponIndex = 0

@@ -2,6 +2,8 @@ package ru.hse.sd.rogue
 
 import com.soywiz.korge.Korge
 import com.soywiz.korge.view.Stage
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import ru.hse.sd.rogue.game.controller.CollisionsController
 import ru.hse.sd.rogue.game.controller.GlobalController
 import ru.hse.sd.rogue.game.controller.MapController
@@ -43,6 +45,10 @@ import ru.hse.sd.rogue.game.view.item.weapon.LootAxView
 import ru.hse.sd.rogue.game.view.item.weapon.LootSwordView
 import kotlin.math.abs
 import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
+import ru.hse.sd.rogue.game.logic.common.Confusion
+import ru.hse.sd.rogue.game.logic.item.Potion
+import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
+import ru.hse.sd.rogue.game.view.item.potion.LootBluePotionView
 
 /**
  * Size of camera used for the game.
@@ -218,6 +224,15 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
 
         LootSwordView(containersManager.lootItemsContainer, swordState).also { it.register(actionsManager) }.invoke()
         LootAxView(containersManager.lootItemsContainer, axState).also { it.register(actionsManager) }.invoke()
+
+        val confusingPotion = Potion(Confusion(Instant.now().plus(1L, ChronoUnit.MINUTES)))
+        val potionState = LootPotionState(confusingPotion, MutablePosition(14, 17))
+
+        LootItemController(potionState).apply { collisionsController.register(this) }
+
+        LootBluePotionView(containersManager.lootItemsContainer, potionState).also {
+            it.register(actionsManager)
+        }.invoke()
     }
 
     actionsManager.start()

@@ -267,5 +267,15 @@ object Tiles {
                 marginTop = 82
             )
         }
+
+        object Potion {
+            val blue = SpriteAnimation(
+                spriteMap = dungeonTileset2,
+                spriteWidth = 10,
+                spriteHeight = 11,
+                marginLeft = 307,
+                marginTop = 228
+            )
+        }
     }
 }

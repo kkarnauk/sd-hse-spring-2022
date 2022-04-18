@@ -24,7 +24,7 @@ data class Weapon(
     /**
      * List of [Effect] of this weapon.
      */
-    val effects: List<Effect> = emptyList()
+    val effects: MutableList<Effect> = mutableListOf()
 ) : Item() {
     override val usable: Boolean
         get() = durability.current > 0

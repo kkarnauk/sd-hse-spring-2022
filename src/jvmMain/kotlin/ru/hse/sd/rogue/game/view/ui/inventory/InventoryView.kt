@@ -1,4 +1,4 @@
-package ru.hse.sd.rogue.game.view.ui.inventory
+package ru.hse.sd.rogue.game.view.interfaze.inventory
 
 import com.soywiz.korge.view.*
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
@@ -12,6 +12,10 @@ import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.View
 import ru.hse.sd.rogue.game.view.container.position
+import ru.hse.sd.rogue.game.view.interfaze.inventory.item.InventoryItemView
+import ru.hse.sd.rogue.game.view.interfaze.inventory.item.potion.InventoryBluePotionView
+import ru.hse.sd.rogue.game.view.interfaze.inventory.item.weapon.InventoryAxView
+import ru.hse.sd.rogue.game.view.interfaze.inventory.item.weapon.InventorySwordView
 import ru.hse.sd.rogue.game.view.ui.inventory.item.InventoryItemView
 import ru.hse.sd.rogue.game.view.ui.inventory.item.weapon.InventoryAxView
 import ru.hse.sd.rogue.game.view.ui.inventory.item.weapon.InventorySwordView
@@ -124,7 +128,9 @@ class InventoryView(
                 Weapon.Type.Sword -> InventorySwordView(container, this, position)
             }
             is Armor -> TODO()
-            is Potion -> TODO()
+            // TODO: add other colors
+            // weird view because of hardcoded InventoryItemView.kt:33
+            is Potion -> InventoryBluePotionView(container, this, position)
         }
     }
 }
