@@ -1,22 +1,30 @@
 package ru.hse.sd.rogue.game.logic.level
 
 import ru.hse.sd.rogue.game.logic.cell.CellContent
+import ru.hse.sd.rogue.game.logic.characteristics.Damage
+import ru.hse.sd.rogue.game.logic.characteristics.Health
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFabric
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.CellState
+import ru.hse.sd.rogue.game.state.InventoryState
+import ru.hse.sd.rogue.game.state.character.CharacterState
+import ru.hse.sd.rogue.game.state.character.PlayerState
+import kotlin.math.roundToInt
 import kotlin.math.sign
 import kotlin.random.Random
 
 class LevelGenerator(
-    val width: Int,
-    val height: Int,
-    val border: Int,
-    val minRoomSize: Int,
-    val corridorWobbling: Double,
-    val minCorridorThickness: Int,
-    val maxCorridorThickness: Int,
-    val splitNumIterations: Int,
-    val minMobsProbability: Double,
-    val maxMobsProbability: Double
+    private val width: Int,
+    private val height: Int,
+    private val border: Int,
+    private val minRoomSize: Int,
+    private val corridorWobbling: Double,
+    private val minCorridorThickness: Int,
+    private val maxCorridorThickness: Int,
+    private val splitNumIterations: Int,
+    private val mobsFabric: MobsFabric,
+    private val minMobsProbability: Double,
+    private val maxMobsProbability: Double
 ) {
 
     private class BSP(private val width: Int, private val height: Int, private val border: Int) {
@@ -214,6 +222,38 @@ class LevelGenerator(
         }
     }
 
+    private fun generateCharacters(rooms: List<BSP.Room>): List<CharacterState> {
+        val shuffledRooms = rooms.shuffled()
+        val playerRoom = shuffledRooms[0]
+        val bossRoom = shuffledRooms[1]
+        val mobsRooms = shuffledRooms.drop(2)
+
+        val characterStates = mutableListOf<CharacterState>()
+
+        characterStates.add(
+            PlayerState(
+                Health(6), playerRoom.points().random().asMutable(), Damage(3, 5), InventoryState()
+            )
+        )
+        characterStates.add(
+            mobsFabric.generateBossMob(bossRoom.points().random())
+        )
+        mobsRooms.flatMapTo(characterStates) {
+            val mobGenerator = listOf(
+                { position: Position -> mobsFabric.generateRandomEasyMob(position) },
+                { position: Position -> mobsFabric.generateRandomMediumMob(position) },
+                { position: Position -> mobsFabric.generateRandomHardMob(position) },
+            ).random()
+            val points = it.points()
+            val usePoints = Random.nextInt(
+                (minMobsProbability * points.size).roundToInt(),
+                (maxMobsProbability * points.size).roundToInt()
+            )
+            points.shuffled().take(usePoints).map { position -> mobGenerator(position) }
+        }
+        return characterStates
+    }
+
     fun generate(): Level {
         val bsp = BSP(width, height, border)
         repeat(splitNumIterations) {
@@ -221,6 +261,7 @@ class LevelGenerator(
         }
         bsp.generateRooms(minRoomSize)
         bsp.generateCorridors(minCorridorThickness, maxCorridorThickness, corridorWobbling)
-        return Level(bsp.getCellStates(), emptyList())
+        val characters = generateCharacters(bsp.rooms)
+        return Level(bsp.getCellStates(), characters)
     }
 }

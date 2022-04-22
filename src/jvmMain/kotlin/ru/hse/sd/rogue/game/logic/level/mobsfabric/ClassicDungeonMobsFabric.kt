@@ -18,5 +18,4 @@ class ClassicDungeonMobsFabric : MobsFabricBase() {
         PositionToState { NecromancerMobState(it.asMutable()) }
     )
     override val bossMob = PositionToState { BigDemonMobState(it.asMutable()) }
-
 }

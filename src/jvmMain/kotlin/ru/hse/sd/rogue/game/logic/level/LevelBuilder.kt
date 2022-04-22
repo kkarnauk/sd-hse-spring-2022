@@ -1,5 +1,8 @@
 package ru.hse.sd.rogue.game.logic.level
 
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFabric
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFabric
+
 
 @DslMarker
 private annotation class LevelDslMarker
@@ -33,7 +36,8 @@ class LevelBuilder {
         )
 
         data class MobsSettings(
-            var probability: Pair<Double, Double> = 0.01 to 0.5
+            var mobsFabric: MobsFabric = ClassicDungeonMobsFabric(),
+            var probability: Pair<Double, Double> = 0.01 to 0.1
         )
 
         fun build() = LevelGenerator(
@@ -45,6 +49,7 @@ class LevelBuilder {
             minCorridorThickness = map.corridorThickness.first,
             maxCorridorThickness = map.corridorThickness.second,
             splitNumIterations = map.splitNumIterations,
+            mobsFabric = mobs.mobsFabric,
             minMobsProbability = mobs.probability.first,
             maxMobsProbability = mobs.probability.second,
         )
