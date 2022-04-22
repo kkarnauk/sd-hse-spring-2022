@@ -29,20 +29,48 @@ class LevelBuilder {
 
     @LevelDslMarker
     class LevelGeneratorBuilder {
-
+        /**
+         * Use it to configure map
+         */
         val map = MapSettings()
+
+        /**
+         * Use it to configure mobs
+         */
         val mobs = MobsSettings()
 
         /**
          * Map settings
          */
         class MapSettings(
+            /**
+             * Level width
+             */
             var width: Int = 64,
+            /**
+             * Level height
+             */
             var height: Int = 64,
+            /**
+             * Border thickness at the level boundary
+             */
             var border: Int = 1,
+            /**
+             * Minimum room width and height
+             */
             var minRoomSize: Int = 5,
+            /**
+             * The degree of wobbling of corridors between rooms
+             */
             var corridorWobbling: Double = 0.1,
+            /**
+             * Thickness of cordiors
+             */
             var corridorThickness: Pair<Int, Int> = 0 to 1,
+            /**
+             * Number of iterations in space division to generate rooms.
+             * The number of rooms will be approximately equal to 2^[splitNumIterations]
+             */
             var splitNumIterations: Int = 4
         )
 
@@ -50,7 +78,13 @@ class LevelBuilder {
          * Mobs settings
          */
         data class MobsSettings(
+            /**
+             * Fabric to generate mobs
+             */
             var mobsFabric: MobsFabric = ClassicDungeonMobsFabric(),
+            /**
+             * Mob frequency
+             */
             var probability: Pair<Double, Double> = 0.01 to 0.1
         )
 
