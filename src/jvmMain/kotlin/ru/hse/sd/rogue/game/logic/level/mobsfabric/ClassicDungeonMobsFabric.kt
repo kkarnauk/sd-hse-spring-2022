@@ -4,6 +4,9 @@ import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFabricBase.PositionToStat
 import ru.hse.sd.rogue.game.state.character.mob.boss.BigDemonMobState
 import ru.hse.sd.rogue.game.state.character.mob.regular.*
 
+/**
+ * Standard dungeon mobs
+ */
 class ClassicDungeonMobsFabric : MobsFabricBase() {
     override val easyMobs = listOf(
         PositionToState { TinyZombieMobState(it.asMutable()) },

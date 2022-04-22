@@ -13,6 +13,9 @@ import kotlin.math.roundToInt
 import kotlin.math.sign
 import kotlin.random.Random
 
+/**
+ * Generates a new level
+ */
 class LevelGenerator(
     private val width: Int,
     private val height: Int,
@@ -254,6 +257,9 @@ class LevelGenerator(
         return characterStates
     }
 
+    /**
+     * Generates a new level
+     */
     fun generate(): Level {
         val bsp = BSP(width, height, border)
         repeat(splitNumIterations) {
