@@ -13,7 +13,6 @@ import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.ai.AggressiveStrategy
-import ru.hse.sd.rogue.game.logic.ai.CowardlyStrategy
 import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Durability
@@ -22,6 +21,8 @@ import ru.hse.sd.rogue.game.logic.input.InputHandler
 import ru.hse.sd.rogue.game.logic.item.Potion
 import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.level.level
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.AnimalsMobsFabric
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFabric
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.logic.size.KorgeSize
 import ru.hse.sd.rogue.game.logic.size.Size
@@ -29,13 +30,16 @@ import ru.hse.sd.rogue.game.state.InterfaceState
 import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.state.MapState
 import ru.hse.sd.rogue.game.state.character.PlayerState
+import ru.hse.sd.rogue.game.state.character.mob.MobState
 import ru.hse.sd.rogue.game.state.character.mob.boss.BigDemonMobState
+import ru.hse.sd.rogue.game.state.character.mob.boss.RinoMobState
 import ru.hse.sd.rogue.game.state.character.mob.regular.*
 import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
 import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.CameraView
 import ru.hse.sd.rogue.game.view.MapView
 import ru.hse.sd.rogue.game.view.character.mob.boss.BigDemonView
+import ru.hse.sd.rogue.game.view.character.mob.boss.RinoView
 import ru.hse.sd.rogue.game.view.character.mob.regular.*
 import ru.hse.sd.rogue.game.view.character.player.PlayerView
 import ru.hse.sd.rogue.game.view.container.ContainersManager
@@ -91,6 +95,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             map.corridorWobbling = 0.05
             map.minRoomSize = 7
             map.splitNumIterations = 4
+            mobs.mobsFabric = listOf(ClassicDungeonMobsFabric(), AnimalsMobsFabric()).random()
         }
     }
 
@@ -124,10 +129,47 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     actionsManager.registerRepeatable(ActionPriority.Low, cameraView)
 
 
+    // todo simplify after implementing automatic view
     run {
-        val state = gameLevel.characters.filterIsInstance<BigDemonMobState>().single()
-        // todo simplify after implementing automatic view
-        BigDemonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        gameLevel.characters.filterIsInstance<BigDemonMobState>().forEach { state ->
+            BigDemonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<GoblinMobState>().forEach { state ->
+            GoblinView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<ImpMobState>().forEach { state ->
+            ImpView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<NecromancerMobState>().forEach { state ->
+            NecromancerView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<TinyZombieMobState>().forEach { state ->
+            TinyZombieView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<SkeletonMobState>().forEach { state ->
+            SkeletonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<AngryPigMobState>().forEach { state ->
+            AngryPigView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<BunnyMobState>().forEach { state ->
+            BunnyView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<ChameleonMobState>().forEach { state ->
+            ChameleonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<MushroomMobState>().forEach { state ->
+            MushroomView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<RinoMobState>().forEach { state ->
+            RinoView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+        gameLevel.characters.filterIsInstance<SlimeMobState>().forEach { state ->
+            SlimeView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        }
+    }
+
+    gameLevel.characters.filterIsInstance<MobState>().forEach { state ->
         MobController(
             actionsManager, state, movementController, AggressiveStrategy(
                 playerState, state, movementController, 5
@@ -135,82 +177,6 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
-    }
-
-    run {
-        val states = gameLevel.characters.filterIsInstance<GoblinMobState>()
-        // todo simplify after implementing automatic view
-        states.forEach { state ->
-            GoblinView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-            MobController(
-                actionsManager, state, movementController, CowardlyStrategy(
-                    playerState, state, movementController, 7
-                ).withExpirableEffects()
-            )
-                .also { it.register() }
-                .apply { collisionsController.register(this) }
-        }
-    }
-    run {
-        val states = gameLevel.characters.filterIsInstance<ImpMobState>()
-        // todo simplify after implementing automatic view
-        states.forEach { state ->
-            ImpView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-            MobController(
-                actionsManager, state, movementController, CowardlyStrategy(
-                    playerState, state, movementController, 7
-                ).withExpirableEffects()
-            )
-                .also { it.register() }
-                .apply { collisionsController.register(this) }
-        }
-
-    }
-    run {
-        val states = gameLevel.characters.filterIsInstance<NecromancerMobState>()
-        // todo simplify after implementing automatic view
-        states.forEach { state ->
-            NecromancerView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-            MobController(
-                actionsManager, state, movementController, CowardlyStrategy(
-                    playerState, state, movementController, 7
-                ).withExpirableEffects()
-            )
-                .also { it.register() }
-                .apply { collisionsController.register(this) }
-        }
-
-    }
-    run {
-        val states = gameLevel.characters.filterIsInstance<TinyZombieMobState>()
-        // todo simplify after implementing automatic view
-        states.forEach { state ->
-
-            TinyZombieView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-            MobController(
-                actionsManager, state, movementController, CowardlyStrategy(
-                    playerState, state, movementController, 7
-                ).withExpirableEffects()
-            )
-                .also { it.register() }
-                .apply { collisionsController.register(this) }
-        }
-    }
-
-    run {
-        val states = gameLevel.characters.filterIsInstance<SkeletonMobState>()
-        // todo simplify after implementing automatic view
-        states.forEach { state ->
-
-            SkeletonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-            MobController(
-                actionsManager, state, movementController, AggressiveStrategy(
-                    playerState, state, movementController, 3
-                ).withExpirableEffects()
-            )
-                .also { it.register() }
-                .apply { collisionsController.register(this) }
-        }
     }
 
     run {
