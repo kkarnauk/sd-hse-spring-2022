@@ -5,7 +5,6 @@ import com.soywiz.korge.input.KeysEvents
 import com.soywiz.korge.input.keys
 import com.soywiz.korge.view.Stage
 import ru.hse.sd.rogue.game.controller.character.PlayerController
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.position.Direction
 
 /**
@@ -19,7 +18,6 @@ class InputHandler(private val playerController: PlayerController) {
         keys {
             mapMovementController()
             mapInventoryController()
-            mapHelps()
         }
     }
 
@@ -124,13 +122,6 @@ class InputHandler(private val playerController: PlayerController) {
             playerController.updateInventory {
                 currentPotionIndex = 2
             }
-        }
-    }
-
-    // TODO remove
-    private fun KeysEvents.mapHelps() {
-        down(Key.F) {
-            playerController.takeDamage(Damage(10, 10), emptyList())
         }
     }
 }
