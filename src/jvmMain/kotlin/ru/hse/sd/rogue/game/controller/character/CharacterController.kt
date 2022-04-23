@@ -52,6 +52,7 @@ abstract class CharacterController(
         update {
             if (movementController.canMoveTo(newPosition)) {
                 state.position.replaceWith(newPosition)
+                movementController.moveCompleted()
             }
             state.lookDirection = newLookDirection
         }
