@@ -1,7 +1,7 @@
 package ru.hse.sd.rogue.game.logic.level
 
-import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFabric
-import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFabric
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFactory
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFactory
 
 
 @DslMarker
@@ -81,7 +81,7 @@ class LevelBuilder {
             /**
              * Fabric to generate mobs
              */
-            var mobsFabric: MobsFabric = ClassicDungeonMobsFabric(),
+            var mobsFactory: MobsFactory = ClassicDungeonMobsFactory(),
             /**
              * Mob frequency
              */
@@ -97,7 +97,7 @@ class LevelBuilder {
             minCorridorThickness = map.corridorThickness.first,
             maxCorridorThickness = map.corridorThickness.second,
             splitNumIterations = map.splitNumIterations,
-            mobsFabric = mobs.mobsFabric,
+            mobsFactory = mobs.mobsFactory,
             minMobsProbability = mobs.probability.first,
             maxMobsProbability = mobs.probability.second,
         )

@@ -1,13 +1,13 @@
 package ru.hse.sd.rogue.game.logic.level.mobsfabric
 
-import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFabricBase.PositionToState
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFactoryBase.PositionToState
 import ru.hse.sd.rogue.game.state.character.mob.boss.RinoMobState
 import ru.hse.sd.rogue.game.state.character.mob.regular.*
 
 /**
  * Animal mobs
  */
-class AnimalsMobsFabric : MobsFabricBase() {
+class AnimalMobsFactory : MobsFactoryBase() {
     override val easyMobs = listOf(
         PositionToState { MushroomMobState(it.asMutable()) },
         PositionToState { SlimeMobState(it.asMutable()) }

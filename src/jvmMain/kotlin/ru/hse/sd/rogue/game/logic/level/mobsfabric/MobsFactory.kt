@@ -7,7 +7,7 @@ import ru.hse.sd.rogue.game.state.character.mob.MobState
 /**
  * Generate mobs
  */
-interface MobsFabric {
+interface MobsFactory {
     /**
      * Generates some simple mob at [position]
      */

@@ -21,8 +21,8 @@ import ru.hse.sd.rogue.game.logic.input.InputHandler
 import ru.hse.sd.rogue.game.logic.item.Potion
 import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.level.level
-import ru.hse.sd.rogue.game.logic.level.mobsfabric.AnimalsMobsFabric
-import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFabric
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.AnimalMobsFactory
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFactory
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.logic.size.KorgeSize
 import ru.hse.sd.rogue.game.logic.size.Size
@@ -95,7 +95,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             map.corridorWobbling = 0.05
             map.minRoomSize = 7
             map.splitNumIterations = 4
-            mobs.mobsFabric = listOf(ClassicDungeonMobsFabric(), AnimalsMobsFabric()).random()
+            mobs.mobsFactory = listOf(ClassicDungeonMobsFactory(), AnimalMobsFactory()).random()
         }
     }
 

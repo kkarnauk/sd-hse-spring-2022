@@ -4,9 +4,9 @@ import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.character.mob.MobState
 
 /**
- * Standard way to implement [MobsFabric]
+ * Standard way to implement [MobsFactory]
  */
-abstract class MobsFabricBase : MobsFabric {
+abstract class MobsFactoryBase : MobsFactory {
     protected fun interface PositionToState {
         fun generateState(position: Position): MobState
     }

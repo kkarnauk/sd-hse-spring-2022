@@ -3,7 +3,7 @@ package ru.hse.sd.rogue.game.logic.level
 import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Health
-import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFabric
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFactory
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.CellState
 import ru.hse.sd.rogue.game.state.InventoryState
@@ -25,7 +25,7 @@ class LevelGenerator(
     private val minCorridorThickness: Int,
     private val maxCorridorThickness: Int,
     private val splitNumIterations: Int,
-    private val mobsFabric: MobsFabric,
+    private val mobsFactory: MobsFactory,
     private val minMobsProbability: Double,
     private val maxMobsProbability: Double
 ) {
@@ -239,13 +239,13 @@ class LevelGenerator(
             )
         )
         characterStates.add(
-            mobsFabric.generateBossMob(bossRoom.points().random())
+            mobsFactory.generateBossMob(bossRoom.points().random())
         )
         mobsRooms.flatMapTo(characterStates) {
             val mobGenerator = listOf(
-                { position: Position -> mobsFabric.generateRandomEasyMob(position) },
-                { position: Position -> mobsFabric.generateRandomMediumMob(position) },
-                { position: Position -> mobsFabric.generateRandomHardMob(position) },
+                { position: Position -> mobsFactory.generateRandomEasyMob(position) },
+                { position: Position -> mobsFactory.generateRandomMediumMob(position) },
+                { position: Position -> mobsFactory.generateRandomHardMob(position) },
             ).random()
             val points = it.points()
             val usePoints = Random.nextInt(
