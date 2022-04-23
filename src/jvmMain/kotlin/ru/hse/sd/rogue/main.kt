@@ -16,6 +16,7 @@ import ru.hse.sd.rogue.game.logic.ai.AggressiveStrategy
 import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Durability
+import ru.hse.sd.rogue.game.logic.characteristics.Speed
 import ru.hse.sd.rogue.game.logic.common.Confusion
 import ru.hse.sd.rogue.game.logic.input.InputHandler
 import ru.hse.sd.rogue.game.logic.item.Potion
@@ -29,6 +30,7 @@ import ru.hse.sd.rogue.game.logic.size.Size
 import ru.hse.sd.rogue.game.state.InterfaceState
 import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.state.MapState
+import ru.hse.sd.rogue.game.state.character.MovementState
 import ru.hse.sd.rogue.game.state.character.PlayerState
 import ru.hse.sd.rogue.game.state.character.mob.MobState
 import ru.hse.sd.rogue.game.state.character.mob.boss.BigDemonMobState
@@ -104,7 +106,11 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val mapController = MapController(
         mapState
     )
-    val movementController = MovementController(mapController)
+
+    val movementController = { ticksToReload: Int ->
+        MovementController(actionsManager, MovementState(Speed(ticksToReload)), mapController)
+    }
+
     MapView(containersManager.mapContainer, mapState).also { it.register(actionsManager) }
 
     val collisionsController = CollisionsController().also { it.register(actionsManager) }
@@ -115,7 +121,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val playerController = PlayerController(
         actionsManager,
         playerState,
-        movementController
+        movementController(1)
     ).apply { collisionsController.register(this) }
 
     PlayerView(containersManager.characterContainer, playerState).also { it.register(actionsManager) }
@@ -171,8 +177,8 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
 
     gameLevel.characters.filterIsInstance<MobState>().forEach { state ->
         MobController(
-            actionsManager, state, movementController, AggressiveStrategy(
-                playerState, state, movementController, 5
+            actionsManager, state, movementController(5), AggressiveStrategy(
+                playerState, state, movementController(3), 5
             ).withExpirableEffects()
         )
             .also { it.register() }
