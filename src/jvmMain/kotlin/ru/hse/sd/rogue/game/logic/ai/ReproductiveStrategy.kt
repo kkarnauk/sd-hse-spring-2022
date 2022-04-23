@@ -18,7 +18,7 @@ class ReproductiveStrategy(mobState: MobState,
                            movementController: MovementController,
                            actionsManager: ActionsManager,
                            collisionsController: CollisionsController,
-                           containersManager: ContainersManager) : MobStrategy {
+                           containersManager: ContainersManager) : MobStrategy() {
     init {
         this.randomlyRepeat(frequency, probability, actionsManager) {
             val position = mobState.position

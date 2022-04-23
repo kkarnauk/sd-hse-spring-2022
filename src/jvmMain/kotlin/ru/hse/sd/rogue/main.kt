@@ -190,15 +190,21 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
 
     run {
         val state = ReproductingMoldMobState(MutablePosition(14, 15))
-        ReproductingMoldView(actionsManager, containersManager.characterContainer, state)
+        ReproductingMoldView(actionsManager, containersManager.characterContainer, state).also {
+            it.register(
+                actionsManager
+            )
+        }
         MobController(
-                actionsManager, state, movementController, ReproductiveStrategy(state,
+            actionsManager, state, movementController, ReproductiveStrategy(
+                state,
                 10,
                 0.5,
                 movementController,
                 actionsManager,
                 collisionsController,
-                containersManager)
+                containersManager
+            )
         ).apply { collisionsController.register(this) }
     }
 
