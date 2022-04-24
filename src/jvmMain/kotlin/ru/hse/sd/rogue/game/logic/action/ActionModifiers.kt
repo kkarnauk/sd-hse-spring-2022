@@ -5,7 +5,7 @@ import kotlin.random.Random
 /**
  * Execute this action only each [frequency] ticks
  */
-fun IrreversibleAction.executeEach(frequency: Long): IrreversibleAction {
+fun IrreversibleAction.withFrequency(frequency: Long): IrreversibleAction {
     require(frequency > 0)
     return object : IrreversibleAction {
         var currentTimer: Long = 0
@@ -14,7 +14,7 @@ fun IrreversibleAction.executeEach(frequency: Long): IrreversibleAction {
             currentTimer++
             if (currentTimer >= frequency) {
                 currentTimer = 0
-                this@executeEach.invoke()
+                this@withFrequency.invoke()
             }
         }
     }

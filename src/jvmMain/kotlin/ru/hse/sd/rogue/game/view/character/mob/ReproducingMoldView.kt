@@ -3,16 +3,16 @@ package ru.hse.sd.rogue.game.view.character.mob
 import com.soywiz.klock.milliseconds
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.sprite
-import ru.hse.sd.rogue.game.state.character.ReproductingMoldMobState
+import ru.hse.sd.rogue.game.state.character.ReproducingMoldMobState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
 /**
  * View of a reproducting mold.
  */
-class ReproductingMoldView(
+class ReproducingMoldView(
     container: Container,
-    characterState: ReproductingMoldMobState,
+    characterState: ReproducingMoldMobState,
 ) : CharacterView(container, characterState) {
 
     override val sprite = container

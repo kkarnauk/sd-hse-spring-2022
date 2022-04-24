@@ -16,11 +16,12 @@ class Level(
      */
     characters: List<CharacterState>
 ) {
-    private val charactersBacking = characters.toMutableList()
+    private val myCharacters = characters.toMutableList()
+
     val characters: List<CharacterState>
-        get() = charactersBacking
+        get() = myCharacters
 
     fun addCharacter(characterState: CharacterState) {
-        charactersBacking.add(characterState)
+        myCharacters.add(characterState)
     }
 }

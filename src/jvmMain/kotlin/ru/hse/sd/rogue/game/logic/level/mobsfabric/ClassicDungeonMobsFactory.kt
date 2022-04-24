@@ -10,15 +10,15 @@ class ClassicDungeonMobsFactory : MobsFactoryBase() {
     override val easyMobs = listOf(
         PositionToState { TinyZombieMobState(it.asMutable()) },
         PositionToState { GoblinMobState(it.asMutable()) },
-        PositionToState { ImpMobState(it.asMutable()) },
+        PositionToState { ImpMobState(it.asMutable()) }
     )
 
     override val mediumMobs = listOf(
-        PositionToState { SkeletonMobState(it.asMutable()) },
+        PositionToState { SkeletonMobState(it.asMutable()) }
     )
     override val hardMobs = listOf(
         PositionToState { NecromancerMobState(it.asMutable()) },
-        PositionToState { ReproductingMoldMobState(it.asMutable()) },
+        PositionToState { ReproducingMoldMobState(it.asMutable()) }
     )
     override val bossMob = PositionToState { BigDemonMobState(it.asMutable()) }
 }
