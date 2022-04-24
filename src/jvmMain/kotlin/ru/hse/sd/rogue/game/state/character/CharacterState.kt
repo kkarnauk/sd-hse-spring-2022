@@ -10,7 +10,7 @@ import ru.hse.sd.rogue.game.state.CollisableState
 /**
  * General state of a character.
  */
-abstract class CharacterState(
+sealed class CharacterState(
     /**
      * Current [Health] for this character.
      */

@@ -6,7 +6,7 @@ import ru.hse.sd.rogue.game.state.character.CharacterState
 /**
  * Game level
  */
-data class Level(
+class Level(
     /**
      * Level cells
      */
@@ -14,5 +14,13 @@ data class Level(
     /**
      * State of level characters
      */
+    characters: List<CharacterState>
+) {
+    private val charactersBacking = characters.toMutableList()
     val characters: List<CharacterState>
-)
+        get() = charactersBacking
+
+    fun addCharacter(characterState: CharacterState) {
+        charactersBacking.add(characterState)
+    }
+}

@@ -1,7 +1,7 @@
 package ru.hse.sd.rogue.game.logic.level.mobsfabric
 
 import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFactoryBase.PositionToState
-import ru.hse.sd.rogue.game.state.character.mob.*
+import ru.hse.sd.rogue.game.state.character.*
 
 /**
  * Standard dungeon mobs

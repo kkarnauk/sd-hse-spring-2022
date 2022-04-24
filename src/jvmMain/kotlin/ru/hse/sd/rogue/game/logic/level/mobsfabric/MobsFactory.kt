@@ -1,7 +1,7 @@
 package ru.hse.sd.rogue.game.logic.level.mobsfabric
 
 import ru.hse.sd.rogue.game.logic.position.Position
-import ru.hse.sd.rogue.game.state.character.mob.MobState
+import ru.hse.sd.rogue.game.state.character.MobState
 
 
 /**

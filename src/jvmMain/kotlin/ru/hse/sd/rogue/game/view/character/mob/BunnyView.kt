@@ -3,7 +3,7 @@ package ru.hse.sd.rogue.game.view.character.mob
 import com.soywiz.klock.milliseconds
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.sprite
-import ru.hse.sd.rogue.game.state.character.mob.BunnyMobState
+import ru.hse.sd.rogue.game.state.character.BunnyMobState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
