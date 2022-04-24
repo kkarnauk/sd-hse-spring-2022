@@ -119,7 +119,6 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         createMovementController(1)
     ).apply { collisionsController.register(this) }
 
-//    PlayerView(containersManager.characterContainer, playerState).also { it.register(actionsManager) }
     InputHandler(playerController).apply {
         mapKeys()
     }
@@ -134,15 +133,6 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     ViewRegistrationManager(gameLevel, actionsManager, mobViewFactory, containersManager).also {
         it.register(actionsManager)
     }
-
-//    run {
-//        with(mobViewFactory) {
-//                gameLevel.characters.forEach { state ->
-//                    state.toView().also { view -> view.register(actionsManager) }
-//                }
-//            }
-//        }
-//    }
 
     gameLevel.characters.filterIsInstance<MobState>().filter { it !is ReproductingMoldMobState }.forEach { state ->
         MobController(

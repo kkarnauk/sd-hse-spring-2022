@@ -159,7 +159,7 @@ object Tiles {
         }
 
         /**
-         * Tile for a skeleton.
+         * Tile for a reproducting mold.
          */
         object ReproductingMold {
             val idle = SpriteAnimation(
