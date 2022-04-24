@@ -1,7 +1,6 @@
 package ru.hse.sd.rogue.game.logic.ai
 
 import ru.hse.sd.rogue.game.controller.CollisionsController
-import ru.hse.sd.rogue.game.controller.MobViewFactory
 import ru.hse.sd.rogue.game.controller.character.MobController
 import ru.hse.sd.rogue.game.controller.character.MovementController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
@@ -46,9 +45,10 @@ class ReproductiveStrategy(
 
                     MobController(
                         actionsManager, newMobState, movementController, newMobStrategy
-                    )
-                        .also { it.register() }
-                        .apply { collisionsController.register(this) }
+                    ).apply {
+                        register()
+                        collisionsController.register(this)
+                    }
                 }
         }
     }

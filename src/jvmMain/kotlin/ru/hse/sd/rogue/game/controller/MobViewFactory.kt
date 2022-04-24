@@ -16,7 +16,7 @@ class MobViewFactory(val characterContainer: Container): Controller {
             is ImpMobState -> ImpView(characterContainer, this)
             is MushroomMobState -> MushroomView(characterContainer, this)
             is NecromancerMobState -> NecromancerView(characterContainer, this)
-            is ReproductingMoldMobState -> ReproductingMoldView(characterContainer, this)
+            is ReproducingMoldMobState -> ReproducingMoldView(characterContainer, this)
             is RinoMobState -> RinoView(characterContainer, this)
             is SkeletonMobState -> SkeletonView(characterContainer, this)
             is SlimeMobState -> SlimeView(characterContainer, this)

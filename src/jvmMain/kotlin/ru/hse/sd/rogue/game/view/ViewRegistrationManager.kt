@@ -1,6 +1,5 @@
 package ru.hse.sd.rogue.game.view
 
-import ru.hse.sd.rogue.game.controller.Controller
 import ru.hse.sd.rogue.game.controller.MobViewFactory
 import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
@@ -26,18 +25,13 @@ class ViewRegistrationManager(
 
     override fun invoke() {
         gameLevel.characters.filterNot { registeredState.contains(it) }.forEach { state ->
-            when (state) {
-                is PlayerState -> {
-                    val view = PlayerView(containersManager.characterContainer, state)
-                    registeredState[state] = view
-                    view.register(actionsManager)
-                }
-                is MobState -> with(mobViewFactory) {
-                    val view = state.toView()
-                    registeredState[state] = view
-                    view.register(actionsManager)
-                }
+            val view = when (state) {
+                is PlayerState -> PlayerView(containersManager.characterContainer, state)
+                is MobState -> with(mobViewFactory) { state.toView() }
             }
+
+            registeredState[state] = view
+            view.register(actionsManager)
         }
     }
 

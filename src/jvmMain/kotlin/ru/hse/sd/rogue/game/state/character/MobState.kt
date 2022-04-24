@@ -9,12 +9,13 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
  * General state of a mob.
  */
 sealed class MobState(
-        health: Health,
-        position: MutablePosition,
-        meleeDamage: Damage
+    health: Health,
+    position: MutablePosition,
+    meleeDamage: Damage
 ) : CharacterState(health, position, meleeDamage), Cloneable {
     override val damage: Damage
         get() = meleeDamage
+
     override val effects: List<Effect> = emptyList()
 
     public override fun clone(): MobState {

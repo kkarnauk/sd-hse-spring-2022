@@ -33,7 +33,7 @@ import ru.hse.sd.rogue.game.state.MapState
 import ru.hse.sd.rogue.game.state.character.MovementState
 import ru.hse.sd.rogue.game.state.character.MobState
 import ru.hse.sd.rogue.game.state.character.PlayerState
-import ru.hse.sd.rogue.game.state.character.ReproductingMoldMobState
+import ru.hse.sd.rogue.game.state.character.ReproducingMoldMobState
 import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
 import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.CameraView
@@ -133,7 +133,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
         it.register(actionsManager)
     }
 
-    gameLevel.characters.filterIsInstance<MobState>().filter { it !is ReproductingMoldMobState }.forEach { state ->
+    gameLevel.characters.filterIsInstance<MobState>().filter { it !is ReproducingMoldMobState }.forEach { state ->
         MobController(
             actionsManager, state, createMovementController(5), AggressiveStrategy(
                 playerState, state, createMovementController(3), 5
@@ -142,7 +142,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             .also { it.register() }
             .apply { collisionsController.register(this) }
     }
-    gameLevel.characters.filterIsInstance<ReproductingMoldMobState>().forEach { state ->
+    gameLevel.characters.filterIsInstance<ReproducingMoldMobState>().forEach { state ->
         val movementController = createMovementController(7)
         MobController(
             actionsManager,
