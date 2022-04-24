@@ -6,7 +6,7 @@ import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.level.Level
-import ru.hse.sd.rogue.game.state.State
+import ru.hse.sd.rogue.game.state.character.CharacterState
 import ru.hse.sd.rogue.game.state.character.MobState
 import ru.hse.sd.rogue.game.state.character.PlayerState
 import ru.hse.sd.rogue.game.view.character.player.PlayerView
@@ -21,7 +21,7 @@ class ViewRegistrationManager(
     private val mobViewFactory: MobViewFactory,
     private val containersManager: ContainersManager
 ): IrreversibleAction {
-    private val registeredState = HashMap<State, View>()
+    private val registeredState = HashMap<CharacterState, View>()
 
     override fun invoke() {
         gameLevel.characters.filterNot { registeredState.contains(it) }.forEach { state ->
