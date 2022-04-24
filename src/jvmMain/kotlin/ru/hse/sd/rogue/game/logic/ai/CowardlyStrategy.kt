@@ -3,7 +3,7 @@ package ru.hse.sd.rogue.game.logic.ai
 import ru.hse.sd.rogue.game.controller.character.MovementController
 import ru.hse.sd.rogue.game.logic.position.Direction
 import ru.hse.sd.rogue.game.state.character.PlayerState
-import ru.hse.sd.rogue.game.state.character.mob.MobState
+import ru.hse.sd.rogue.game.state.character.MobState
 
 /**
  * Represents a [MobStrategy] that is trying to go away from the player.

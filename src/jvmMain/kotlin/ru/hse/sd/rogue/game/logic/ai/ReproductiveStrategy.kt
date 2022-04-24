@@ -5,18 +5,19 @@ import ru.hse.sd.rogue.game.controller.MobViewFactory
 import ru.hse.sd.rogue.game.controller.character.MobController
 import ru.hse.sd.rogue.game.controller.character.MovementController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
+import ru.hse.sd.rogue.game.logic.level.Level
 import ru.hse.sd.rogue.game.logic.position.Direction
 import ru.hse.sd.rogue.game.logic.position.Position
-import ru.hse.sd.rogue.game.state.character.mob.MobState
+import ru.hse.sd.rogue.game.state.character.MobState
 
 class ReproductiveStrategy(
     mobState: MobState,
     frequency: Long,
     probability: Double,
+    gameLevel: Level,
     movementController: MovementController,
     actionsManager: ActionsManager,
     collisionsController: CollisionsController,
-    mobViewFactory: MobViewFactory
 ) : MobStrategy() {
     init {
         this.randomlyRepeat(frequency, probability, actionsManager) {
@@ -31,12 +32,20 @@ class ReproductiveStrategy(
                 .randomOrNull()?.run {
                     val newMobState = mobState.clone()
                     newMobState.position.replaceWith(this)
-                    with(mobViewFactory) {
-                        newMobState.toView().also { it.register(actionsManager) }
-                    }
+
+                    gameLevel.addCharacter(newMobState)
+                    val newMobStrategy = ReproductiveStrategy(
+                        newMobState,
+                        frequency,
+                        probability,
+                        gameLevel,
+                        movementController,
+                        actionsManager,
+                        collisionsController
+                    )
 
                     MobController(
-                        actionsManager, newMobState, movementController, this@ReproductiveStrategy
+                        actionsManager, newMobState, movementController, newMobStrategy
                     )
                         .also { it.register() }
                         .apply { collisionsController.register(this) }
