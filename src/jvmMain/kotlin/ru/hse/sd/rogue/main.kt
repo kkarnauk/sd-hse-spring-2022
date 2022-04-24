@@ -5,16 +5,15 @@ import com.soywiz.korge.view.Stage
 import ru.hse.sd.rogue.game.controller.CollisionsController
 import ru.hse.sd.rogue.game.controller.GlobalController
 import ru.hse.sd.rogue.game.controller.MapController
+import ru.hse.sd.rogue.game.controller.MobViewFactory
 import ru.hse.sd.rogue.game.controller.character.MobController
 import ru.hse.sd.rogue.game.controller.character.MovementController
 import ru.hse.sd.rogue.game.controller.character.PlayerController
 import ru.hse.sd.rogue.game.controller.item.LootItemController
 import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
-import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.ai.*
-import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Durability
@@ -33,18 +32,12 @@ import ru.hse.sd.rogue.game.state.InterfaceState
 import ru.hse.sd.rogue.game.state.MapState
 import ru.hse.sd.rogue.game.state.character.MovementState
 import ru.hse.sd.rogue.game.state.character.PlayerState
-import ru.hse.sd.rogue.game.state.character.mob.MobState
-import ru.hse.sd.rogue.game.state.character.mob.boss.BigDemonMobState
-import ru.hse.sd.rogue.game.state.character.mob.boss.RinoMobState
-import ru.hse.sd.rogue.game.state.character.mob.regular.*
+import ru.hse.sd.rogue.game.state.character.mob.*
 import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
 import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.CameraView
 import ru.hse.sd.rogue.game.view.MapView
-import ru.hse.sd.rogue.game.view.character.mob.ReproductingMoldView
-import ru.hse.sd.rogue.game.view.character.mob.boss.BigDemonView
-import ru.hse.sd.rogue.game.view.character.mob.boss.RinoView
-import ru.hse.sd.rogue.game.view.character.mob.regular.*
+import ru.hse.sd.rogue.game.view.character.mob.*
 import ru.hse.sd.rogue.game.view.character.player.PlayerView
 import ru.hse.sd.rogue.game.view.container.ContainersManager
 import ru.hse.sd.rogue.game.view.item.potion.LootBluePotionView
@@ -135,48 +128,19 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     }
     actionsManager.registerRepeatable(ActionPriority.Low, cameraView)
 
+    val mobViewFactory = MobViewFactory(containersManager.characterContainer)
 
-    // todo simplify after implementing automatic view
     run {
-        gameLevel.characters.filterIsInstance<BigDemonMobState>().forEach { state ->
-            BigDemonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<GoblinMobState>().forEach { state ->
-            GoblinView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<ImpMobState>().forEach { state ->
-            ImpView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<NecromancerMobState>().forEach { state ->
-            NecromancerView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<TinyZombieMobState>().forEach { state ->
-            TinyZombieView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<SkeletonMobState>().forEach { state ->
-            SkeletonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<AngryPigMobState>().forEach { state ->
-            AngryPigView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<BunnyMobState>().forEach { state ->
-            BunnyView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<ChameleonMobState>().forEach { state ->
-            ChameleonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<MushroomMobState>().forEach { state ->
-            MushroomView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<RinoMobState>().forEach { state ->
-            RinoView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        }
-        gameLevel.characters.filterIsInstance<SlimeMobState>().forEach { state ->
-            SlimeView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+        with(mobViewFactory) {
+            MobState::class.sealedSubclasses.forEach {
+                gameLevel.characters.filterIsInstance(it.java).forEach { state ->
+                    state.toView().also { view -> view.register(actionsManager) }
+                }
+            }
         }
     }
 
-    gameLevel.characters.filterIsInstance<MobState>().forEach { state ->
+    gameLevel.characters.filterIsInstance<MobState>().filter { it !is ReproductingMoldMobState }.forEach { state ->
         MobController(
             actionsManager, state, movementController(5), AggressiveStrategy(
                 playerState, state, movementController(3), 5
@@ -185,25 +149,23 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             .also { it.register() }
             .apply { collisionsController.register(this) }
     }
-
-    run {
-        val state = ReproductingMoldMobState(MutablePosition(14, 15))
-        ReproductingMoldView(actionsManager, containersManager.characterContainer, state).also {
-            it.register(
-                actionsManager
-            )
-        }
+    gameLevel.characters.filterIsInstance<ReproductingMoldMobState>().forEach { state ->
         MobController(
-            actionsManager, state, movementController, ReproductiveStrategy(
+            actionsManager,
+            state,
+            movementController,
+            ReproductiveStrategy(
                 state,
-                10,
+                100,
                 0.5,
                 movementController,
                 actionsManager,
                 collisionsController,
-                containersManager
-            )
-        ).apply { collisionsController.register(this) }
+                mobViewFactory
+            ).withExpirableEffects()
+        )
+            .also { it.register() }
+            .apply { collisionsController.register(this) }
     }
 
     run {

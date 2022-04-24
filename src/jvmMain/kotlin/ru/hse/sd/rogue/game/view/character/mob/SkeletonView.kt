@@ -1,25 +1,25 @@
-package ru.hse.sd.rogue.game.view.character.mob.regular
+package ru.hse.sd.rogue.game.view.character.mob
 
 import com.soywiz.klock.milliseconds
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.sprite
-import ru.hse.sd.rogue.game.state.character.mob.regular.GoblinMobState
+import ru.hse.sd.rogue.game.state.character.mob.SkeletonMobState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
 /**
- * View of a goblin.
+ * View of a skeleton.
  */
-class GoblinView(
+class SkeletonView(
     container: Container,
-    characterState: GoblinMobState,
+    characterState: SkeletonMobState,
 ) : CharacterView(container, characterState) {
 
     override val sprite = container
         .sprite(
-            Tiles.Mobs.Goblin.idle,
+            Tiles.Mobs.Skeleton.idle,
             anchorX = 0.0,
-            anchorY = 0.3
+            anchorY = 0.2
         ).also {
             it.playAnimationLooped(spriteDisplayTime = 70.milliseconds)
         }

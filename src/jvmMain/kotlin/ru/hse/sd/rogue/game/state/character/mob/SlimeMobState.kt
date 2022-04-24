@@ -1,4 +1,4 @@
-package ru.hse.sd.rogue.game.state.character.mob.regular
+package ru.hse.sd.rogue.game.state.character.mob
 
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Health

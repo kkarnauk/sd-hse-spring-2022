@@ -165,19 +165,11 @@ object Tiles {
             val idle = SpriteAnimation(
                     spriteMap = dungeonTileset2,
                     spriteWidth = 16,
-                    spriteHeight = 20,
-                    marginTop = 268,
+                    spriteHeight = 16,
+                    marginTop = 112,
                     marginLeft = 368,
                     columns = 4
             )
-//            val idle = SpriteAnimation(
-//                    spriteMap = dungeonTileset2,
-//                    spriteWidth = 16,
-//                    spriteHeight = 16,
-//                    marginTop = 112,
-//                    marginLeft = 368,
-//                    columns = 4
-//            )
         }
 
         /**

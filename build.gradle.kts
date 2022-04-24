@@ -20,6 +20,11 @@ buildscript {
 
 kotlin {
     sourceSets {
+        commonMain {
+            dependencies {
+                implementation(kotlin("reflect"))
+            }
+        }
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
@@ -29,6 +34,7 @@ kotlin {
 }
 
 apply<KorgeGradlePlugin>()
+
 
 tasks {
     val javaVersion = "11"
