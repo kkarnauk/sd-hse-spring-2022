@@ -91,7 +91,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             map.corridorWobbling = 0.05
             map.minRoomSize = 7
             map.splitNumIterations = 4
-            mobs.mobsFactory = listOf(ClassicDungeonMobsFactory()/*, AnimalMobsFactory()*/).random()
+            mobs.mobsFactory = listOf(ClassicDungeonMobsFactory(), AnimalMobsFactory()).random()
         }
     }
 
