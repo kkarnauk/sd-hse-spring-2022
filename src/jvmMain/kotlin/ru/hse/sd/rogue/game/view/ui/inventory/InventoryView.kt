@@ -41,6 +41,7 @@ class InventoryView(
     }
 
     private val placePosition = startPosition + Position(1, 0)
+
     private val weaponPositions =
         placePosition..Position(placePosition.x + inventoryState.maxSize - 1, placePosition.y)
 
@@ -128,7 +129,6 @@ class InventoryView(
             // TODO: add other colors
             // weird view because of hardcoded InventoryItemView.kt:33
             is Potion -> InventoryBluePotionView(container, this, position)
-            else -> TODO("investigate compilation error")
         }
     }
 }

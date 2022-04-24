@@ -28,7 +28,6 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.logic.size.KorgeSize
 import ru.hse.sd.rogue.game.logic.size.Size
 import ru.hse.sd.rogue.game.state.InterfaceState
-import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.state.MapState
 import ru.hse.sd.rogue.game.state.character.MovementState
 import ru.hse.sd.rogue.game.state.character.PlayerState
@@ -114,7 +113,6 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     MapView(containersManager.mapContainer, mapState).also { it.register(actionsManager) }
 
     val collisionsController = CollisionsController().also { it.register(actionsManager) }
-    val inventoryState = InventoryState()
 
     val playerState = gameLevel.characters.filterIsInstance<PlayerState>().single()
 
@@ -188,7 +186,12 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     run {
         InterfaceView(
             containersManager.interfaceContainer,
-            InterfaceState(playerState.health, inventoryState, playerState.experience, playerState.damage),
+            InterfaceState(
+                playerState.health,
+                playerState.inventoryState,
+                playerState.experience,
+                playerState.damage
+            ),
             cameraSize
         ).also {
             it.register(actionsManager)
