@@ -88,6 +88,9 @@ class ActionsManager(
         }
     }
 
+    /**
+     * Invokes all actions without waiting for the timer.
+     */
     fun manualInvoke() = invokeActions()
 }
 
