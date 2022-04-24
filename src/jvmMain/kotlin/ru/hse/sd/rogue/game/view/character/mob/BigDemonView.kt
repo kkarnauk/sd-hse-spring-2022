@@ -1,25 +1,25 @@
-package ru.hse.sd.rogue.game.view.character.mob.regular
+package ru.hse.sd.rogue.game.view.character.mob
 
 import com.soywiz.klock.milliseconds
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.sprite
-import ru.hse.sd.rogue.game.state.character.mob.regular.ImpMobState
+import ru.hse.sd.rogue.game.state.character.mob.BigDemonMobState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
 /**
- * View of an impl.
+ * View of the boss.
  */
-class ImpView(
+class BigDemonView(
     container: Container,
-    characterState: ImpMobState,
+    characterState: BigDemonMobState,
 ) : CharacterView(container, characterState) {
 
     override val sprite = container
         .sprite(
-            Tiles.Mobs.Imp.idle,
-            anchorX = 0.2,
-            anchorY = 0.3
+            Tiles.Mobs.BigDemon.idle,
+            anchorX = 0.25,
+            anchorY = 0.65
         ).also {
             it.playAnimationLooped(spriteDisplayTime = 70.milliseconds)
         }

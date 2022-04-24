@@ -1,8 +1,7 @@
 package ru.hse.sd.rogue.game.logic.level.mobsfabric
 
 import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFactoryBase.PositionToState
-import ru.hse.sd.rogue.game.state.character.mob.boss.BigDemonMobState
-import ru.hse.sd.rogue.game.state.character.mob.regular.*
+import ru.hse.sd.rogue.game.state.character.mob.*
 
 /**
  * Standard dungeon mobs
@@ -15,10 +14,11 @@ class ClassicDungeonMobsFactory : MobsFactoryBase() {
     )
 
     override val mediumMobs = listOf(
-        PositionToState { SkeletonMobState(it.asMutable()) }
+        PositionToState { SkeletonMobState(it.asMutable()) },
     )
     override val hardMobs = listOf(
-        PositionToState { NecromancerMobState(it.asMutable()) }
+        PositionToState { NecromancerMobState(it.asMutable()) },
+        PositionToState { ReproductingMoldMobState(it.asMutable()) },
     )
     override val bossMob = PositionToState { BigDemonMobState(it.asMutable()) }
 }

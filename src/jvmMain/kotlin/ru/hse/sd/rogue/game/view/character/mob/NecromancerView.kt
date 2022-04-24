@@ -1,28 +1,26 @@
-package ru.hse.sd.rogue.game.view.character.mob.boss
+package ru.hse.sd.rogue.game.view.character.mob
 
 import com.soywiz.klock.milliseconds
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.sprite
-import ru.hse.sd.rogue.game.state.character.mob.boss.RinoMobState
+import ru.hse.sd.rogue.game.state.character.mob.NecromancerMobState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
 /**
- * View of the rino.
+ * View of a necromancer.
  */
-class RinoView(
+class NecromancerView(
     container: Container,
-    characterState: RinoMobState,
+    characterState: NecromancerMobState,
 ) : CharacterView(container, characterState) {
 
     override val sprite = container
         .sprite(
-            Tiles.Mobs.Rino.idle,
-            anchorX = 1.0,
+            Tiles.Mobs.Necromancer.idle,
+            anchorX = 0.0,
             anchorY = 0.3
         ).also {
-            it.scale = 0.4
-            it.scaleX *= -1.0
-            it.playAnimationLooped(spriteDisplayTime = 50.milliseconds)
+            it.playAnimationLooped(spriteDisplayTime = 70.milliseconds)
         }
 }

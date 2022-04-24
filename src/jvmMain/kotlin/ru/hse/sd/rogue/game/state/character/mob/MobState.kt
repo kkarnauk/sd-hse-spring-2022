@@ -9,7 +9,7 @@ import ru.hse.sd.rogue.game.state.character.CharacterState
 /**
  * General state of a mob.
  */
-open class MobState(
+sealed class MobState(
         health: Health,
         position: MutablePosition,
         meleeDamage: Damage
