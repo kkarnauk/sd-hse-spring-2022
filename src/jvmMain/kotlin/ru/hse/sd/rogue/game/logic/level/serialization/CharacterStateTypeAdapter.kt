@@ -21,9 +21,9 @@ class CharacterStateTypeAdapter(
 
     override fun read(inn: JsonReader): CharacterState {
         return inn.obj {
-            nextName()
+            nextName().also { require(it == "fullyQualifiedName") }
             val fullyQualifiedName = nextString()
-            nextName()
+            nextName().also { require(it == "value") }
             gson.fromJson(inn, Class.forName(fullyQualifiedName))
         }
     }
