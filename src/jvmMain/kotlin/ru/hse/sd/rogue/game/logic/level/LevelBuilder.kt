@@ -1,7 +1,9 @@
 package ru.hse.sd.rogue.game.logic.level
 
+import java.nio.file.Path
 import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFactory
 import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFactory
+import ru.hse.sd.rogue.game.logic.level.serialization.LevelJsonSerializer
 
 
 @DslMarker
@@ -17,8 +19,10 @@ class LevelBuilder {
     /**
      * Load level from file
      */
-    fun load(path: String): Level {
-        TODO("Not yet implemented")
+    fun load(path: Path): Level {
+        with(LevelJsonSerializer) {
+            return readFrom(path)
+        }
     }
 
     /**
