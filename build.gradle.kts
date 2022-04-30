@@ -28,6 +28,10 @@ kotlin {
     }
 }
 
+dependencies {
+    "commonMainImplementation"("com.google.code.gson:gson:2.9.0")
+}
+
 apply<KorgeGradlePlugin>()
 
 
