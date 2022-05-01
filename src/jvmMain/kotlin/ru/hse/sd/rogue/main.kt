@@ -14,7 +14,6 @@ import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.ai.*
-import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Durability
 import ru.hse.sd.rogue.game.logic.characteristics.Speed
@@ -30,8 +29,8 @@ import ru.hse.sd.rogue.game.logic.size.KorgeSize
 import ru.hse.sd.rogue.game.logic.size.Size
 import ru.hse.sd.rogue.game.state.InterfaceState
 import ru.hse.sd.rogue.game.state.MapState
-import ru.hse.sd.rogue.game.state.character.MovementState
 import ru.hse.sd.rogue.game.state.character.MobState
+import ru.hse.sd.rogue.game.state.character.MovementState
 import ru.hse.sd.rogue.game.state.character.PlayerState
 import ru.hse.sd.rogue.game.state.character.ReproducingMoldMobState
 import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
@@ -135,9 +134,13 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
 
     gameLevel.characters.filterIsInstance<MobState>().filter { it !is ReproducingMoldMobState }.forEach { state ->
         MobController(
-            actionsManager, state, createMovementController(5), AggressiveStrategy(
-                playerState, state, createMovementController(3), 5
-            ).withExpirableEffects()
+            actionsManager, state, createMovementController(5), DynamicStrategy(
+                AggressiveStrategy(
+                    playerState, state, createMovementController(3), 5
+                ).withExpirableEffects()
+            ).withStrategyRule(CowardlyStrategy(playerState, state, createMovementController(3), 5), 1) {
+                state.health.current <= 0.2 * state.health.maximum
+            }
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
@@ -149,6 +152,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             state,
             movementController,
             ReproductiveStrategy(
+                7,
                 state,
                 100,
                 0.5,
