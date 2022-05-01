@@ -7,5 +7,6 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 /**
  * State of skeleton.
  */
-class SkeletonMobState(position: MutablePosition) : MobState(Health(5), position, Damage(1, 2)) {
-}
+class SkeletonMobState(
+    position: MutablePosition
+) : MobState(Health(5), position, Damage(1, 2))

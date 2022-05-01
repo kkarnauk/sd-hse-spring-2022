@@ -7,6 +7,6 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 /**
  * State of angry pig.
  */
-class AngryPigMobState(position: MutablePosition) : MobState(Health(5), position, Damage(1, 2)) {
-    // TODO
-}
+class AngryPigMobState(
+    position: MutablePosition
+) : MobState(Health(5), position, Damage(1, 2))

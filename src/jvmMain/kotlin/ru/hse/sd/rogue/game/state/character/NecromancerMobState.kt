@@ -7,5 +7,6 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 /**
  * State of a necromancer.
  */
-class NecromancerMobState(position: MutablePosition) : MobState(Health(2), position, Damage(1, 2)) {
-}
+class NecromancerMobState(
+    position: MutablePosition
+) : MobState(Health(2), position, Damage(1, 2))

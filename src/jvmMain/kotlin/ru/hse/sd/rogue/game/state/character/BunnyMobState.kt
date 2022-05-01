@@ -7,6 +7,6 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 /**
  * State of a bunny.
  */
-class BunnyMobState(position: MutablePosition) : MobState(Health(2), position, Damage(1, 2)) {
-    // TODO
-}
+class BunnyMobState(
+    position: MutablePosition
+) : MobState(Health(2), position, Damage(1, 2))

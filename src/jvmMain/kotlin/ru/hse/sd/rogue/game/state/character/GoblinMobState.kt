@@ -7,5 +7,6 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 /**
  * State of a goblin.
  */
-class GoblinMobState(position: MutablePosition) : MobState(Health(1), position, Damage(0, 1)) {
-}
+class GoblinMobState(
+    position: MutablePosition
+) : MobState(Health(1), position, Damage(0, 1))

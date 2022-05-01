@@ -6,6 +6,6 @@ import ru.hse.sd.rogue.game.state.character.ReproducingMoldMobState
 /**
  * Interface for those states that can clone themselves. See example of usage in [ReproducingMoldMobState] and [ReproductiveStrategy]
  */
-interface CloneableState<T : CloneableState<T>>: State {
+interface CloneableState<T : CloneableState<T>> : State {
     fun clone(): T
 }
