@@ -8,8 +8,4 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
  * State of skeleton.
  */
 class SkeletonMobState(position: MutablePosition) : MobState(Health(5), position, Damage(1, 2)) {
-    // TODO
-    override fun clone(): SkeletonMobState {
-        return SkeletonMobState(MutablePosition(position.x, position.y))
-    }
 }
