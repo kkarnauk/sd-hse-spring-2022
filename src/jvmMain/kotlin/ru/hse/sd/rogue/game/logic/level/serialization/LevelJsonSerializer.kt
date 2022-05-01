@@ -2,25 +2,21 @@ package ru.hse.sd.rogue.game.logic.level.serialization
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import java.nio.file.Path
-import kotlin.io.path.bufferedReader
-import kotlin.io.path.bufferedWriter
+import java.io.Reader
+import java.io.Writer
 import ru.hse.sd.rogue.game.logic.level.Level
 
 object LevelJsonSerializer {
     private val gson: Gson = GsonBuilder()
+        .setPrettyPrinting()
         .registerTypeAdapterFactory(LevelTypeAdapterFactory())
         .create()
 
-    fun Level.writeTo(path: Path) {
-        path.bufferedWriter().use {
-            gson.toJson(this, it)
-        }
+    fun Level.writeTo(writer: Writer) {
+        gson.toJson(this, writer)
     }
 
-    fun readFrom(path: Path): Level {
-        return path.bufferedReader().use {
-            gson.fromJson(it, Level::class.java)
-        }
+    fun readFrom(reader: Reader): Level {
+        return gson.fromJson(reader, Level::class.java)
     }
 }

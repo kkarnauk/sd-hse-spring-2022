@@ -1,5 +1,6 @@
 package ru.hse.sd.rogue.game.logic.level
 
+import kotlin.random.Random
 import ru.hse.sd.rogue.game.logic.cell.CellContent
 import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFactory
 import ru.hse.sd.rogue.game.logic.position.Position
@@ -21,7 +22,8 @@ internal class LevelGeneratorTest {
         splitNumIterations = 4,
         mobsFactory = ClassicDungeonMobsFactory(),
         minMobsProbability = 0.2,
-        maxMobsProbability = 0.5
+        maxMobsProbability = 0.5,
+        random = Random
     )
 
     @Test

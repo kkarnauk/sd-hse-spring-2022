@@ -27,10 +27,16 @@ class LevelGenerator(
     private val splitNumIterations: Int,
     private val mobsFactory: MobsFactory,
     private val minMobsProbability: Double,
-    private val maxMobsProbability: Double
+    private val maxMobsProbability: Double,
+    private val random: Random
 ) {
 
-    private class BSP(private val width: Int, private val height: Int, private val border: Int) {
+    private class BSP(
+        private val width: Int,
+        private val height: Int,
+        private val border: Int,
+        private val random: Random
+    ) {
 
         data class Room(
             val x1: Int,
@@ -84,9 +90,9 @@ class LevelGenerator(
                 if (leaf.canSplit(minRoomSize)) {
                     val (firstRegion, secondRegion) = when {
                         !leaf.canSplitHeight(minRoomSize) || (
-                                leaf.canSplitWidth(minRoomSize) && Random.nextInt(2) == 0
+                                leaf.canSplitWidth(minRoomSize) && random.nextInt(2) == 0
                                 ) -> {
-                            val x = Random.nextInt(
+                            val x = random.nextInt(
                                 leaf.region.x1 + minRoomSize,
                                 leaf.region.x2 - minRoomSize + 1
                             )
@@ -95,7 +101,7 @@ class LevelGenerator(
                             left to right
                         }
                         else -> {
-                            val y = Random.nextInt(
+                            val y = random.nextInt(
                                 leaf.region.y1 + minRoomSize,
                                 leaf.region.y2 - minRoomSize + 1
                             )
@@ -112,10 +118,10 @@ class LevelGenerator(
 
         fun generateRooms(minRoomSize: Int) {
             leaves.forEach {
-                val x1 = Random.nextInt(it.region.x1, it.region.x2 - minRoomSize + 1)
-                val y1 = Random.nextInt(it.region.y1, it.region.y2 - minRoomSize + 1)
-                val x2 = Random.nextInt(x1 + minRoomSize, it.region.x2 + 1)
-                val y2 = Random.nextInt(y1 + minRoomSize, it.region.y2 + 1)
+                val x1 = random.nextInt(it.region.x1, it.region.x2 - minRoomSize + 1)
+                val y1 = random.nextInt(it.region.y1, it.region.y2 - minRoomSize + 1)
+                val x2 = random.nextInt(x1 + minRoomSize, it.region.x2 + 1)
+                val y2 = random.nextInt(y1 + minRoomSize, it.region.y2 + 1)
                 it.roomRegion = Room(x1, y1, x2, y2)
             }
         }
@@ -135,7 +141,7 @@ class LevelGenerator(
             thickness: Int,
             corridorWobbling: Double
         ) {
-            var lastMoveByX = Random.nextInt(2) == 0
+            var lastMoveByX = random.nextInt(2) == 0
             var currentX = x1
             var currentY = y1
             while (currentX != x2 || currentY != y2) {
@@ -144,7 +150,7 @@ class LevelGenerator(
                 val moveByX = when {
                     dx == 0 -> false
                     dy == 0 -> true
-                    Random.nextDouble() < corridorWobbling -> !lastMoveByX
+                    random.nextDouble() < corridorWobbling -> !lastMoveByX
                     else -> lastMoveByX
                 }
                 if (moveByX) {
@@ -170,10 +176,10 @@ class LevelGenerator(
             corridorWobbling: Double
         ) {
             generateCorridorBetweenPoints(
-                Random.nextInt(first.x1, first.x2),
-                Random.nextInt(first.y1, first.y2),
-                Random.nextInt(second.x1, second.x2),
-                Random.nextInt(second.y1, second.y2),
+                random.nextInt(first.x1, first.x2),
+                random.nextInt(first.y1, first.y2),
+                random.nextInt(second.x1, second.x2),
+                random.nextInt(second.y1, second.y2),
                 thickness,
                 corridorWobbling
             )
@@ -193,9 +199,9 @@ class LevelGenerator(
             val rightRooms = right.traverse().mapNotNull { it.roomRegion }
 
             generateCorridorBetweenRectangles(
-                leftRooms.randomOrNull() ?: return,
-                rightRooms.randomOrNull() ?: return,
-                Random.nextInt(minThickness, maxThickness + 1),
+                leftRooms.randomOrNull(random) ?: return,
+                rightRooms.randomOrNull(random) ?: return,
+                random.nextInt(minThickness, maxThickness + 1),
                 corridorWobbling
             )
 
@@ -235,11 +241,11 @@ class LevelGenerator(
 
         characterStates.add(
             PlayerState(
-                Health(6), playerRoom.points().random().asMutable(), Damage(3, 5), InventoryState()
+                Health(6), playerRoom.points().random(random).asMutable(), Damage(3, 5), InventoryState()
             )
         )
         characterStates.add(
-            mobsFactory.generateBossMob(bossRoom.points().random())
+            mobsFactory.generateBossMob(bossRoom.points().random(random))
         )
         mobsRooms.flatMapTo(characterStates) {
             val mobGenerator = listOf(
@@ -261,7 +267,7 @@ class LevelGenerator(
      * Generates a new level
      */
     fun generate(): Level {
-        val bsp = BSP(width, height, border)
+        val bsp = BSP(width, height, border, random)
         repeat(splitNumIterations) {
             bsp.split(minRoomSize)
         }
