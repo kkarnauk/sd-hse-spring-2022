@@ -2,11 +2,10 @@ package ru.hse.sd.rogue
 
 import com.soywiz.korge.Korge
 import com.soywiz.korge.view.Stage
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 import ru.hse.sd.rogue.game.controller.CollisionsController
 import ru.hse.sd.rogue.game.controller.GlobalController
 import ru.hse.sd.rogue.game.controller.MapController
+import ru.hse.sd.rogue.game.controller.MobViewFactory
 import ru.hse.sd.rogue.game.controller.character.MobController
 import ru.hse.sd.rogue.game.controller.character.MovementController
 import ru.hse.sd.rogue.game.controller.character.PlayerController
@@ -14,41 +13,39 @@ import ru.hse.sd.rogue.game.controller.item.LootItemController
 import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
-import ru.hse.sd.rogue.game.logic.ai.AggressiveStrategy
-import ru.hse.sd.rogue.game.logic.ai.CowardlyStrategy
-import ru.hse.sd.rogue.game.logic.cell.CellContent
+import ru.hse.sd.rogue.game.logic.ai.*
+import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
 import ru.hse.sd.rogue.game.logic.characteristics.Damage
 import ru.hse.sd.rogue.game.logic.characteristics.Durability
-import ru.hse.sd.rogue.game.logic.characteristics.Health
+import ru.hse.sd.rogue.game.logic.characteristics.Speed
+import ru.hse.sd.rogue.game.logic.common.Confusion
 import ru.hse.sd.rogue.game.logic.input.InputHandler
+import ru.hse.sd.rogue.game.logic.item.Potion
 import ru.hse.sd.rogue.game.logic.item.Weapon
+import ru.hse.sd.rogue.game.logic.level.level
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.AnimalMobsFactory
+import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFactory
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
-import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.logic.size.KorgeSize
 import ru.hse.sd.rogue.game.logic.size.Size
-import ru.hse.sd.rogue.game.state.CellState
 import ru.hse.sd.rogue.game.state.InterfaceState
-import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.state.MapState
+import ru.hse.sd.rogue.game.state.character.MovementState
+import ru.hse.sd.rogue.game.state.character.MobState
 import ru.hse.sd.rogue.game.state.character.PlayerState
-import ru.hse.sd.rogue.game.state.character.mob.boss.BigDemonMobState
-import ru.hse.sd.rogue.game.state.character.mob.regular.*
+import ru.hse.sd.rogue.game.state.character.ReproducingMoldMobState
+import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
 import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.CameraView
 import ru.hse.sd.rogue.game.view.MapView
-import ru.hse.sd.rogue.game.view.character.mob.boss.BigDemonView
-import ru.hse.sd.rogue.game.view.character.mob.regular.*
-import ru.hse.sd.rogue.game.view.character.player.PlayerView
+import ru.hse.sd.rogue.game.view.ViewRegistrationManager
 import ru.hse.sd.rogue.game.view.container.ContainersManager
-import ru.hse.sd.rogue.game.view.ui.InterfaceView
+import ru.hse.sd.rogue.game.view.item.potion.LootBluePotionView
 import ru.hse.sd.rogue.game.view.item.weapon.LootAxView
 import ru.hse.sd.rogue.game.view.item.weapon.LootSwordView
-import kotlin.math.abs
-import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
-import ru.hse.sd.rogue.game.logic.common.Confusion
-import ru.hse.sd.rogue.game.logic.item.Potion
-import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
-import ru.hse.sd.rogue.game.view.item.potion.LootBluePotionView
+import ru.hse.sd.rogue.game.view.ui.InterfaceView
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 /**
  * Size of camera used for the game.
@@ -70,22 +67,6 @@ val cameraKorgeSize = cameraSize.asKorge()
  */
 val mapWindowSize = mapSize.asKorge()
 
-// TODO remove after implementing map generator and loader in hw3
-private fun generateSimpleMap(): List<List<CellState>> {
-    val size = 50
-    return List(size) { x ->
-        List(size) { y ->
-            val content = when {
-                minOf(x, y) == 0 || maxOf(x, y) + 1 == size -> CellContent.Wall
-                x % 8 == 0 && y % 13 == 0 -> CellContent.Wall
-                abs(x - size / 3) <= 1 && abs(y - size / 3) <= 1 -> CellContent.Wall
-                else -> CellContent.Space
-            }
-            CellState(Position(x, y), content)
-        }
-    }
-}
-
 suspend operator fun Korge.invoke(mapSize: KorgeSize, cameraSize: KorgeSize, entry: Stage.() -> Unit) {
     return invoke(
         width = mapSize.width,
@@ -102,29 +83,41 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
 
     @Suppress("UNUSED_VARIABLE") val globalController = GlobalController()
 
-    val mapState = MapState(generateSimpleMap())
+    val gameLevel = level {
+        generate {
+            map.width = mapSize.width
+            map.height = mapSize.height
+            map.border = 1
+            map.corridorThickness = 0 to 1
+            map.corridorWobbling = 0.05
+            map.minRoomSize = 7
+            map.splitNumIterations = 4
+            mobs.mobsFactory = listOf(ClassicDungeonMobsFactory(), AnimalMobsFactory()).random()
+        }
+    }
+
+
+    val mapState = MapState(gameLevel.cells)
     val mapController = MapController(
         mapState
     )
-    val movementController = MovementController(mapController)
+
+    val createMovementController = { ticksToReload: Int ->
+        MovementController(actionsManager, MovementState(Speed(ticksToReload)), mapController)
+    }
+
     MapView(containersManager.mapContainer, mapState).also { it.register(actionsManager) }
 
     val collisionsController = CollisionsController().also { it.register(actionsManager) }
-    val inventoryState = InventoryState()
 
-    val playerState = PlayerState(
-        Health(6),
-        MutablePosition(10, 10),
-        Damage(3, 5),
-        inventoryState
-    )
+    val playerState = gameLevel.characters.filterIsInstance<PlayerState>().single()
+
     val playerController = PlayerController(
         actionsManager,
         playerState,
-        movementController
+        createMovementController(1)
     ).apply { collisionsController.register(this) }
 
-    PlayerView(containersManager.characterContainer, playerState).also { it.register(actionsManager) }
     InputHandler(playerController).apply {
         mapKeys()
     }
@@ -134,69 +127,35 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     }
     actionsManager.registerRepeatable(ActionPriority.Low, cameraView)
 
-    run {
-        val state = BigDemonMobState(MutablePosition(2, 2))
-        BigDemonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        MobController(
-            actionsManager, state, movementController, AggressiveStrategy(
-                playerState, state, movementController, 5
-            ).withExpirableEffects()
-        )
-            .also { it.register() }
-            .apply { collisionsController.register(this) }
+    val mobViewFactory = MobViewFactory(containersManager.characterContainer)
+
+    ViewRegistrationManager(gameLevel, actionsManager, mobViewFactory, containersManager).also {
+        it.register(actionsManager)
     }
 
-    run {
-        val state = GoblinMobState(MutablePosition(4, 4))
-        GoblinView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+    gameLevel.characters.filterIsInstance<MobState>().filter { it !is ReproducingMoldMobState }.forEach { state ->
         MobController(
-            actionsManager, state, movementController, CowardlyStrategy(
-                playerState, state, movementController, 7
+            actionsManager, state, createMovementController(5), AggressiveStrategy(
+                playerState, state, createMovementController(3), 5
             ).withExpirableEffects()
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
     }
-    run {
-        val state = ImpMobState(MutablePosition(20, 20))
-        ImpView(containersManager.characterContainer, state).also { it.register(actionsManager) }
+    gameLevel.characters.filterIsInstance<ReproducingMoldMobState>().forEach { state ->
+        val movementController = createMovementController(7)
         MobController(
-            actionsManager, state, movementController, CowardlyStrategy(
-                playerState, state, movementController, 7
-            ).withExpirableEffects()
-        )
-            .also { it.register() }
-            .apply { collisionsController.register(this) }
-    }
-    run {
-        val state = NecromancerMobState(MutablePosition(8, 8))
-        NecromancerView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        MobController(
-            actionsManager, state, movementController, CowardlyStrategy(
-                playerState, state, movementController, 7
-            ).withExpirableEffects()
-        )
-            .also { it.register() }
-            .apply { collisionsController.register(this) }
-    }
-    run {
-        val state = TinyZombieMobState(MutablePosition(12, 12))
-        TinyZombieView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        MobController(
-            actionsManager, state, movementController, CowardlyStrategy(
-                playerState, state, movementController, 7
-            ).withExpirableEffects()
-        )
-            .also { it.register() }
-            .apply { collisionsController.register(this) }
-    }
-
-    run {
-        val state = SkeletonMobState(MutablePosition(33, 10))
-        SkeletonView(containersManager.characterContainer, state).also { it.register(actionsManager) }
-        MobController(
-            actionsManager, state, movementController, AggressiveStrategy(
-                playerState, state, movementController, 3
+            actionsManager,
+            state,
+            movementController,
+            ReproductiveStrategy(
+                state,
+                100,
+                0.5,
+                gameLevel,
+                movementController,
+                actionsManager,
+                collisionsController
             ).withExpirableEffects()
         )
             .also { it.register() }
@@ -206,7 +165,12 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     run {
         InterfaceView(
             containersManager.interfaceContainer,
-            InterfaceState(playerState.health, inventoryState, playerState.experience, playerState.damage),
+            InterfaceState(
+                playerState.health,
+                playerState.inventoryState,
+                playerState.experience,
+                playerState.damage
+            ),
             cameraSize
         ).also {
             it.register(actionsManager)

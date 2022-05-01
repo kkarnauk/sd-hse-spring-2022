@@ -41,6 +41,7 @@ class CameraView(
 
     init {
         topLeft.replaceWith(updateTopLeft())
+        camera.position(-topLeft)
     }
 
     private fun MutablePosition.fixWithLimits(): MutablePosition = apply {

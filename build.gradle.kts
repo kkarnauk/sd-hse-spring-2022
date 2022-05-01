@@ -28,7 +28,13 @@ kotlin {
     }
 }
 
+dependencies {
+    "commonMainImplementation"("org.jetbrains.kotlin:kotlin-reflect:1.6.20")
+    "commonMainImplementation"("com.google.code.gson:gson:2.9.0")
+}
+
 apply<KorgeGradlePlugin>()
+
 
 tasks {
     val javaVersion = "11"

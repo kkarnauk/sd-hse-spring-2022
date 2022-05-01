@@ -4,7 +4,6 @@ import ru.hse.sd.rogue.game.logic.item.Armor
 import ru.hse.sd.rogue.game.logic.item.Item
 import ru.hse.sd.rogue.game.logic.item.Potion
 import ru.hse.sd.rogue.game.logic.item.Weapon
-import kotlin.properties.Delegates
 
 /**
  * State of an inventory of the player.
@@ -32,26 +31,29 @@ class InventoryState : VersionableState() {
     /**
      * Index of the currently chosen weapon.
      */
-    var currentWeaponIndex: Int? by Delegates.vetoable(null) { _, oldValue, newValue ->
-        if (oldValue != newValue) updateVersion()
-        newValue == null || newValue in 0 until maxSize
-    }
+    var currentWeaponIndex: Int? = null
+        set(value) {
+            if (field != value) updateVersion()
+            field = value
+        }
 
     /**
      * Index of the currently chosen armor.
      */
-    var currentArmorIndex: Int? by Delegates.vetoable(null) { _, oldValue, newValue ->
-        if (oldValue != newValue) updateVersion()
-        newValue == null || newValue in 0 until maxSize
-    }
+    var currentArmorIndex: Int? = null
+        set(value) {
+            if (field != value) updateVersion()
+            field = value
+        }
 
     /**
      * Index of the currently chosen potion.
      */
-    var currentPotionIndex: Int? by Delegates.vetoable(null) { _, oldValue, newValue ->
-        if (oldValue != newValue) updateVersion()
-        newValue == null || newValue in 0 until maxSize
-    }
+    var currentPotionIndex: Int? = null
+        set(value) {
+            if (field != value) updateVersion()
+            field = value
+        }
 
     /**
      * Currently chosen weapon.
@@ -96,7 +98,6 @@ class InventoryState : VersionableState() {
             is Weapon -> myWeapons.addItem(item)
             is Armor -> myArmors.addItem(item)
             is Potion -> myPotions.addItem(item)
-            else -> TODO("investigate compilation error")
         }
     }
 

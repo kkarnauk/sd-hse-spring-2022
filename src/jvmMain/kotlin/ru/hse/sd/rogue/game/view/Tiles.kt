@@ -20,6 +20,15 @@ object Tiles {
         resourcesVfs["Kyrises_Free_16x16_RPG_Icon_Pack.png"].readBitmap()
     }
 
+    private object PixelAdventure {
+        val angryPigIdle = runBlocking { resourcesVfs["pixelAdventure/AngryPig idle.png"].readBitmap() }
+        val bunnyIdle = runBlocking { resourcesVfs["pixelAdventure/Bunny idle.png"].readBitmap() }
+        val chameleonIdle = runBlocking { resourcesVfs["pixelAdventure/Chameleon idle.png"].readBitmap() }
+        val mushroomIdle = runBlocking { resourcesVfs["pixelAdventure/Mushroom idle.png"].readBitmap() }
+        val rinoIdle = runBlocking { resourcesVfs["pixelAdventure/Rino idle.png"].readBitmap() }
+        val slimeIdle = runBlocking { resourcesVfs["pixelAdventure/Slime idle.png"].readBitmap() }
+    }
+
     /**
      * Tiles for a map.
      */
@@ -66,7 +75,7 @@ object Tiles {
      */
     object Mobs {
         /**
-         * Tile for the boss.
+         * Tile for the big demon.
          */
         object BigDemon {
             val idle = SpriteAnimation(
@@ -146,6 +155,92 @@ object Tiles {
                 marginTop = 268,
                 marginLeft = 368,
                 columns = 4
+            )
+        }
+
+        /**
+         * Tile for a reproducting mold.
+         */
+        object ReproductingMold {
+            val idle = SpriteAnimation(
+                    spriteMap = dungeonTileset2,
+                    spriteWidth = 16,
+                    spriteHeight = 16,
+                    marginTop = 112,
+                    marginLeft = 368,
+                    columns = 4
+            )
+        }
+
+        /**
+         * Tile for the angry pig.
+         */
+        object AngryPig {
+            val idle = SpriteAnimation(
+                spriteMap = PixelAdventure.angryPigIdle,
+                spriteWidth = 36,
+                spriteHeight = 30,
+                columns = 9
+            )
+        }
+
+        /**
+         * Tile for the bunny.
+         */
+        object Bunny {
+            val idle = SpriteAnimation(
+                spriteMap = PixelAdventure.bunnyIdle,
+                spriteWidth = 34,
+                spriteHeight = 44,
+                columns = 8
+            )
+        }
+
+        /**
+         * Tile for the chameleon.
+         */
+        object Chameleon {
+            val idle = SpriteAnimation(
+                spriteMap = PixelAdventure.chameleonIdle,
+                spriteWidth = 84,
+                spriteHeight = 38,
+                columns = 13
+            )
+        }
+
+        /**
+         * Tile for the mushroom.
+         */
+        object Mushroom {
+            val idle = SpriteAnimation(
+                spriteMap = PixelAdventure.mushroomIdle,
+                spriteWidth = 32,
+                spriteHeight = 32,
+                columns = 14
+            )
+        }
+
+        /**
+         * Tile for the rino.
+         */
+        object Rino {
+            val idle = SpriteAnimation(
+                spriteMap = PixelAdventure.rinoIdle,
+                spriteWidth = 52,
+                spriteHeight = 34,
+                columns = 11
+            )
+        }
+
+        /**
+         * Tile for the slime.
+         */
+        object Slime {
+            val idle = SpriteAnimation(
+                spriteMap = PixelAdventure.slimeIdle,
+                spriteWidth = 44,
+                spriteHeight = 30,
+                columns = 10
             )
         }
     }

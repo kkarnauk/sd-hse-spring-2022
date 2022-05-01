@@ -51,4 +51,8 @@ class CollisionsController : Controller, IrreversibleAction {
     override fun register(actionsManager: ActionsManager) {
         actionsManager.registerRepeatable(this)
     }
+
+    fun isOccupied(position: Position): Boolean {
+        return collisableControllers.any { it.state.position == position }
+    }
 }
