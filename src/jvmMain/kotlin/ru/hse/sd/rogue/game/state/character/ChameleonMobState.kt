@@ -7,6 +7,7 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 /**
  * State of chameleon.
  */
-class ChameleonMobState(position: MutablePosition) : MobState(Health(5), position, Damage(1, 2)) {
-    // TODO
-}
+class ChameleonMobState(
+    position: MutablePosition
+) : MobState(Health(5), position, Damage(1, 2))
+

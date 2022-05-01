@@ -7,6 +7,6 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 /**
  * State of a mushroom.
  */
-class MushroomMobState(position: MutablePosition) : MobState(Health(1), position, Damage(0, 1)) {
-    // TODO
-}
+class MushroomMobState(
+    position: MutablePosition
+) : MobState(Health(1), position, Damage(0, 1))

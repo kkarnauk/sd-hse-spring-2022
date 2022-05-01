@@ -7,6 +7,6 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 /**
  * State of the rino boss.
  */
-class RinoMobState(position: MutablePosition) : MobState(Health(100), position, Damage(3, 5)) {
-    // TODO
-}
+class RinoMobState(
+    position: MutablePosition
+) : MobState(Health(100), position, Damage(3, 5))

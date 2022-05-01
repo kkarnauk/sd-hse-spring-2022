@@ -7,5 +7,6 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
 /**
  * State of an impl.
  */
-class ImpMobState(position: MutablePosition) : MobState(Health(1), position, Damage(0, 1)) {
-}
+class ImpMobState(
+    position: MutablePosition
+) : MobState(Health(1), position, Damage(0, 1))
