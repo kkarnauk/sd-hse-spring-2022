@@ -41,18 +41,6 @@ class InventoryStateTest {
     }
 
     @Test
-    fun `test current weapon`() {
-        val inventory = InventoryState()
-        inventory.addItem(sword)
-        inventory.addItem(ax)
-        inventory.currentWeaponIndex = 1
-        assertEquals(ax, inventory.currentWeapon)
-
-        inventory.currentWeaponIndex = 3
-        assertEquals(1, inventory.currentWeaponIndex)
-    }
-
-    @Test
     fun `test versions`() {
         val inventory = InventoryState()
         val version1 = inventory.version

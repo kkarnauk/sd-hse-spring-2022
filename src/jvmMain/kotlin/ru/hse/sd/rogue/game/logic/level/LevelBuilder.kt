@@ -1,6 +1,8 @@
 package ru.hse.sd.rogue.game.logic.level
 
 import java.nio.file.Path
+import kotlin.io.path.bufferedReader
+import kotlin.random.Random
 import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFactory
 import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFactory
 import ru.hse.sd.rogue.game.logic.level.serialization.LevelJsonSerializer
@@ -21,7 +23,9 @@ class LevelBuilder {
      */
     fun load(path: Path): Level {
         with(LevelJsonSerializer) {
-            return readFrom(path)
+            path.bufferedReader().use {
+                return readFrom(it)
+            }
         }
     }
 
@@ -42,6 +46,11 @@ class LevelBuilder {
          * Use it to configure mobs
          */
         val mobs = MobsSettings()
+
+        /**
+         * Random generator for Level generator
+         */
+        var random: Random = Random
 
         /**
          * Map settings
@@ -104,6 +113,7 @@ class LevelBuilder {
             mobsFactory = mobs.mobsFactory,
             minMobsProbability = mobs.probability.first,
             maxMobsProbability = mobs.probability.second,
+            random = random
         )
     }
 }
