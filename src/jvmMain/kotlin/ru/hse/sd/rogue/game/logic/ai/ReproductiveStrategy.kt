@@ -11,6 +11,7 @@ import ru.hse.sd.rogue.game.state.CloneableState
 import ru.hse.sd.rogue.game.state.character.MobState
 
 class ReproductiveStrategy<T>(
+    maxChildren: Int,
     mobState: T,
     frequency: Long,
     probability: Double,
@@ -19,39 +20,56 @@ class ReproductiveStrategy<T>(
     actionsManager: ActionsManager,
     collisionsController: CollisionsController,
 ) : MobStrategy() where T : CloneableState<T>, T : MobState {
+    private class ChildrenCounter {
+        var childrenCount: Int = 1
+    }
+
+    private var childrenCounter = ChildrenCounter()
+    private var deadSignalSent = false
+
     init {
         this.randomlyRepeat(frequency, probability, actionsManager) {
             if (mobState.isAlive) {
-                val position = mobState.position
-                listOf(
-                    Position(position.x - 1, position.y),
-                    Position(position.x + 1, position.y),
-                    Position(position.x, position.y - 1),
-                    Position(position.x, position.y + 1)
-                ).filter { movementController.canMoveTo(it) }
-                    .filter { !collisionsController.isOccupied(it) }
-                    .randomOrNull()?.run {
-                        val newMobState = mobState.clone()
-                        newMobState.position.replaceWith(this)
+                if (childrenCounter.childrenCount <= maxChildren) {
+                    val position = mobState.position
+                    listOf(
+                        Position(position.x - 1, position.y),
+                        Position(position.x + 1, position.y),
+                        Position(position.x, position.y - 1),
+                        Position(position.x, position.y + 1)
+                    ).filter { movementController.canMoveTo(it) }
+                        .filter { !collisionsController.isOccupied(it) }
+                        .randomOrNull()?.run {
+                            val newMobState = mobState.clone()
+                            newMobState.position.replaceWith(this)
 
-                        gameLevel.addCharacter(newMobState)
-                        val newMobStrategy = ReproductiveStrategy(
-                            newMobState,
-                            frequency,
-                            probability,
-                            gameLevel,
-                            movementController,
-                            actionsManager,
-                            collisionsController
-                        )
+                            gameLevel.addCharacter(newMobState)
+                            val newMobStrategy = ReproductiveStrategy(
+                                maxChildren,
+                                newMobState,
+                                frequency,
+                                probability,
+                                gameLevel,
+                                movementController,
+                                actionsManager,
+                                collisionsController
+                            )
+                            childrenCounter.childrenCount++
+                            newMobStrategy.childrenCounter = childrenCounter
 
-                        MobController(
-                            actionsManager, newMobState, movementController, newMobStrategy
-                        ).apply {
-                            register()
-                            collisionsController.register(this)
+                            MobController(
+                                actionsManager, newMobState, movementController, newMobStrategy
+                            ).apply {
+                                register()
+                                collisionsController.register(this)
+                            }
                         }
-                    }
+                }
+            } else {
+                if (!deadSignalSent) {
+                    childrenCounter.childrenCount--
+                    deadSignalSent = true
+                }
             }
         }
     }
