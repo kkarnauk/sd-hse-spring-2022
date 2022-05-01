@@ -8,7 +8,7 @@ import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
 /**
- * View of a reproducting mold.
+ * View of a reproducing mold.
  */
 class ReproducingMoldView(
     container: Container,

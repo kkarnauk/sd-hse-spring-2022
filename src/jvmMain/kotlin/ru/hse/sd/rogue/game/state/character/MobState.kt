@@ -12,13 +12,9 @@ sealed class MobState(
     health: Health,
     position: MutablePosition,
     meleeDamage: Damage
-) : CharacterState(health, position, meleeDamage), Cloneable {
+) : CharacterState(health, position, meleeDamage) {
     override val damage: Damage
         get() = meleeDamage
 
     override val effects: List<Effect> = emptyList()
-
-    public override fun clone(): MobState {
-        throw CloneNotSupportedException()
-    }
 }

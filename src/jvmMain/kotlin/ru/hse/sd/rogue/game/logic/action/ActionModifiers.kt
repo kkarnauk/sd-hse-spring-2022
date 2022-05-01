@@ -23,7 +23,7 @@ fun IrreversibleAction.withFrequency(frequency: Long): IrreversibleAction {
 /**
  * Execute this action with probability [probability]
  */
-fun IrreversibleAction.probably(probability: Double): IrreversibleAction {
+fun IrreversibleAction.probably(probability: Double, random: Random = Random): IrreversibleAction {
     require(probability in 0.0..1.0)
-    return IrreversibleAction { if (Random.nextFloat() < probability) this@probably.invoke() }
+    return IrreversibleAction { if (random.nextFloat() < probability) this@probably.invoke() }
 }
