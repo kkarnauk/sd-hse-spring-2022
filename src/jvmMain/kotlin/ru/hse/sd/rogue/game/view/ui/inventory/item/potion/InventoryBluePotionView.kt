@@ -1,4 +1,4 @@
-package ru.hse.sd.rogue.game.view.ui.inventory.item.ui
+package ru.hse.sd.rogue.game.view.ui.inventory.item.potion
 
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.Sprite

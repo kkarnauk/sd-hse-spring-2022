@@ -1,8 +1,7 @@
-package ru.hse.sd.rogue.game.view.ui.inventory.item.ui
+package ru.hse.sd.rogue.game.view.ui.inventory.item.potion
 
 import com.soywiz.korge.view.Container
 import ru.hse.sd.rogue.game.logic.item.Potion
-import ru.hse.sd.rogue.game.logic.item.Weapon
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.view.ui.inventory.item.InventoryItemView
 

@@ -12,7 +12,7 @@ import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.View
 import ru.hse.sd.rogue.game.view.container.position
-import ru.hse.sd.rogue.game.view.ui.inventory.item.ui.InventoryBluePotionView
+import ru.hse.sd.rogue.game.view.ui.inventory.item.potion.InventoryBluePotionView
 import ru.hse.sd.rogue.game.view.ui.inventory.item.InventoryItemView
 import ru.hse.sd.rogue.game.view.ui.inventory.item.weapon.InventoryAxView
 import ru.hse.sd.rogue.game.view.ui.inventory.item.weapon.InventorySwordView
