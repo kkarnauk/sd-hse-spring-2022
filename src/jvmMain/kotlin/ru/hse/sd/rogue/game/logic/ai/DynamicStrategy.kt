@@ -1,7 +1,6 @@
 package ru.hse.sd.rogue.game.logic.ai
 
 import ru.hse.sd.rogue.game.logic.position.Direction
-import java.util.*
 
 /**
  * Strategy with the behaviour based on set of rules, which are invoked each [nextMovement]
@@ -22,7 +21,7 @@ class DynamicStrategy(private val defaultStrategy: MobStrategy) : MobStrategy() 
         }
     }
 
-    private val strategyRules = TreeSet<StrategyRule>()
+    private val strategyRules = sortedSetOf<StrategyRule>()
 
     /**
      * Add [rule], which will be invoked each tick.
@@ -32,9 +31,12 @@ class DynamicStrategy(private val defaultStrategy: MobStrategy) : MobStrategy() 
      *
      * If no rule returned True, then [defaultStrategy] will be activated
      */
-    fun withStrategyRule(strategy: MobStrategy, priority: Int = 1, rule: () -> Boolean): DynamicStrategy {
+    fun withStrategyRule(
+        strategy: MobStrategy,
+        priority: Int = 1,
+        rule: () -> Boolean
+    ): DynamicStrategy = apply {
         strategyRules.add(StrategyRule(priority, strategyRules.size, strategy, rule))
-        return this
     }
 
     override fun nextMovement(): Direction? {
