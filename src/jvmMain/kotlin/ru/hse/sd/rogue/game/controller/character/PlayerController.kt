@@ -7,9 +7,10 @@ import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.common.Effect
 import ru.hse.sd.rogue.game.logic.position.takeAway
+import ru.hse.sd.rogue.game.state.InventoryMutableState
 import ru.hse.sd.rogue.game.state.InventoryState
 import ru.hse.sd.rogue.game.state.character.PlayerState
-import ru.hse.sd.rogue.game.state.item.LootItemState
+import ru.hse.sd.rogue.game.state.item.LootItemMutableState
 import kotlin.math.log2
 import kotlin.random.Random
 
@@ -21,7 +22,7 @@ class PlayerController(
     override val state: PlayerState,
     movementController: MovementController
 ) : CharacterController(actionsManager, state, movementController) {
-    private var lootCandidate: LootItemState? = null
+    private var lootCandidate: LootItemMutableState? = null
 
     /**
      * `Loot candidate` is an item that will be put into the inventory if a player down the corresponding key.
@@ -78,7 +79,7 @@ class PlayerController(
     /**
      * Invokes [action] on [InventoryState] of the player.
      */
-    fun updateInventory(action: InventoryState.() -> Unit) {
+    fun updateInventory(action: InventoryMutableState.() -> Unit) {
         actionsManager.register(IrreversibleAction { action(state.inventoryState) })
     }
 }

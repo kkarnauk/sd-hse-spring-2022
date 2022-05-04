@@ -4,13 +4,13 @@ import com.google.gson.Gson
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import ru.hse.sd.rogue.game.state.character.CharacterState
+import ru.hse.sd.rogue.game.state.character.CharacterMutableState
 
 class CharacterStateTypeAdapter(
     private val gson: Gson,
-    private val delegates: Map<String, TypeAdapter<CharacterState>>
-) : TypeAdapter<CharacterState>() {
-    override fun write(out: JsonWriter, value: CharacterState) {
+    private val delegates: Map<String, TypeAdapter<CharacterMutableState>>
+) : TypeAdapter<CharacterMutableState>() {
+    override fun write(out: JsonWriter, value: CharacterMutableState) {
         out.obj {
             val name = value.javaClass.name
             name("fullyQualifiedName")
@@ -20,7 +20,7 @@ class CharacterStateTypeAdapter(
         }
     }
 
-    override fun read(inn: JsonReader): CharacterState {
+    override fun read(inn: JsonReader): CharacterMutableState {
         return inn.obj {
             nextName().also { require(it == "fullyQualifiedName") { it } }
             val fullyQualifiedName = nextString()

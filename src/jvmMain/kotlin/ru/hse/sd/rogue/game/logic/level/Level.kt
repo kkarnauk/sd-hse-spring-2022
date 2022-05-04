@@ -1,7 +1,7 @@
 package ru.hse.sd.rogue.game.logic.level
 
 import ru.hse.sd.rogue.game.state.CellState
-import ru.hse.sd.rogue.game.state.character.CharacterState
+import ru.hse.sd.rogue.game.state.character.CharacterMutableState
 
 /**
  * Game level
@@ -14,14 +14,14 @@ class Level(
     /**
      * State of level characters
      */
-    characters: List<CharacterState>
+    characters: List<CharacterMutableState>
 ) {
     private val myCharacters = characters.toMutableList()
 
-    val characters: List<CharacterState>
+    val characters: List<CharacterMutableState>
         get() = myCharacters
 
-    fun addCharacter(characterState: CharacterState) {
+    fun addCharacter(characterState: CharacterMutableState) {
         myCharacters.add(characterState)
     }
 }

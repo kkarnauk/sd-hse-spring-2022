@@ -6,7 +6,7 @@ import ru.hse.sd.rogue.game.state.character.BigDemonMobState
 /**
  * Global state of the game.
  */
-class GlobalState(
+class GlobalMutableState(
     /**
      * State of the player.
      */
@@ -15,4 +15,4 @@ class GlobalState(
      * State of the boss.
      */
     private val boss: BigDemonMobState
-) : State
+) : MutableState

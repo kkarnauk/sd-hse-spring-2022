@@ -1,13 +1,13 @@
 package ru.hse.sd.rogue.game.logic.level
 
 import ru.hse.sd.rogue.game.logic.cell.CellContent
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.characteristics.Health
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDamage
+import ru.hse.sd.rogue.game.logic.characteristics.MutableHealth
 import ru.hse.sd.rogue.game.logic.level.mobsfabric.MobsFactory
 import ru.hse.sd.rogue.game.logic.position.Position
 import ru.hse.sd.rogue.game.state.CellState
-import ru.hse.sd.rogue.game.state.InventoryState
-import ru.hse.sd.rogue.game.state.character.CharacterState
+import ru.hse.sd.rogue.game.state.InventoryMutableState
+import ru.hse.sd.rogue.game.state.character.CharacterMutableState
 import ru.hse.sd.rogue.game.state.character.PlayerState
 import kotlin.math.roundToInt
 import kotlin.math.sign
@@ -231,17 +231,20 @@ class LevelGenerator(
         }
     }
 
-    private fun generateCharacters(rooms: List<BSP.Room>): List<CharacterState> {
+    private fun generateCharacters(rooms: List<BSP.Room>): List<CharacterMutableState> {
         val shuffledRooms = rooms.shuffled()
         val playerRoom = shuffledRooms[0]
         val bossRoom = shuffledRooms[1]
         val mobsRooms = shuffledRooms.drop(2)
 
-        val characterStates = mutableListOf<CharacterState>()
+        val characterStates = mutableListOf<CharacterMutableState>()
 
         characterStates.add(
             PlayerState(
-                Health(6), playerRoom.points().random(random).asMutable(), Damage(3, 5), InventoryState()
+                MutableHealth(6),
+                playerRoom.points().random(random).asMutable(),
+                MutableDamage(3, 5),
+                InventoryMutableState()
             )
         )
         characterStates.add(

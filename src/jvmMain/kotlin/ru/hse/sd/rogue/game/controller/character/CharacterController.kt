@@ -4,11 +4,12 @@ import ru.hse.sd.rogue.game.controller.CollisableController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDamage
 import ru.hse.sd.rogue.game.logic.common.Effect
 import ru.hse.sd.rogue.game.logic.position.Direction
 import ru.hse.sd.rogue.game.logic.position.LookDirection
-import ru.hse.sd.rogue.game.state.character.CharacterState
+import ru.hse.sd.rogue.game.logic.position.takeAway
+import ru.hse.sd.rogue.game.state.character.CharacterMutableState
 
 /**
  * Responsible for controlling actions with characters (player and mobs).
@@ -22,9 +23,9 @@ abstract class CharacterController(
      */
     protected val actionsManager: ActionsManager,
     /**
-     * [CharacterState] of this character.
+     * [CharacterMutableState] of this character.
      */
-    override val state: CharacterState,
+    override val state: CharacterMutableState,
     /**
      * Checks whether this character can move to one or another position.
      */
@@ -75,15 +76,19 @@ abstract class CharacterController(
     }
 
     /**
-     * Updates current [CharacterState.health] with considering one application of [damage].
-     * Updates [CharacterState.isAlive] depending on the result health.
+     * Updates current [CharacterMutableState.health] with considering one application of [damage].
+     * Updates [CharacterMutableState.isAlive] depending on the result health.
      */
-    fun takeDamage(damage: Damage, effects: List<Effect>) = update {
+    fun takeDamage(damage: MutableDamage, effects: List<Effect>) = update {
         if (!state.isAlive) {
             return@update
         }
         state.health.current -= damage.value
         effects.forEach { apply(it) }
+
+        if (!state.isAlive) {
+            state.position.takeAway()
+        }
     }
 
     override fun noCollisions() = Unit

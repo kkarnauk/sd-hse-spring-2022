@@ -3,7 +3,7 @@ package ru.hse.sd.rogue.game.view.character.mob
 import com.soywiz.klock.milliseconds
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.sprite
-import ru.hse.sd.rogue.game.state.character.TinyZombieMobState
+import ru.hse.sd.rogue.game.state.character.CharacterState
 import ru.hse.sd.rogue.game.view.Tiles
 import ru.hse.sd.rogue.game.view.character.CharacterView
 
@@ -12,7 +12,7 @@ import ru.hse.sd.rogue.game.view.character.CharacterView
  */
 class TinyZombieView(
     container: Container,
-    characterState: TinyZombieMobState,
+    characterState: CharacterState
 ) : CharacterView(container, characterState) {
 
     override val sprite = container
