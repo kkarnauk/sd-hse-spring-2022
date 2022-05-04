@@ -14,9 +14,9 @@ import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.ai.*
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.characteristics.Durability
-import ru.hse.sd.rogue.game.logic.characteristics.Speed
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDamage
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDurability
+import ru.hse.sd.rogue.game.logic.characteristics.MutableSpeed
 import ru.hse.sd.rogue.game.logic.common.Confusion
 import ru.hse.sd.rogue.game.logic.input.InputHandler
 import ru.hse.sd.rogue.game.logic.item.Potion
@@ -27,10 +27,10 @@ import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFactory
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.logic.size.KorgeSize
 import ru.hse.sd.rogue.game.logic.size.Size
-import ru.hse.sd.rogue.game.state.InterfaceState
+import ru.hse.sd.rogue.game.state.InterfaceMutableState
 import ru.hse.sd.rogue.game.state.MapState
 import ru.hse.sd.rogue.game.state.character.MobState
-import ru.hse.sd.rogue.game.state.character.MovementState
+import ru.hse.sd.rogue.game.state.character.MovementMutableState
 import ru.hse.sd.rogue.game.state.character.PlayerState
 import ru.hse.sd.rogue.game.state.character.ReproducingMoldMobState
 import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
@@ -102,7 +102,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     )
 
     val createMovementController = { ticksToReload: Int ->
-        MovementController(actionsManager, MovementState(Speed(ticksToReload)), mapController)
+        MovementController(actionsManager, MovementMutableState(MutableSpeed(ticksToReload)), mapController)
     }
 
     MapView(containersManager.mapContainer, mapState).also { it.register(actionsManager) }
@@ -169,7 +169,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     run {
         InterfaceView(
             containersManager.interfaceContainer,
-            InterfaceState(
+            InterfaceMutableState(
                 playerState.health,
                 playerState.inventoryState,
                 playerState.experience,
@@ -182,8 +182,8 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     }
 
     run {
-        val ax = Weapon(Damage(10, 20), Durability(100), Weapon.Type.Ax)
-        val sword = Weapon(Damage(10, 20), Durability(100), Weapon.Type.Sword)
+        val ax = Weapon(MutableDamage(10, 20), MutableDurability(100), Weapon.Type.Ax)
+        val sword = Weapon(MutableDamage(10, 20), MutableDurability(100), Weapon.Type.Sword)
         val swordState = LootWeaponState(sword, MutablePosition(10, 10))
         val axState = LootWeaponState(ax, MutablePosition(13, 13))
 

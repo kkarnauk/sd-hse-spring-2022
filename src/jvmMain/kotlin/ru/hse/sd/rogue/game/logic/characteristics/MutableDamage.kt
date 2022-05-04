@@ -3,16 +3,17 @@ package ru.hse.sd.rogue.game.logic.characteristics
 /**
  * Responsible for calculating a damage depending on [minimum] and [maximum].
  */
-data class Damage(
+abstract class Damage {
     /**
      * Minimum possible damage.
      */
-    var minimum: Int,
+    abstract val minimum: Int
+
     /**
      * Maximum possible damage.
      */
-    var maximum: Int
-) {
+    abstract val maximum: Int
+
     /**
      * Current damage, uniformly distributed between [minimum] and [maximum].
      */
@@ -24,4 +25,18 @@ data class Damage(
      */
     val average: Double
         get() = (minimum + maximum).toDouble() / 2
+
+    /**
+     * Constructs [MutableDamage] from this one.
+     */
+    fun asMutable(): MutableDamage = MutableDamage(minimum, maximum)
 }
+
+
+/**
+ * Mutable [Damage].
+ */
+data class MutableDamage(
+    override var minimum: Int,
+    override var maximum: Int
+) : Damage()

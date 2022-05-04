@@ -9,7 +9,6 @@ import ru.hse.sd.rogue.game.logic.action.IrreversibleAction
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.position.LookDirection
 import ru.hse.sd.rogue.game.logic.position.opposite
-import ru.hse.sd.rogue.game.logic.position.takeAway
 import ru.hse.sd.rogue.game.state.character.CharacterState
 import ru.hse.sd.rogue.game.view.View
 import ru.hse.sd.rogue.game.view.container.position
@@ -18,7 +17,8 @@ import kotlin.math.PI
 /**
  * View of a character.
  */
-abstract class CharacterView(/**
+abstract class CharacterView(
+    /**
      * [Container] to contain a sprite of a character.
      */
     protected val container: Container,
@@ -28,7 +28,7 @@ abstract class CharacterView(/**
     protected val characterState: CharacterState
 ) : View, IrreversibleAction {
     protected abstract val sprite: Sprite
-    protected var currentLookDirection: LookDirection = LookDirection.Right
+    private var currentLookDirection: LookDirection = LookDirection.Right
 
     private fun rotate() {
         currentLookDirection = currentLookDirection.opposite()
@@ -38,10 +38,6 @@ abstract class CharacterView(/**
     }
 
     override fun invoke() {
-        if (!characterState.isAlive) {
-            characterState.position.takeAway()
-        }
-
         sprite.position(characterState.position)
         if (characterState.lookDirection != currentLookDirection) {
             rotate()

@@ -1,7 +1,7 @@
 package ru.hse.sd.rogue.game.state.character
 
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.characteristics.Health
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDamage
+import ru.hse.sd.rogue.game.logic.characteristics.MutableHealth
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 
 /**
@@ -9,4 +9,4 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
  */
 class RinoMobState(
     position: MutablePosition
-) : MobState(Health(100), position, Damage(3, 5))
+) : MobState(MutableHealth(100), position, MutableDamage(3, 5))

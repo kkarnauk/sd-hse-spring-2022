@@ -12,8 +12,12 @@ abstract class LootItemState(
      * Directly the item on the field.
      */
     open val item: Item,
-    /**
-     * Position of this item.
-     */
-    override val position: MutablePosition
 ) : CollisableState
+
+/**
+ * Mutable [LootItemState].
+ */
+abstract class LootItemMutableState(
+    item: Item,
+    override val position: MutablePosition
+) : LootItemState(item), CollisableState

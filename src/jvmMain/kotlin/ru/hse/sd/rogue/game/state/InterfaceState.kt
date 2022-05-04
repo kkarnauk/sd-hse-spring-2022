@@ -1,15 +1,35 @@
 package ru.hse.sd.rogue.game.state
 
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.characteristics.Experience
-import ru.hse.sd.rogue.game.logic.characteristics.Health
+import ru.hse.sd.rogue.game.logic.characteristics.*
 
 /**
  * Represents a state of UI.
  */
-class InterfaceState(
-    val health: Health,
-    val inventoryState: InventoryState,
-    val experience: Experience,
-    val damage: Damage
+open class InterfaceState(
+    /**
+     * Player [Health].
+     */
+    open val health: Health,
+    /**
+     * Player [InventoryState].
+     */
+    open val inventoryState: InventoryState,
+    /**
+     * Player [Experience].
+     */
+    open val experience: Experience,
+    /**
+     * Player [Damage].
+     */
+    open val damage: Damage
 ) : State
+
+/**
+ * Mutable [InterfaceState].
+ */
+class InterfaceMutableState(
+    override val health: MutableHealth,
+    override val inventoryState: InventoryMutableState,
+    override val experience: MutableExperience,
+    override val damage: MutableDamage
+) : InterfaceState(health, inventoryState, experience, damage), MutableState

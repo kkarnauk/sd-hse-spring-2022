@@ -2,17 +2,17 @@ package ru.hse.sd.rogue.game.state
 
 import junit.framework.TestCase.*
 import org.junit.Test
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.characteristics.Durability
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDamage
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDurability
 import ru.hse.sd.rogue.game.logic.item.Weapon
 
 class InventoryStateTest {
-    private val sword = Weapon(Damage(100, 100), Durability(100), Weapon.Type.Sword)
-    private val ax = Weapon(Damage(100, 100), Durability(100), Weapon.Type.Ax)
+    private val sword = Weapon(MutableDamage(100, 100), MutableDurability(100), Weapon.Type.Sword)
+    private val ax = Weapon(MutableDamage(100, 100), MutableDurability(100), Weapon.Type.Ax)
 
     @Test
     fun `test add item`() {
-        val inventory = InventoryState()
+        val inventory = InventoryMutableState()
         assertTrue(inventory.weapons.isEmpty())
         assertTrue(inventory.armors.isEmpty())
         assertTrue(inventory.potions.isEmpty())
@@ -31,7 +31,7 @@ class InventoryStateTest {
 
     @Test
     fun `test drop item`() {
-        val inventory = InventoryState()
+        val inventory = InventoryMutableState()
         inventory.addItem(sword)
         inventory.addItem(ax)
         inventory.addItem(sword)
@@ -42,7 +42,7 @@ class InventoryStateTest {
 
     @Test
     fun `test versions`() {
-        val inventory = InventoryState()
+        val inventory = InventoryMutableState()
         val version1 = inventory.version
         inventory.addItem(sword)
         assertTrue(inventory.hasChangedSince(version1))

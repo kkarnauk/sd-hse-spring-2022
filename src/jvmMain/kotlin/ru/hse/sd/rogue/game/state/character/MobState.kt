@@ -1,7 +1,7 @@
 package ru.hse.sd.rogue.game.state.character
 
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.characteristics.Health
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDamage
+import ru.hse.sd.rogue.game.logic.characteristics.MutableHealth
 import ru.hse.sd.rogue.game.logic.common.Effect
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 
@@ -9,11 +9,11 @@ import ru.hse.sd.rogue.game.logic.position.MutablePosition
  * General state of a mob.
  */
 sealed class MobState(
-    health: Health,
+    health: MutableHealth,
     position: MutablePosition,
-    meleeDamage: Damage
-) : CharacterState(health, position, meleeDamage) {
-    override val damage: Damage
+    meleeDamage: MutableDamage
+) : CharacterMutableState(health, position, meleeDamage) {
+    override val damage: MutableDamage
         get() = meleeDamage
 
     override val effects: List<Effect> = emptyList()

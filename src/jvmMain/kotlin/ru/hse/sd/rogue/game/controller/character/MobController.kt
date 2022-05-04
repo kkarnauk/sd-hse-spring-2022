@@ -4,14 +4,14 @@ import ru.hse.sd.rogue.game.controller.CollisableController
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.ai.MobStrategy
 import ru.hse.sd.rogue.game.logic.common.Effect
-import ru.hse.sd.rogue.game.state.character.CharacterState
+import ru.hse.sd.rogue.game.state.character.CharacterMutableState
 
 /**
  * Responsible for controlling mobs.
  */
 class MobController(
     actionsManager: ActionsManager,
-    state: CharacterState,
+    state: CharacterMutableState,
     movementController: MovementController,
     private val mobStrategy: MobStrategy
 ) : CharacterController(actionsManager, state, movementController) {
