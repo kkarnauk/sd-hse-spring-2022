@@ -19,52 +19,58 @@ internal fun Application.configureRouting() {
     val repo = RepositoryImpl()
 
     routing {
-        routeHomework(repo)
-        routeSubmission(repo)
-        routeChecker(repo)
+        route("/homework") {
+            routeHomework(repo)
+        }
+        route("/submission") {
+            routeSubmission(repo)
+        }
+        route("/check") {
+            routeChecker(repo)
+        }
     }
 }
 
-private fun Routing.routeHomework(repo: Repository) {
-    get("/homework/{id}") {
+private fun Route.routeHomework(repo: Repository) {
+    get("/{id}") {
         val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
         call.respond(HttpStatusCode.OK, repo.getHomework(id))
     }
 
-    get("/homework") {
+    get("/") {
         call.respond(HttpStatusCode.OK, repo.getHomeworks())
     }
 
-    post("/homework") {
+    post("/") {
         val content = call.receive<Homework.Content>()
         call.respond(HttpStatusCode.OK, repo.addHomework(content))
     }
 }
 
-private fun Routing.routeSubmission(repo: Repository) {
-    get("/submission/{id}") {
+private fun Route.routeSubmission(repo: Repository) {
+    get("/{id}") {
         val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmission(id))
     }
 
-    get("/submission/{id}") {
+    get("/{id}") {
         val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmissions(id))
     }
 
-    get("/submission/{id}/result") {
+    get("/{id}/result") {
         val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmissionResult(id))
     }
 
-    post("/submission") {
+    post("/") {
         val content = call.receive<Submission.Content>()
         call.respond(HttpStatusCode.OK, repo.addSubmission(content))
     }
 }
 
-private fun Routing.routeChecker(repo: Repository) {
-    post("/checker") {
+private fun Route.routeChecker(repo: Repository) {
+    post("/") {
         val content = call.receive<Checker.Content>()
         call.respond(HttpStatusCode.OK, repo.addChecker(content))
     }
