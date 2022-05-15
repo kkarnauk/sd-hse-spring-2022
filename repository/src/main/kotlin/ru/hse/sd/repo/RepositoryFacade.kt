@@ -1,39 +1,58 @@
 package ru.hse.sd.repo
 
+import com.google.gson.GsonBuilder
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import ru.hse.sd.hwproj.model.Checker
 import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.Submission
 
 class RepositoryFacade : Repository {
-    override fun getHomework(id: Long): Homework.Content {
-        TODO("Not yet implemented")
+    private val client = HttpClient()
+
+    private suspend inline fun <reified T> request(url: String, reqMethod: HttpMethod, reqBody: String? = null): T {
+        return client.request("$host:$port/$url") {
+            method = reqMethod
+            reqBody?.let {
+                body = it
+            }
+        }
     }
 
-    override fun getHomeworks(): List<Homework> {
-        TODO("Not yet implemented")
+    override suspend fun getHomework(id: Long): Homework.Content {
+        return request("homework/$id", HttpMethod.Get)
     }
 
-    override fun getSubmission(id: Long): Submission.Content {
-        TODO("Not yet implemented")
+    override suspend fun getHomeworks(): List<Homework> {
+        return request("homework", HttpMethod.Get)
     }
 
-    override fun getSubmissionResult(submissionId: Long): Submission.Result {
-        TODO("Not yet implemented")
+    override suspend fun getSubmission(id: Long): Submission.Content {
+        return request("submission/$id", HttpMethod.Get)
     }
 
-    override fun getSubmissions(homeworkId: Long): List<Submission> {
-        TODO("Not yet implemented")
+    override suspend fun getSubmissionResult(submissionId: Long): Submission.Result {
+        return request("submission/$submissionId/result", HttpMethod.Get)
     }
 
-    override fun addHomework(content: Homework.Content): Homework {
-        TODO("Not yet implemented")
+    override suspend fun getSubmissions(homeworkId: Long): List<Submission> {
+        return request("submission", HttpMethod.Get)
     }
 
-    override fun addSubmission(content: Submission.Content): Submission {
-        TODO("Not yet implemented")
+    override suspend fun addHomework(content: Homework.Content): Homework {
+        return request("homework", HttpMethod.Post, gson.toJson(content))
     }
 
-    override fun addChecker(content: Checker.Content): Checker {
-        TODO("Not yet implemented")
+    override suspend fun addSubmission(content: Submission.Content): Submission {
+        return request("submission", HttpMethod.Post, gson.toJson(content))
+    }
+
+    override suspend fun addChecker(content: Checker.Content): Checker {
+        return request("checker", HttpMethod.Post, gson.toJson(content))
+    }
+
+    companion object {
+        private val gson = GsonBuilder().create()
     }
 }
