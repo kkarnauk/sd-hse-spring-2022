@@ -5,19 +5,19 @@ import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.Submission
 
 interface Repository {
-    fun getHomework(id: Long): Homework.Content
+    suspend fun getHomework(id: Long): Homework.Content
 
-    fun getHomeworks(): List<Homework>
+    suspend fun getHomeworks(): List<Homework>
 
-    fun addHomework(content: Homework.Content): Homework
+    suspend fun addHomework(content: Homework.Content): Homework
 
-    fun getSubmission(id: Long): Submission.Content
+    suspend fun getSubmission(id: Long): Submission.Content
 
-    fun getSubmissionResult(submissionId: Long): Submission.Result
+    suspend fun getSubmissionResult(submissionId: Long): Submission.Result
 
-    fun getSubmissions(homeworkId: Long): List<Submission>
+    suspend fun getSubmissions(homeworkId: Long): List<Submission>
 
-    fun addSubmission(content: Submission.Content): Submission
+    suspend fun addSubmission(content: Submission.Content): Submission
 
-    fun addChecker(content: Checker.Content): Checker
+    suspend fun addChecker(content: Checker.Content): Checker
 }
