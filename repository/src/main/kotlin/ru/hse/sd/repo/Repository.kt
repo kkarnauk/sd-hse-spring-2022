@@ -9,13 +9,13 @@ interface Repository {
 
     fun getHomeworks(): List<Homework>
 
+    fun addHomework(content: Homework.Content): Homework
+
     fun getSubmission(id: Long): Submission.Content
 
     fun getSubmissionResult(submissionId: Long): Submission.Result
 
     fun getSubmissions(homeworkId: Long): List<Submission>
-
-    fun addHomework(content: Homework.Content): Homework
 
     fun addSubmission(content: Submission.Content): Submission
 

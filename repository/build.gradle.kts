@@ -5,6 +5,16 @@ plugins {
 group = "ru.hse.sd.hwproj.repo"
 version = "1.0-SNAPSHOT"
 
+val ktorVersion: String by project
+val logbackVersion: String by project
+
 dependencies {
     implementation(project(":model"))
+
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-gson:$ktorVersion")
+    implementation("io.ktor:ktor-client-json:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 }
