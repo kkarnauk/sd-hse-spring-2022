@@ -37,11 +37,11 @@ private fun Route.routeHomework(repo: Repository) {
         call.respond(HttpStatusCode.OK, repo.getHomework(id))
     }
 
-    get("/") {
+    get() {
         call.respond(HttpStatusCode.OK, repo.getHomeworks())
     }
 
-    post("/") {
+    post() {
         val content = call.receive<Homework.Content>()
         call.respond(HttpStatusCode.OK, repo.addHomework(content))
     }
@@ -63,14 +63,14 @@ private fun Route.routeSubmission(repo: Repository) {
         call.respond(HttpStatusCode.OK, repo.getSubmissionResult(id))
     }
 
-    post("/") {
+    post() {
         val content = call.receive<Submission.Content>()
         call.respond(HttpStatusCode.OK, repo.addSubmission(content))
     }
 }
 
 private fun Route.routeChecker(repo: Repository) {
-    post("/") {
+    post() {
         val content = call.receive<Checker.Content>()
         call.respond(HttpStatusCode.OK, repo.addChecker(content))
     }
