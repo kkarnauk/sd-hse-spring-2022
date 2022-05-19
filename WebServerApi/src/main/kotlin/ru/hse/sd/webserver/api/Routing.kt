@@ -25,7 +25,7 @@ internal fun Application.configureRouting() {
             routeStudentApi(repo)
         }
         route("api/submission") {
-            routeProfessorApi(repo)
+            routeSubmissionApi(repo)
         }
     }
 }
@@ -36,12 +36,12 @@ private fun Route.routeStudentApi(repo: Repository) {
         call.respond(HttpStatusCode.OK, repo.getHomework(id))
     }
 
-    post("homework") {
+    post("/homework") {
         val homeworkContent = call.receive<Homework.Content>()
         call.respond(HttpStatusCode.OK, repo.addHomework(homeworkContent))
     }
 
-    get("homework") {
+    get("/homework") {
         call.respond(HttpStatusCode.OK, repo.getHomeworks())
     }
 
@@ -55,7 +55,7 @@ private fun Route.routeStudentApi(repo: Repository) {
         call.respond(HttpStatusCode.OK, repo.addSubmission(submissionContent))
     }
 
-    get("{homeworkId}/submissions") {
+    get("/{homeworkId}/submissions") {
         val homeworkId = checkNotNull(call.parameters["homeworkId"]?.toLongOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmissions(homeworkId))
     }
@@ -67,13 +67,13 @@ private fun Route.routeStudentApi(repo: Repository) {
 }
 
 
-private fun Route.routeProfessorApi(repo: Repository) {
+private fun Route.routeSubmissionApi(repo: Repository) {
     post("/check/{submissionId}") {
         val id = checkNotNull(call.parameters["submissionId"]?.toLongOrNull())
         TODO()
     }
 
-    post("checker") {
+    post("/checker") {
         val checkerContent = call.receive<Checker.Content>()
         repo.addChecker(checkerContent)
     }
