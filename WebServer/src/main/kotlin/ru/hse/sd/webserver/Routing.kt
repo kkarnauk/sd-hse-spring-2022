@@ -47,6 +47,7 @@ private fun Route.routeProfessor() {
             professorPage(allHomework)
         }
     }
+
     get("/addHomework") {
         val name = checkNotNull(call.request.queryParameters["name"])
         val statement = checkNotNull(call.request.queryParameters["statement"])
@@ -54,5 +55,14 @@ private fun Route.routeProfessor() {
         val endDate = Timestamp(Date.valueOf(checkNotNull(call.request.queryParameters["endDate"])).time)
         addHomework(Homework.Content(name, startDate, endDate, statement, RunnerTask(0)))
         call.respondRedirect("/professor")
+    }
+
+    get("/homework/{id}") {
+        val homeworkId = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val homework = getHomework(homeworkId)
+        val submissions = getSubmissions(homeworkId)
+        call.respondHtml(HttpStatusCode.OK) {
+            homeworkPage(homework, submissions)
+        }
     }
 }

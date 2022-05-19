@@ -2,6 +2,7 @@ package ru.hse.sd.webserver
 
 import kotlinx.html.*
 import ru.hse.sd.hwproj.model.Homework
+import ru.hse.sd.hwproj.model.Submission
 import java.text.SimpleDateFormat
 
 private val dateFormat = SimpleDateFormat("d MMM yyyy")
@@ -83,6 +84,33 @@ private fun BODY.cards(allHomework: List<Homework>, createNew: Boolean, inFooter
     }
 }
 
+private fun DIV.modalFade(modalId: String, title: String, inBody: DIV.() -> Unit, inFooter: DIV.() -> Unit) {
+    div(classes = "modal fade") {
+        id = modalId
+        tabIndex = "-1"
+        attributes["aria-hidden"] = "true"
+        div(classes = "modal-dialog") {
+            div(classes = "modal-content") {
+                div(classes = "modal-header") {
+                    h5(classes = "modal-title") {
+                        text(title)
+                    }
+                    button(type = ButtonType.button, classes = "btn-close") {
+                        attributes["data-bs-dismiss"] = "modal"
+                        attributes["aria-label"] = "Close"
+                    }
+                }
+                div(classes = "modal-body") {
+                    inBody()
+                }
+                div(classes = "modal-footer") {
+                    inFooter()
+                }
+            }
+        }
+    }
+}
+
 fun HTML.studentPage(allHomework: List<Homework>) {
     head {
         title {
@@ -101,44 +129,25 @@ fun HTML.studentPage(allHomework: List<Homework>) {
                 attributes["data-bs-target"] = "#$modalId"
                 text("Сдать")
             }
-            div(classes = "modal fade") {
-                id = modalId
-                tabIndex = "-1"
-                attributes["aria-hidden"] = "true"
-                div(classes = "modal-dialog") {
-                    div(classes = "modal-content") {
-                        div(classes = "modal-header") {
-                            h5(classes = "modal-title") {
-                                text(it.content.name)
-                            }
-                            button(type = ButtonType.button, classes = "btn-close") {
-                                attributes["data-bs-dismiss"] = "modal"
-                                attributes["aria-label"] = "Close"
-                            }
-                        }
-                        div(classes = "modal-body") {
-                            p {
-                                text(it.content.statement)
-                            }
-                            form {
-                                div(classes = "mb-3") {
-                                    input(type = InputType.text, classes = "form-control") {
-                                        id = "solution"
-                                        placeholder = "Ссылка на github с решением"
-                                    }
-                                }
-                            }
-                        }
-                        div(classes = "modal-footer") {
-                            button(type = ButtonType.button, classes = "btn btn-secondary") {
-                                attributes["data-bs-dismiss"] = "modal"
-                                text("Отменить")
-                            }
-                            button(type = ButtonType.button, classes = "btn btn-primary") {
-                                text("Отправить")
-                            }
+            modalFade(modalId, it.content.name, {
+                p {
+                    text(it.content.statement)
+                }
+                form {
+                    div(classes = "mb-3") {
+                        input(type = InputType.text, classes = "form-control") {
+                            id = "solution"
+                            placeholder = "Ссылка на github с решением"
                         }
                     }
+                }
+            }) {
+                button(type = ButtonType.button, classes = "btn btn-secondary") {
+                    attributes["data-bs-dismiss"] = "modal"
+                    text("Отменить")
+                }
+                button(type = ButtonType.button, classes = "btn btn-primary") {
+                    text("Отправить")
                 }
             }
         }
@@ -165,11 +174,77 @@ fun HTML.professorPage(allHomework: List<Homework>) {
     body {
 
         cards(allHomework, true) {
-            val modalId = "modal${it.id}"
-            button(type = ButtonType.button, classes = "btn btn-primary") {
-                attributes["data-bs-toggle"] = "modal"
-                attributes["data-bs-target"] = "#$modalId"
+            a(href = "professor/homework/${it.id}", classes = "btn btn-primary") {
                 text("Смотреть решения")
+            }
+        }
+        script {
+            src = "/assets/bootstrap/bootstrap.bundle.min.js"
+        }
+    }
+}
+
+
+fun HTML.homeworkPage(homework: Homework, submission: List<Submission>) {
+    head {
+        title {
+            +homework.content.name
+        }
+        link {
+            rel = "stylesheet"
+            href = "/assets/bootstrap/bootstrap.css"
+        }
+        link {
+            rel = "stylesheet"
+            href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        }
+    }
+    body {
+        div(classes = "container") {
+            div(classes = "card h-100") {
+                div(classes = "card-body") {
+                    h5(classes = "card-title") {
+                        text(homework.content.name)
+                    }
+                    h6(classes = "card-subtitle mb-2 text-muted") {
+                        val startDate = dateFormat.format(homework.content.startDate)
+                        val endDate = dateFormat.format(homework.content.endDate)
+                        text("$startDate — $endDate")
+                    }
+                    p(classes = "card-text") {
+                        text(homework.content.statement)
+                    }
+                }
+                div(classes = "card-footer") {
+                    div(classes = "list-group") {
+                        submission.forEach {
+                            val modalId = "modal${it.id}"
+                            button(classes = "list-group-item list-group-item-action") {
+                                attributes["data-bs-toggle"] = "modal"
+                                attributes["data-bs-target"] = "#$modalId"
+                                text(it.content.solutionLink.toString())
+                            }
+                            modalFade(modalId, "Решение задачи ${homework.content.name}", {
+                                p {
+                                    text("Сдано: ${dateFormat.format(it.content.date)}")
+                                }
+                                p {
+                                    text("Ссылка: ")
+                                    a(classes = "link-primary", href = it.content.solutionLink.toString()) {
+                                        text(it.content.solutionLink.toString())
+                                    }
+                                }
+                                p {
+                                    text("Результат проверки: не проверено")
+                                }
+                            }) {
+                                button(type = ButtonType.button, classes = "btn btn-primary") {
+                                    text("Проверить")
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         script {
