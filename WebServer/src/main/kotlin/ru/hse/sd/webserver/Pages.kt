@@ -1,0 +1,179 @@
+package ru.hse.sd.webserver
+
+import kotlinx.html.*
+import ru.hse.sd.hwproj.model.Homework
+import java.text.SimpleDateFormat
+
+private val dateFormat = SimpleDateFormat("d MMM yyyy")
+
+private fun BODY.cards(allHomework: List<Homework>, createNew: Boolean, inFooter: DIV.(Homework) -> Unit) {
+    div(classes = "container") {
+        div(classes = "row row-cols-1 row-cols-md-4 g-4") {
+            if (createNew) {
+                div(classes = "col") {
+                    form(classes = "card h-100", method = FormMethod.get, action = "professor/addHomework") {
+                        div(classes = "card-body") {
+                            h5(classes = "card-title") {
+                                input(type = InputType.text, name = "name", classes = "form-control") {
+                                    required = true
+                                    placeholder = "Название новой домашки"
+                                }
+                            }
+                            div(classes = "input-group mb-3") {
+                                span(classes = "input-group-text") {
+                                    id = "basic-addon1"
+                                    text("С")
+                                }
+                                input(type = InputType.date, classes = "form-control input-sm", name = "startDate") {
+                                    required = true
+                                    id = "inputStartDate"
+                                    attributes["aria-describedby"] = "basic-addon1"
+                                }
+                            }
+                            div(classes = "input-group mb-3") {
+                                span(classes = "input-group-text") {
+                                    id = "basic-addon2"
+                                    text("По")
+                                }
+                                input(type = InputType.date, classes = "form-control input-sm", name = "endDate") {
+                                    required = true
+                                    attributes["aria-describedby"] = "basic-addon2"
+                                }
+                            }
+                            div {
+                                textArea(classes = "form-control") {
+                                    required = true
+                                    name = "statement"
+                                    style = "width: 100%"
+                                    placeholder = "Описание новой домашки.."
+                                }
+                            }
+                        }
+                        div(classes = "card-footer") {
+                            button(type = ButtonType.submit, classes = "btn btn-primary") {
+                                text("Создать")
+                            }
+                        }
+                    }
+                }
+            }
+            allHomework.forEach {
+                div(classes = "col") {
+                    div(classes = "card h-100") {
+                        div(classes = "card-body") {
+                            h5(classes = "card-title") {
+                                text(it.content.name)
+                            }
+                            h6(classes = "card-subtitle mb-2 text-muted") {
+                                val startDate = dateFormat.format(it.content.startDate)
+                                val endDate = dateFormat.format(it.content.endDate)
+                                text("$startDate — $endDate")
+                            }
+                            p(classes = "card-text") {
+                                text(it.content.statement)
+                            }
+                        }
+                        div(classes = "card-footer") {
+                            inFooter(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun HTML.studentPage(allHomework: List<Homework>) {
+    head {
+        title {
+            +"Страничка студента"
+        }
+        link {
+            rel = "stylesheet"
+            href = "/assets/bootstrap/bootstrap.css"
+        }
+    }
+    body {
+        cards(allHomework, false) {
+            val modalId = "modal${it.id}"
+            button(type = ButtonType.button, classes = "btn btn-primary") {
+                attributes["data-bs-toggle"] = "modal"
+                attributes["data-bs-target"] = "#$modalId"
+                text("Сдать")
+            }
+            div(classes = "modal fade") {
+                id = modalId
+                tabIndex = "-1"
+                attributes["aria-hidden"] = "true"
+                div(classes = "modal-dialog") {
+                    div(classes = "modal-content") {
+                        div(classes = "modal-header") {
+                            h5(classes = "modal-title") {
+                                text(it.content.name)
+                            }
+                            button(type = ButtonType.button, classes = "btn-close") {
+                                attributes["data-bs-dismiss"] = "modal"
+                                attributes["aria-label"] = "Close"
+                            }
+                        }
+                        div(classes = "modal-body") {
+                            p {
+                                text(it.content.statement)
+                            }
+                            form {
+                                div(classes = "mb-3") {
+                                    input(type = InputType.text, classes = "form-control") {
+                                        id = "solution"
+                                        placeholder = "Ссылка на github с решением"
+                                    }
+                                }
+                            }
+                        }
+                        div(classes = "modal-footer") {
+                            button(type = ButtonType.button, classes = "btn btn-secondary") {
+                                attributes["data-bs-dismiss"] = "modal"
+                                text("Отменить")
+                            }
+                            button(type = ButtonType.button, classes = "btn btn-primary") {
+                                text("Отправить")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        script {
+            src = "/assets/bootstrap/bootstrap.bundle.min.js"
+        }
+    }
+}
+
+fun HTML.professorPage(allHomework: List<Homework>) {
+    head {
+        title {
+            +"Страничка преподавателя"
+        }
+        link {
+            rel = "stylesheet"
+            href = "/assets/bootstrap/bootstrap.css"
+        }
+        link {
+            rel = "stylesheet"
+            href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        }
+    }
+    body {
+
+        cards(allHomework, true) {
+            val modalId = "modal${it.id}"
+            button(type = ButtonType.button, classes = "btn btn-primary") {
+                attributes["data-bs-toggle"] = "modal"
+                attributes["data-bs-target"] = "#$modalId"
+                text("Смотреть решения")
+            }
+        }
+        script {
+            src = "/assets/bootstrap/bootstrap.bundle.min.js"
+        }
+    }
+}
