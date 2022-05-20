@@ -23,7 +23,7 @@ internal class Runner {
 
     @Suppress("UNUSED_PARAMETER")
     private fun deliveryCallback(consumerTag: String, message: Delivery) {
-        val task = GSON.fromJson(String(message.body), RunnerTask::class.java)
+        val task = gson.fromJson(String(message.body), RunnerTask::class.java)
         run(task)
     }
 
@@ -32,6 +32,6 @@ internal class Runner {
     }
 
     companion object {
-        private val GSON = GsonBuilder().create()
+        private val gson = GsonBuilder().create()
     }
 }

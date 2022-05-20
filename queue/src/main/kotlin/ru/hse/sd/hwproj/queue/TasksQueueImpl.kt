@@ -24,10 +24,10 @@ internal class TasksQueueImpl : TasksQueue, AutoCloseable {
     }
 
     override suspend fun sendRunnerTask(task: RunnerTask) {
-        channel.basicPublish("", BrokerSettings.queueName, null, GSON.toJson(task).toByteArray())
+        channel.basicPublish("", BrokerSettings.queueName, null, gson.toJson(task).toByteArray())
     }
 
     companion object {
-        private val GSON = GsonBuilder().create()
+        private val gson = GsonBuilder().create()
     }
 }

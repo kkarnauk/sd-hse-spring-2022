@@ -10,9 +10,6 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":model"))
-    implementation(project(":repository"))
-    implementation(project(":facade"))
     implementation(project(":settings"))
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
@@ -22,5 +19,7 @@ dependencies {
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-client-gson:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-html-builder:$ktorVersion")
+    implementation("io.ktor:ktor-webjars:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 }
