@@ -12,7 +12,7 @@ private fun BODY.cards(allHomework: List<Homework>, createNew: Boolean, inFooter
         div(classes = "row row-cols-1 row-cols-md-4 g-4") {
             if (createNew) {
                 div(classes = "col") {
-                    form(classes = "card h-100", method = FormMethod.post, action = "professor/addHomework") {
+                    form(classes = "card h-100", method = FormMethod.post, action = "professor/homework") {
                         div(classes = "card-body") {
                             h5(classes = "card-title") {
                                 input(type = InputType.text, name = "name", classes = "form-control") {
