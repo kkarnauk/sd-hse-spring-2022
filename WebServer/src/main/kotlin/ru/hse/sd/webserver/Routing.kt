@@ -5,6 +5,7 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.html.*
 import io.ktor.http.*
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.webjars.*
@@ -48,11 +49,12 @@ private fun Route.routeProfessor() {
         }
     }
 
-    get("/addHomework") {
-        val name = checkNotNull(call.request.queryParameters["name"])
-        val statement = checkNotNull(call.request.queryParameters["statement"])
-        val startDate = Timestamp(Date.valueOf(checkNotNull(call.request.queryParameters["startDate"])).time)
-        val endDate = Timestamp(Date.valueOf(checkNotNull(call.request.queryParameters["endDate"])).time)
+    post("/addHomework") {
+        val formParameters = call.receiveParameters()
+        val name = checkNotNull(formParameters["name"])
+        val statement = checkNotNull(formParameters["statement"])
+        val startDate = Timestamp(Date.valueOf(checkNotNull(formParameters["startDate"])).time)
+        val endDate = Timestamp(Date.valueOf(checkNotNull(formParameters["endDate"])).time)
         addHomework(Homework.Content(name, startDate, endDate, statement, RunnerTask(0)))
         call.respondRedirect("/professor")
     }
