@@ -8,7 +8,7 @@ interface AddressSettings : Settings {
     val port: Int
 }
 
-object QueueHandlerSettings : AddressSettings {
+object TasksQueueSettings : AddressSettings {
     override val host: String
         get() = "localhost"
 

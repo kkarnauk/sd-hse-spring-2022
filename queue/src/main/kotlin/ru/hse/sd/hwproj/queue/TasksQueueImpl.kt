@@ -23,7 +23,7 @@ internal class TasksQueueImpl : TasksQueue, AutoCloseable {
         connection.close()
     }
 
-    override fun sendRunnerTask(task: RunnerTask) {
+    override suspend fun sendRunnerTask(task: RunnerTask) {
         channel.basicPublish("", BrokerSettings.queueName, null, GSON.toJson(task).toByteArray())
     }
 
