@@ -2,6 +2,6 @@ package ru.hse.sd.hwproj.queue
 
 import ru.hse.sd.hwproj.model.RunnerTask
 
-interface QueueHandler {
+interface TasksQueue {
     fun sendRunnerTask(task: RunnerTask)
 }

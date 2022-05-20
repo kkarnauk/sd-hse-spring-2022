@@ -14,12 +14,12 @@ internal fun Application.configureRouting() {
         gson()
     }
 
-    val queueHandler = QueueHandlerImpl()
+    val tasksQueue = TasksQueueImpl()
 
     routing {
         post("/task") {
             val runnerTask = call.receive<RunnerTask>()
-            queueHandler.sendRunnerTask(runnerTask)
+            tasksQueue.sendRunnerTask(runnerTask)
             call.respond(HttpStatusCode.OK)
         }
     }
