@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "ru.hse.sd.hwproj.repo"
+group = "ru.hse.sd.hwproj"
 version = "1.0-SNAPSHOT"
 
 val ktorVersion: String by project
