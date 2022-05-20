@@ -1,33 +1,13 @@
 package ru.hse.sd.repo
 
-import com.google.gson.GsonBuilder
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.*
-import io.ktor.client.request.*
 import io.ktor.http.*
+import ru.hse.sd.hwproj.facade.Facade
 import ru.hse.sd.hwproj.model.Checker
 import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.Submission
 import ru.hse.sd.hwproj.settings.RepositorySettings
-import java.net.URL
 
-class RepositoryFacade : Repository {
-    private val client = HttpClient(CIO) {
-        install(JsonFeature) {
-            serializer = GsonSerializer()
-        }
-    }
-
-    private suspend inline fun <reified T> request(url: String, reqMethod: HttpMethod, reqBody: String? = null): T {
-        return client.request(URL("http", RepositorySettings.host, RepositorySettings.port, url)) {
-            method = reqMethod
-            reqBody?.let {
-                body = it
-            }
-        }
-    }
-
+class RepositoryFacade : Facade(RepositorySettings), Repository {
     override suspend fun getHomework(id: Long): Homework.Content {
         return request("/homework/$id", HttpMethod.Get)
     }
@@ -58,9 +38,5 @@ class RepositoryFacade : Repository {
 
     override suspend fun addChecker(content: Checker.Content): Checker {
         return request("/checker", HttpMethod.Post, gson.toJson(content))
-    }
-
-    companion object {
-        private val gson = GsonBuilder().create()
     }
 }
