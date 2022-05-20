@@ -49,7 +49,7 @@ private fun Route.routeProfessor() {
         }
     }
 
-    post("/addHomework") {
+    post("/homework") {
         val formParameters = call.receiveParameters()
         val name = checkNotNull(formParameters["name"])
         val statement = checkNotNull(formParameters["statement"])
