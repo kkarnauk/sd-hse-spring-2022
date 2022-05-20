@@ -7,6 +7,7 @@ version = "1.0-SNAPSHOT"
 
 val ktorVersion: String by project
 val logbackVersion: String by project
+val rabbitmqVersion: String by project
 
 repositories {
     mavenCentral()
@@ -14,6 +15,7 @@ repositories {
 
 dependencies {
     implementation(project(":model"))
+    implementation(project(":settings"))
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
