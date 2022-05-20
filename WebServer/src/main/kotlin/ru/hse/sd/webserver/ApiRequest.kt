@@ -9,6 +9,7 @@ import io.ktor.http.*
 import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.RunnerTask
 import ru.hse.sd.hwproj.model.Submission
+import ru.hse.sd.hwproj.settings.WebServerApiSettings
 import java.net.URL
 import java.sql.Timestamp
 import kotlin.random.Random
@@ -20,7 +21,7 @@ private val client = HttpClient(CIO) {
 }
 
 private suspend inline fun <reified T> request(url: String, reqMethod: HttpMethod, reqBody: String? = null): T {
-    return client.request(URL("http", apiHost, apiPort, url)) {
+    return client.request(URL("http", WebServerApiSettings.host, WebServerApiSettings.port, url)) {
         method = reqMethod
         reqBody?.let {
             body = it

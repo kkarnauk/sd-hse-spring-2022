@@ -9,6 +9,7 @@ import io.ktor.http.*
 import ru.hse.sd.hwproj.model.Checker
 import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.Submission
+import ru.hse.sd.hwproj.settings.RepositorySettings
 import java.net.URL
 
 class RepositoryFacade : Repository {
@@ -19,7 +20,7 @@ class RepositoryFacade : Repository {
     }
 
     private suspend inline fun <reified T> request(url: String, reqMethod: HttpMethod, reqBody: String? = null): T {
-        return client.request(URL("http", host, port, url)) {
+        return client.request(URL("http", RepositorySettings.host, RepositorySettings.port, url)) {
             method = reqMethod
             reqBody?.let {
                 body = it
