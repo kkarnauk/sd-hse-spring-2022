@@ -13,6 +13,8 @@ repositories {
 dependencies {
     implementation(project(":model"))
     implementation(project(":settings"))
+    implementation(project(":repository"))
+    implementation(project(":facade"))
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")

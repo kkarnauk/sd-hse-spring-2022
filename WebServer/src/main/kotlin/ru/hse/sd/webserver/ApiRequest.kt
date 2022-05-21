@@ -42,7 +42,8 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
 //    return request(TODO, HttpMethod.Get)
         return List(Random.nextInt(7)) {
             Submission(
-                it.toLong(), RunnerTask(0), Submission.Content(
+                it.toLong(), Submission.Content(
+                    0L,
                     Timestamp(Random.nextInt().toLong()),
                     URL("https://github.com/submission${Random.nextInt()}")
                 )

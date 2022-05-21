@@ -24,8 +24,16 @@ class RepositoryFacade : Facade(RepositorySettings), Repository {
         return request("/submission/$submissionId/result", HttpMethod.Get)
     }
 
+    override suspend fun addSubmissionResult(submissionId: Long, result: Submission.Result) {
+        return request("/submission/$submissionId/result", HttpMethod.Post, gson.toJson(result))
+    }
+
     override suspend fun getSubmissions(homeworkId: Long): List<Submission> {
         return request("/submission", HttpMethod.Get)
+    }
+
+    override suspend fun getChecker(id: Long): Checker.Content {
+        return request("/checker/$id", HttpMethod.Get)
     }
 
     override suspend fun addHomework(content: Homework.Content): Homework {

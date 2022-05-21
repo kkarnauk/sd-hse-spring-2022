@@ -67,9 +67,20 @@ private fun Route.routeSubmission(repo: Repository) {
         val content = call.receive<Submission.Content>()
         call.respond(HttpStatusCode.OK, repo.addSubmission(content))
     }
+
+    post("/{id}/result") {
+        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val result = call.receive<Submission.Result>()
+        call.respond(HttpStatusCode.OK, repo.addSubmissionResult(id, result))
+    }
 }
 
 private fun Route.routeChecker(repo: Repository) {
+    get("/{id}") {
+        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        call.respond(HttpStatusCode.OK, repo.getChecker(id))
+    }
+
     post {
         val content = call.receive<Checker.Content>()
         call.respond(HttpStatusCode.OK, repo.addChecker(content))

@@ -15,9 +15,13 @@ interface Repository {
 
     suspend fun getSubmissionResult(submissionId: Long): Submission.Result
 
+    suspend fun addSubmissionResult(submissionId: Long, result: Submission.Result)
+
     suspend fun getSubmissions(homeworkId: Long): List<Submission>
 
     suspend fun addSubmission(content: Submission.Content): Submission
+
+    suspend fun getChecker(id: Long): Checker.Content
 
     suspend fun addChecker(content: Checker.Content): Checker
 }
