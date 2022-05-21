@@ -6,7 +6,7 @@ private fun startRunner() = thread(start = true, isDaemon = false) {
     Receiver().receiveTasks()
 }
 
-fun main() {
+internal fun main() {
     startRunner()
     startRunner()
     startRunner()

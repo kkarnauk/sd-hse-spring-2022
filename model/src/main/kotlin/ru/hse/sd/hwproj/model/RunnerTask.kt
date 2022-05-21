@@ -1,3 +1,15 @@
 package ru.hse.sd.hwproj.model
 
-data class RunnerTask(val checkerId: Long, val submissionId: Long)
+/**
+ * Represents a task that is invoked when a checker is going to test a submission.
+ */
+data class RunnerTask(
+    /**
+     * Checker to be used.
+     */
+    val checkerId: Long,
+    /**
+     * Submission to be checked.
+     */
+    val submissionId: Long
+)

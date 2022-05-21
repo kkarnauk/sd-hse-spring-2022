@@ -7,6 +7,9 @@ import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.Submission
 import ru.hse.sd.hwproj.settings.RepositorySettings
 
+/**
+ * Public API for [Repository]. Communicates with actual implementation via REST.
+ */
 class RepositoryFacade : Facade(RepositorySettings), Repository {
     override suspend fun getHomework(id: Long): Homework.Content {
         return request("/homework/$id", HttpMethod.Get)

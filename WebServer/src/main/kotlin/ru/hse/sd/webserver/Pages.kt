@@ -111,7 +111,7 @@ private fun DIV.modalFade(modalId: String, title: String, inBody: DIV.() -> Unit
     }
 }
 
-fun HTML.studentPage(allHomework: List<Homework>) {
+internal fun HTML.studentPage(allHomework: List<Homework>) {
     head {
         title {
             +"Страничка студента"
@@ -157,7 +157,7 @@ fun HTML.studentPage(allHomework: List<Homework>) {
     }
 }
 
-fun HTML.professorPage(allHomework: List<Homework>) {
+internal fun HTML.professorPage(allHomework: List<Homework>) {
     head {
         title {
             +"Страничка преподавателя"
@@ -185,7 +185,7 @@ fun HTML.professorPage(allHomework: List<Homework>) {
 }
 
 
-fun HTML.homeworkPage(homework: Homework, submission: List<Submission>) {
+internal fun HTML.homeworkPage(homework: Homework, submission: List<Submission>) {
     head {
         title {
             +homework.content.name
