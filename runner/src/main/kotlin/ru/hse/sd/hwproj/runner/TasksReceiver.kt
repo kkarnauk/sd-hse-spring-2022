@@ -7,7 +7,7 @@ import ru.hse.sd.hwproj.model.RunnerTask
 import ru.hse.sd.hwproj.settings.BrokerSettings
 import java.nio.file.Path
 
-internal class Receiver : AutoCloseable {
+internal class TasksReceiver : AutoCloseable {
     private val runner by lazy {
         Runner(root)
     }

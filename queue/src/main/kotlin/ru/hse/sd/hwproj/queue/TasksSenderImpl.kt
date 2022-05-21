@@ -5,7 +5,7 @@ import com.rabbitmq.client.ConnectionFactory
 import ru.hse.sd.hwproj.model.RunnerTask
 import ru.hse.sd.hwproj.settings.BrokerSettings
 
-internal class TasksQueueImpl : TasksQueue, AutoCloseable {
+internal class TasksSenderImpl : TasksSender, AutoCloseable {
     private val connectionFactory by lazy {
         ConnectionFactory().apply {
             host = BrokerSettings.host

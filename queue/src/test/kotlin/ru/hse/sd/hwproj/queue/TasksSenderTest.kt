@@ -13,7 +13,7 @@ import ru.hse.sd.hwproj.settings.BrokerSettings
 import java.time.Duration
 import kotlin.concurrent.thread
 
-class TasksQueueTest {
+class TasksSenderTest {
     private lateinit var connectionFactory: ConnectionFactory
 
     @BeforeEach
@@ -34,7 +34,7 @@ class TasksQueueTest {
 
     @ParameterizedTest
     @MethodSource("implementations")
-    fun `test consistent send and receive`(queue: TasksQueue) = runBlocking {
+    fun `test consistent send and receive`(queue: TasksSender) = runBlocking {
         for (i in 0 until 3) {
             for (j in 0 until 3) {
                 val task = RunnerTask(i.toLong(), j.toLong())
@@ -46,7 +46,7 @@ class TasksQueueTest {
 
     @ParameterizedTest
     @MethodSource("implementations")
-    fun `test all sends at first`(queue: TasksQueue) = runBlocking {
+    fun `test all sends at first`(queue: TasksSender) = runBlocking {
         for (i in 0 until 3) {
             for (j in 0 until 3) {
                 queue.sendRunnerTask(RunnerTask(i.toLong(), j.toLong()))
@@ -61,7 +61,7 @@ class TasksQueueTest {
 
     @ParameterizedTest
     @MethodSource("implementations")
-    fun `test parallel send and receive`(queue: TasksQueue) {
+    fun `test parallel send and receive`(queue: TasksSender) {
         val count = 12
 
         @Suppress("BlockingMethodInNonBlockingContext")
@@ -88,7 +88,7 @@ class TasksQueueTest {
 
     companion object {
         @JvmStatic
-        fun implementations() = listOf<TasksQueue>(TasksQueueImpl())
+        fun implementations() = listOf<TasksSender>(TasksSenderImpl())
 
         private val gson = GsonBuilder().create()
     }

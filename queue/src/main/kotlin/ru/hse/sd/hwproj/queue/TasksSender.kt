@@ -5,7 +5,7 @@ import ru.hse.sd.hwproj.model.RunnerTask
 /**
  * Handles requests to perform a check.
  */
-interface TasksQueue {
+interface TasksSender {
     /**
      * Sends [task] to a queue in order to perform a check.
      */

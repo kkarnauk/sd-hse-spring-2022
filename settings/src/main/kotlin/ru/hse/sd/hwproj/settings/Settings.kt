@@ -23,7 +23,7 @@ interface AddressSettings : Settings {
 /**
  * Settings to set up the tasks queue.
  */
-object TasksQueueSettings : AddressSettings {
+object TasksSenderSettings : AddressSettings {
     override val host: String
         get() = "localhost"
 

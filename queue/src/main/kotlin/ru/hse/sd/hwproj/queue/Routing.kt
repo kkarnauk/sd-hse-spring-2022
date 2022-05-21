@@ -14,7 +14,7 @@ internal fun Application.configureRouting() {
         gson()
     }
 
-    val tasksQueue = TasksQueueImpl()
+    val tasksQueue = TasksSenderImpl()
 
     routing {
         post("/task") {
