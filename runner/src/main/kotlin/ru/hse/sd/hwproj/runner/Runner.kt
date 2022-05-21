@@ -11,6 +11,7 @@ import java.nio.file.Path
 import java.sql.Timestamp
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
+import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
 import kotlin.io.path.writeBytes
 
@@ -40,7 +41,7 @@ internal class Runner {
 
     private fun runProcess(path: Path): Process {
         return ProcessBuilder().apply {
-            command(path.toString())
+            command("bash", path.toString())
         }.start()
     }
 
@@ -68,5 +69,9 @@ internal class Runner {
         private val filesLock = ReentrantLock()
         private val root = Path.of("checkers")
         private val gson = GsonBuilder().create()
+
+        init {
+            root.createDirectories()
+        }
     }
 }
