@@ -21,7 +21,7 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
 
     suspend fun addHomework(homeworkContent: Homework.Content): Homework {
 //     TODO
-//    return request("/api/student/homework", HttpMethod.Post, gson.toJson(homeworkContent))
+//    return request("/api/student/homework", HttpMethod.Post, homeworkContent)
         hw.add(
             Homework(
                 Random.nextLong(),

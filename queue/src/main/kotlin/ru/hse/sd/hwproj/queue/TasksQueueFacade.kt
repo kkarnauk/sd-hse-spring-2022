@@ -7,6 +7,6 @@ import ru.hse.sd.hwproj.settings.TasksQueueSettings
 
 class TasksQueueFacade : Facade(TasksQueueSettings), TasksQueue {
     override suspend fun sendRunnerTask(task: RunnerTask) {
-        return request("/task", HttpMethod.Post, gson.toJson(task))
+        return request("/task", HttpMethod.Post, task)
     }
 }

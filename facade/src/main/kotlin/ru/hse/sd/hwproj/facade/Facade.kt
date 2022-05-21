@@ -1,7 +1,5 @@
 package ru.hse.sd.hwproj.facade
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.json.*
@@ -17,21 +15,17 @@ abstract class Facade(protected val addressSettings: AddressSettings) : AutoClos
         }
     }
 
-    protected suspend inline fun <reified T> request(url: String, reqMethod: HttpMethod, reqBody: String? = null): T {
+    protected suspend inline fun <reified T> request(url: String, reqMethod: HttpMethod, reqBody: Any? = null): T {
         return client.request(URL("http", addressSettings.host, addressSettings.port, url)) {
             method = reqMethod
             reqBody?.let {
                 body = it
+                contentType(ContentType.Application.Json)
             }
         }
     }
 
     override fun close() {
         client.close()
-    }
-
-    companion object {
-        @JvmStatic
-        protected val gson: Gson = GsonBuilder().create()
     }
 }

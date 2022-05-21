@@ -25,7 +25,7 @@ class RepositoryFacade : Facade(RepositorySettings), Repository {
     }
 
     override suspend fun addSubmissionResult(submissionId: Long, result: Submission.Result) {
-        return request("/submission/$submissionId/result", HttpMethod.Post, gson.toJson(result))
+        return request("/submission/$submissionId/result", HttpMethod.Post, result)
     }
 
     override suspend fun getSubmissions(homeworkId: Long): List<Submission> {
@@ -33,18 +33,18 @@ class RepositoryFacade : Facade(RepositorySettings), Repository {
     }
 
     override suspend fun getChecker(id: Long): Checker.Content {
-        return request("/checker/$id", HttpMethod.Get)
+        return request("/check/$id", HttpMethod.Get)
     }
 
     override suspend fun addHomework(content: Homework.Content): Homework {
-        return request("/homework", HttpMethod.Post, gson.toJson(content))
+        return request("/homework", HttpMethod.Post, content)
     }
 
     override suspend fun addSubmission(content: Submission.Content): Submission {
-        return request("/submission", HttpMethod.Post, gson.toJson(content))
+        return request("/submission", HttpMethod.Post, content)
     }
 
     override suspend fun addChecker(content: Checker.Content): Checker {
-        return request("/checker", HttpMethod.Post, gson.toJson(content))
+        return request("/check", HttpMethod.Post, content)
     }
 }
