@@ -1,4 +1,3 @@
 package ru.hse.sd.hwproj.model
 
-@JvmInline
-value class RunnerTask(val checkerId: Long)
+data class RunnerTask(val checkerId: Long, val submissionId: Long)

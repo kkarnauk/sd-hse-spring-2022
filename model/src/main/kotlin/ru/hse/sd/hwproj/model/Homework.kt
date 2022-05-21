@@ -8,6 +8,6 @@ data class Homework(val id: Long, val content: Content) {
         val startDate: Timestamp,
         val endDate: Timestamp,
         val statement: String,
-        val runnerTask: RunnerTask
+        val checkerId: Long
     )
 }

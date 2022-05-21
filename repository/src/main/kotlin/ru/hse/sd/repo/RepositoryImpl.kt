@@ -23,7 +23,15 @@ internal class RepositoryImpl : Repository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun addSubmissionResult(submissionId: Long, result: Submission.Result) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getSubmissions(homeworkId: Long): List<Submission> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getChecker(id: Long): Checker.Content {
         TODO("Not yet implemented")
     }
 
