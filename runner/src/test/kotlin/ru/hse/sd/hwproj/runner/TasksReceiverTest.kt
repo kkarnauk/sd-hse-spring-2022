@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.thread
 import kotlin.concurrent.withLock
 
-class ReceiverTest {
+class TasksReceiverTest {
     private lateinit var connectionFactory: ConnectionFactory
 
     private val receivedMessages = LinkedList<RunnerTask>()
@@ -31,10 +31,10 @@ class ReceiverTest {
         return connectionFactory
     }
 
-    private fun mockReceiverRun(block: (RunnerTask) -> Unit): Receiver {
+    private fun mockReceiverRun(block: (RunnerTask) -> Unit): TasksReceiver {
         mockkConstructor(Runner::class)
         every { anyConstructed<Runner>().run(any()) } answers { block(arg(0)) }
-        return Receiver()
+        return TasksReceiver()
     }
 
     @BeforeEach
