@@ -55,7 +55,7 @@ private fun Route.routeProfessor() {
         val statement = checkNotNull(formParameters["statement"])
         val startDate = Timestamp(Date.valueOf(checkNotNull(formParameters["startDate"])).time)
         val endDate = Timestamp(Date.valueOf(checkNotNull(formParameters["endDate"])).time)
-        ApiRequest.addHomework(Homework.Content(name, startDate, endDate, statement, RunnerTask(0)))
+        ApiRequest.addHomework(Homework.Content(name, startDate, endDate, statement, 0))
         call.respondRedirect("/professor")
     }
 
