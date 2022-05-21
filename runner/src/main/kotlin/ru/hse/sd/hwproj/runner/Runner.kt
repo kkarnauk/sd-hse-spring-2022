@@ -31,7 +31,7 @@ internal class Runner {
 
     private fun createChecker(id: Long, checker: Checker.Content): Path {
         return filesLock.withLock {
-            val filepath = root.resolve("checker_$id")
+            val filepath = root.resolve("checker_$id.sh")
             if (!filepath.exists()) {
                 filepath.writeBytes(checker.bytes)
             }
@@ -53,7 +53,7 @@ internal class Runner {
             homework = repository.getHomework(submission.homeworkId)
         }
         val input = gson.toJson(Content(submission, homework))
-        outputStream.write(input.toByteArray())
+        outputStream.write((input + System.lineSeparator()).toByteArray())
     }
 
     private fun Process.waitForResult(): Submission.Result {

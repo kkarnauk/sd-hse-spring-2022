@@ -53,7 +53,7 @@ private fun Route.routeSubmission(repo: Repository) {
         call.respond(HttpStatusCode.OK, repo.getSubmission(id))
     }
 
-    get("/{id}") {
+    get("/homework/{id}") {
         val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmissions(id))
     }
