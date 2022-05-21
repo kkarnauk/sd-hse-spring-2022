@@ -5,10 +5,11 @@ import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.Delivery
 import ru.hse.sd.hwproj.model.RunnerTask
 import ru.hse.sd.hwproj.settings.BrokerSettings
+import java.nio.file.Path
 
 internal class Receiver : AutoCloseable {
     private val runner by lazy {
-        Runner()
+        Runner(root)
     }
 
     private val connectionFactory by lazy {
@@ -44,5 +45,6 @@ internal class Receiver : AutoCloseable {
 
     companion object {
         private val gson = GsonBuilder().create()
+        private val root = Path.of("checkers")
     }
 }
