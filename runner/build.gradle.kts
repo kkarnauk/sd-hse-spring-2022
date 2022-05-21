@@ -6,6 +6,11 @@ val ktorVersion: String by project
 val logbackVersion: String by project
 val rabbitmqVersion: String by project
 
+val rabbitmqMockVersion: String by project
+val mockkVersion: String by project
+
+val junitVersion: String by project
+
 repositories {
     mavenCentral()
 }
@@ -27,4 +32,13 @@ dependencies {
     implementation("io.ktor:ktor-webjars:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("com.rabbitmq:amqp-client:$rabbitmqVersion")
+
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("com.github.fridujo:rabbitmq-mock:$rabbitmqMockVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
