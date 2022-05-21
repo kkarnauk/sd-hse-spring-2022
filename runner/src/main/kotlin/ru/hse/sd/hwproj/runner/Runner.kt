@@ -15,8 +15,12 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
 import kotlin.io.path.writeBytes
 
-internal class Runner {
+internal class Runner(private val root: Path) {
     private val repository = RepositoryFacade()
+
+    init {
+        root.createDirectories()
+    }
 
     fun run(task: RunnerTask) {
         val checkerContent = runBlocking { repository.getChecker(task.checkerId) }
@@ -67,11 +71,6 @@ internal class Runner {
 
     companion object {
         private val filesLock = ReentrantLock()
-        private val root = Path.of("checkers")
         private val gson = GsonBuilder().create()
-
-        init {
-            root.createDirectories()
-        }
     }
 }
