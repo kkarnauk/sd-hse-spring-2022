@@ -1,5 +1,10 @@
 plugins {
     kotlin("jvm")
+    application
+}
+
+application {
+    mainClass.set("ru.hse.sd.webserver.api.MainKt")
 }
 
 val ktorVersion: String by project

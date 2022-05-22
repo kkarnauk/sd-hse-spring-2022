@@ -1,0 +1,66 @@
+version: "3.4"
+
+services:
+  rabbit-mq:
+    image: bitnami/rabbitmq:latest
+    restart: always
+    networks:
+      - hw-proj
+
+  db:
+    image: postgres:latest
+    networks:
+      - hw-proj
+
+  queue:
+    build: ./queue
+    restart: always
+    networks:
+      - hw-proj
+    depends_on:
+      - rabbit-mq
+
+  backend:
+    build: ./WebServerApi
+    restart: always
+    ports:
+      - "10003:10003"
+    hostname: localhost
+    networks:
+      - hw-proj
+    depends_on:
+      - db
+
+  frontend:
+    build: ./WebServer
+    restart: always
+    ports:
+      - "10002:10002"
+    hostname: localhost
+    networks:
+      - hw-proj
+    depends_on:
+      - db
+      - backend
+
+#  repository:
+#    build:
+#      context: ./repository
+#      dockerfile: app.Dockerfile
+#    networks:
+#      - hw-proj
+#    depends_on:
+#      - db
+
+#  db-init:
+#    build:
+#      context: ./repository
+#      dockerfile: init.Dockerfile
+#    networks:
+#      - hw-proj
+#    depends_on:
+#      - db
+
+networks:
+  hw-proj:
+    driver: bridge
