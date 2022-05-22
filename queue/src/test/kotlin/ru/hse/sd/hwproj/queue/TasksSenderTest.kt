@@ -37,7 +37,7 @@ class TasksSenderTest {
     fun `test consistent send and receive`(queue: TasksSender) = runBlocking {
         for (i in 0 until 3) {
             for (j in 0 until 3) {
-                val task = RunnerTask(i.toLong(), j.toLong())
+                val task = RunnerTask(i, j)
                 queue.sendRunnerTask(task)
                 assertEquals(task, receiveMessage())
             }
@@ -49,12 +49,12 @@ class TasksSenderTest {
     fun `test all sends at first`(queue: TasksSender) = runBlocking {
         for (i in 0 until 3) {
             for (j in 0 until 3) {
-                queue.sendRunnerTask(RunnerTask(i.toLong(), j.toLong()))
+                queue.sendRunnerTask(RunnerTask(i, j))
             }
         }
         for (i in 0 until 3) {
             for (j in 0 until 3) {
-                assertEquals(RunnerTask(i.toLong(), j.toLong()), receiveMessage())
+                assertEquals(RunnerTask(i, j), receiveMessage())
             }
         }
     }
@@ -68,7 +68,7 @@ class TasksSenderTest {
         thread {
             runBlocking {
                 for (i in 0 until count) {
-                    queue.sendRunnerTask(RunnerTask(i.toLong(), 0L))
+                    queue.sendRunnerTask(RunnerTask(i, 0))
                     Thread.sleep(100)
                 }
             }
@@ -80,7 +80,7 @@ class TasksSenderTest {
                     while (task == null) {
                         task = receiveMessage()
                     }
-                    assertEquals(RunnerTask(i.toLong(), 0L), task)
+                    assertEquals(RunnerTask(i, 0), task)
                 }
             }
         }.join()

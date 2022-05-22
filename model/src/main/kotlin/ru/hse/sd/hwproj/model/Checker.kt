@@ -7,7 +7,7 @@ data class Checker(
     /**
      * Unique id for the checker.
      */
-    val id: Long,
+    val id: Int,
     /**
      * [Content] of the checker.
      */
@@ -16,8 +16,7 @@ data class Checker(
     /**
      * Contains information about a program that will be invoked to check a submission.
      */
-    @Suppress("ArrayInDataClass")
-    data class Content(
+    class Content(
         /**
          * Bytes of the program.
          */

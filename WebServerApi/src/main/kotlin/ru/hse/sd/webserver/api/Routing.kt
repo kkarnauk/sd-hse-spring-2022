@@ -32,7 +32,7 @@ internal fun Application.configureRouting() {
 
 private fun Route.routeStudentApi(repo: Repository) {
     get("/homework/{id}") {
-        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
         call.respond(HttpStatusCode.OK, repo.getHomework(id))
     }
 
@@ -46,7 +46,7 @@ private fun Route.routeStudentApi(repo: Repository) {
     }
 
     get("/submission/{id}") {
-        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmission(id))
     }
 
@@ -56,12 +56,12 @@ private fun Route.routeStudentApi(repo: Repository) {
     }
 
     get("/{homeworkId}/submissions") {
-        val homeworkId = checkNotNull(call.parameters["homeworkId"]?.toLongOrNull())
+        val homeworkId = checkNotNull(call.parameters["homeworkId"]?.toIntOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmissions(homeworkId))
     }
 
     get("/submission/{id}/result") {
-        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmissionResult(id))
     }
 }
@@ -69,7 +69,7 @@ private fun Route.routeStudentApi(repo: Repository) {
 
 private fun Route.routeSubmissionApi(repo: Repository) {
     post("/check/{submissionId}") {
-        val id = checkNotNull(call.parameters["submissionId"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["submissionId"]?.toIntOrNull())
         TODO()
     }
 

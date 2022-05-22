@@ -11,7 +11,7 @@ import ru.hse.sd.hwproj.settings.RepositorySettings
  * Public API for [Repository]. Communicates with actual implementation via REST.
  */
 class RepositoryFacade : Facade(RepositorySettings), Repository {
-    override suspend fun getHomework(id: Long): Homework.Content {
+    override suspend fun getHomework(id: Int): Homework.Content {
         return request("/homework/$id", HttpMethod.Get)
     }
 
@@ -19,23 +19,23 @@ class RepositoryFacade : Facade(RepositorySettings), Repository {
         return request("/homework", HttpMethod.Get)
     }
 
-    override suspend fun getSubmission(id: Long): Submission.Content {
+    override suspend fun getSubmission(id: Int): Submission.Content {
         return request("/submission/$id", HttpMethod.Get)
     }
 
-    override suspend fun getSubmissionResult(submissionId: Long): Submission.Result {
+    override suspend fun getSubmissionResult(submissionId: Int): Submission.Result {
         return request("/submission/$submissionId/result", HttpMethod.Get)
     }
 
-    override suspend fun addSubmissionResult(submissionId: Long, result: Submission.Result) {
+    override suspend fun addSubmissionResult(submissionId: Int, result: Submission.Result) {
         return request("/submission/$submissionId/result", HttpMethod.Post, result)
     }
 
-    override suspend fun getSubmissions(homeworkId: Long): List<Submission> {
+    override suspend fun getSubmissions(homeworkId: Int): List<Submission> {
         return request("/submission/homework/$homeworkId", HttpMethod.Get)
     }
 
-    override suspend fun getChecker(id: Long): Checker.Content {
+    override suspend fun getChecker(id: Int): Checker.Content {
         return request("/check/$id", HttpMethod.Get)
     }
 

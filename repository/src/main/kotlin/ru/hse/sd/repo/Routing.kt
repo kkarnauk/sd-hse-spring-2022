@@ -33,7 +33,7 @@ internal fun Application.configureRouting() {
 
 private fun Route.routeHomework(repo: Repository) {
     get("/{id}") {
-        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
         call.respond(HttpStatusCode.OK, repo.getHomework(id))
     }
 
@@ -49,17 +49,17 @@ private fun Route.routeHomework(repo: Repository) {
 
 private fun Route.routeSubmission(repo: Repository) {
     get("/{id}") {
-        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmission(id))
     }
 
     get("/homework/{id}") {
-        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmissions(id))
     }
 
     get("/{id}/result") {
-        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
         call.respond(HttpStatusCode.OK, repo.getSubmissionResult(id))
     }
 
@@ -69,7 +69,7 @@ private fun Route.routeSubmission(repo: Repository) {
     }
 
     post("/{id}/result") {
-        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
         val result = call.receive<Submission.Result>()
         call.respond(HttpStatusCode.OK, repo.addSubmissionResult(id, result))
     }
@@ -77,7 +77,7 @@ private fun Route.routeSubmission(repo: Repository) {
 
 private fun Route.routeChecker(repo: Repository) {
     get("/{id}") {
-        val id = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
         call.respond(HttpStatusCode.OK, repo.getChecker(id))
     }
 

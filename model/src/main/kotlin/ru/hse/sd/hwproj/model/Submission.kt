@@ -10,7 +10,7 @@ data class Submission(
     /**
      * Unique id of the submission.
      */
-    val id: Long,
+    val id: Int,
     /**
      * [Content] for the submission.
      */
@@ -23,7 +23,7 @@ data class Submission(
         /**
          * ID of submitted homework.
          */
-        val homeworkId: Long,
+        val homeworkId: Int,
         /**
          * Date of submission.
          */

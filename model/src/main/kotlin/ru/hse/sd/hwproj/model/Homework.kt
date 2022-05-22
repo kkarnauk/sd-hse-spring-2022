@@ -9,7 +9,7 @@ data class Homework(
     /**
      * Unique id for the homework.
      */
-    val id: Long,
+    val id: Int,
     /**
      * [Content] for the homework.
      */
@@ -38,6 +38,6 @@ data class Homework(
         /**
          * Unique id of a checker that is going to be invoked when this homework is done.
          */
-        val checkerId: Long
+        val checkerId: Int
     )
 }

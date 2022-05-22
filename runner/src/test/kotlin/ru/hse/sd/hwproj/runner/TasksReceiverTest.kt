@@ -78,7 +78,7 @@ class TasksReceiverTest {
     fun `test consistent send and receive`() {
         for (i in 0 until 3) {
             for (j in 0 until 3) {
-                val task = RunnerTask(i.toLong(), j.toLong())
+                val task = RunnerTask(i, j)
                 sendMessage(task)
                 assertEquals(task, receiveMessage())
             }
@@ -88,10 +88,10 @@ class TasksReceiverTest {
     @Test
     fun `test all sends at first`() {
         for (i in 0 until 10) {
-            sendMessage(RunnerTask(i.toLong(), i.toLong()))
+            sendMessage(RunnerTask(i, i))
         }
         for (i in 0 until 10) {
-            assertEquals(RunnerTask(i.toLong(), i.toLong()), receiveMessage())
+            assertEquals(RunnerTask(i, i), receiveMessage())
         }
     }
 
@@ -99,12 +99,12 @@ class TasksReceiverTest {
     fun `test parallel send and receive`() {
         thread {
             for (i in 0 until 10) {
-                sendMessage(RunnerTask(i.toLong(), i.toLong()))
+                sendMessage(RunnerTask(i, i))
             }
         }
         thread {
             for (i in 0 until 10) {
-                assertEquals(RunnerTask(i.toLong(), i.toLong()), receiveMessage())
+                assertEquals(RunnerTask(i, i), receiveMessage())
             }
         }.join()
     }

@@ -11,7 +11,7 @@ interface Repository {
     /**
      * @return [Homework.Content] by id.
      */
-    suspend fun getHomework(id: Long): Homework.Content
+    suspend fun getHomework(id: Int): Homework.Content
 
     /**
      * @return all [Homework].
@@ -27,22 +27,22 @@ interface Repository {
     /**
      * @return [Submission] by id.
      */
-    suspend fun getSubmission(id: Long): Submission.Content
+    suspend fun getSubmission(id: Int): Submission.Content
 
     /**
      * @return [Submission.Result] by submission id.
      */
-    suspend fun getSubmissionResult(submissionId: Long): Submission.Result
+    suspend fun getSubmissionResult(submissionId: Int): Submission.Result
 
     /**
      * Adds a new [Submission.Result].
      */
-    suspend fun addSubmissionResult(submissionId: Long, result: Submission.Result)
+    suspend fun addSubmissionResult(submissionId: Int, result: Submission.Result)
 
     /**
      * @return all [Submission] for homework id.
      */
-    suspend fun getSubmissions(homeworkId: Long): List<Submission>
+    suspend fun getSubmissions(homeworkId: Int): List<Submission>
 
     /**
      * Adds a new [Submission]. Generates new id for that.
@@ -53,7 +53,7 @@ interface Repository {
     /**
      * @return [Checker.Content] by id.
      */
-    suspend fun getChecker(id: Long): Checker.Content
+    suspend fun getChecker(id: Int): Checker.Content
 
     /**
      * Adds a new [Checker]. Generates new id for that.

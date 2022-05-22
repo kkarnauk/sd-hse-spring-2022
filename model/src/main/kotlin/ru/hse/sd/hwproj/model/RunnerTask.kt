@@ -7,9 +7,9 @@ data class RunnerTask(
     /**
      * Checker to be used.
      */
-    val checkerId: Long,
+    val checkerId: Int,
     /**
      * Submission to be checked.
      */
-    val submissionId: Long
+    val submissionId: Int
 )

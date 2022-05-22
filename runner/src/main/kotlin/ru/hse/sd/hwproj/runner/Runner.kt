@@ -33,7 +33,7 @@ internal class Runner(private val root: Path) {
         }
     }
 
-    private fun createChecker(id: Long, checker: Checker.Content): Path {
+    private fun createChecker(id: Int, checker: Checker.Content): Path {
         return filesLock.withLock {
             val filepath = root.resolve("checker_$id.sh")
             if (!filepath.exists()) {
@@ -49,7 +49,7 @@ internal class Runner(private val root: Path) {
         }.start()
     }
 
-    private fun Process.putInput(submissionId: Long) {
+    private fun Process.putInput(submissionId: Int) {
         val submission: Submission.Content
         val homework: Homework.Content
         runBlocking {

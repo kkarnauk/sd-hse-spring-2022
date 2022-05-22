@@ -40,7 +40,7 @@ class RunnerTest {
         val runner = mockRunner(
             Checker.Content("echo hello\n".toByteArray()),
             Submission.Content(0, now(), URL("https://github.com")),
-            Homework.Content("Test homework", now(), now(), "Nothing needed", 0L)
+            Homework.Content("Test homework", now(), now(), "Nothing needed", 0)
         ) {
             assertEquals(Submission.Result(true, "hello\n", it.checkDate), it)
         }

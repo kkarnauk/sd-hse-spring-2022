@@ -1,18 +1,23 @@
 package ru.hse.sd.webserver
 
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.gson.*
-import io.ktor.html.*
-import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.webjars.*
-import ru.hse.sd.hwproj.model.Homework
-import ru.hse.sd.hwproj.model.RunnerTask
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.gson.gson
+import io.ktor.html.respondHtml
+import io.ktor.http.HttpStatusCode
+import io.ktor.request.receiveParameters
+import io.ktor.response.respondRedirect
+import io.ktor.routing.Route
+import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.route
+import io.ktor.routing.routing
+import io.ktor.webjars.Webjars
 import java.sql.Date
 import java.sql.Timestamp
+import ru.hse.sd.hwproj.model.Homework
 
 internal fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -60,7 +65,7 @@ private fun Route.routeProfessor() {
     }
 
     get("/homework/{id}") {
-        val homeworkId = checkNotNull(call.parameters["id"]?.toLongOrNull())
+        val homeworkId = checkNotNull(call.parameters["id"]?.toIntOrNull())
         val homework = ApiRequest.getHomework(homeworkId)
         val submissions = ApiRequest.getSubmissions(homeworkId)
         call.respondHtml(HttpStatusCode.OK) {
