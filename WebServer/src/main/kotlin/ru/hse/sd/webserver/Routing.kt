@@ -10,7 +10,6 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.webjars.*
 import ru.hse.sd.hwproj.model.Homework
-import ru.hse.sd.hwproj.model.RunnerTask
 import java.sql.Date
 import java.sql.Timestamp
 
@@ -55,7 +54,8 @@ private fun Route.routeProfessor() {
         val statement = checkNotNull(formParameters["statement"])
         val startDate = Timestamp(Date.valueOf(checkNotNull(formParameters["startDate"])).time)
         val endDate = Timestamp(Date.valueOf(checkNotNull(formParameters["endDate"])).time)
-        ApiRequest.addHomework(Homework.Content(name, startDate, endDate, statement, 0))
+        val checkerId = ApiRequest.addChecker(checkNotNull(formParameters["checkerContent"]))
+        ApiRequest.addHomework(Homework.Content(name, startDate, endDate, statement, checkerId))
         call.respondRedirect("/professor")
     }
 
