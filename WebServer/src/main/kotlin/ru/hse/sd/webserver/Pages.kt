@@ -186,13 +186,13 @@ internal fun HTML.professorPage(allHomework: List<Homework>) {
 
 
 internal fun HTML.homeworkPage(
-    homework: Homework,
+    homework: Homework.Content,
     submissions: List<Submission>,
     results: List<Submission.Result?>
 ) {
     head {
         title {
-            +homework.content.name
+            +homework.name
         }
         link {
             rel = "stylesheet"
@@ -208,15 +208,15 @@ internal fun HTML.homeworkPage(
             div(classes = "card h-100") {
                 div(classes = "card-body") {
                     h5(classes = "card-title") {
-                        text(homework.content.name)
+                        text(homework.name)
                     }
                     h6(classes = "card-subtitle mb-2 text-muted") {
-                        val startDate = dateFormat.format(homework.content.startDate)
-                        val endDate = dateFormat.format(homework.content.endDate)
+                        val startDate = dateFormat.format(homework.startDate)
+                        val endDate = dateFormat.format(homework.endDate)
                         text("$startDate — $endDate")
                     }
                     p(classes = "card-text") {
-                        text(homework.content.statement)
+                        text(homework.statement)
                     }
                 }
                 div(classes = "card-footer") {
@@ -228,7 +228,7 @@ internal fun HTML.homeworkPage(
                                 attributes["data-bs-target"] = "#$modalId"
                                 text(submission.content.solutionLink.toString())
                             }
-                            modalFade(modalId, "Решение задачи ${homework.content.name}", {
+                            modalFade(modalId, "Решение задачи ${homework.name}", {
                                 p {
                                     text("Сдано: ${dateFormat.format(submission.content.date)}")
                                 }

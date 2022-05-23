@@ -16,17 +16,17 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
         return request("/api/student/homework", HttpMethod.Post, homeworkContent)
     }
 
-    suspend fun getHomework(id: Int): Homework {
+    suspend fun getHomework(id: Int): Homework.Content {
         return request("/api/student/homework/${id}", HttpMethod.Get)
     }
 
     suspend fun getSubmissions(id: Int): List<Submission> {
-        return request("api/student/submission/$id", HttpMethod.Get)
+        return request("/api/student/${id}/submissions", HttpMethod.Get)
     }
 
     suspend fun getSubmissionResult(submissionId: Int): Submission.Result? {
         return try {
-            request("api/student/submission/$submissionId/result", HttpMethod.Get)
+            request("/api/student/submission/$submissionId/result", HttpMethod.Get)
         } catch (e: NotFoundException) {
             null
         }

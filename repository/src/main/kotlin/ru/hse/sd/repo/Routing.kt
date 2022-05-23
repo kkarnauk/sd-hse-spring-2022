@@ -34,7 +34,7 @@ internal fun Application.configureRouting() {
 private fun Route.routeHomework(repo: Repository) {
     get("/{id}") {
         val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
-        call.respond(HttpStatusCode.OK, repo.getHomework(id))
+        call.respond(HttpStatusCode.OK, repo.getHomework(id).also { println("|||| $it") })
     }
 
     get {
