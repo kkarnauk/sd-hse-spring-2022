@@ -4,5 +4,5 @@ all:
 	docker compose -f docker-compose.yml up -d
 
 clean:
-	./gradlew clean; \
+	#./gradlew clean; \
 	docker compose -f docker-compose.yml down
