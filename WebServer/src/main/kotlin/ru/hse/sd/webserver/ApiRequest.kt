@@ -7,6 +7,8 @@ import ru.hse.sd.hwproj.model.Checker
 import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.Submission
 import ru.hse.sd.hwproj.settings.WebServerApiSettings
+import java.net.URL
+import java.sql.Timestamp
 
 internal object ApiRequest : Facade(WebServerApiSettings) {
     suspend fun getAllHomework(): List<Homework> {
@@ -35,5 +37,14 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
 
     suspend fun addChecker(content: String): Checker {
         return request("/api/submission/checker", HttpMethod.Post, Checker.Content(content.toByteArray().toList()))
+    }
+
+    suspend fun addSubmission(homeworkId: Int, link: String) {
+        return request(
+            "/api/submission",
+            HttpMethod.Post,
+            Submission.Content(homeworkId, Timestamp(System.currentTimeMillis()), URL(link))
+        )
+        // TODO
     }
 }

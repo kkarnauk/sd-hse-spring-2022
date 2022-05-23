@@ -100,7 +100,13 @@ private fun BODY.cards(allHomework: List<Homework>, createNew: Boolean, inFooter
     }
 }
 
-private fun DIV.modalFade(modalId: String, title: String, inBody: DIV.() -> Unit, inFooter: DIV.() -> Unit) {
+private fun DIV.modalFade(
+    modalId: String,
+    title: String,
+    action: String,
+    formAction: DIV.() -> Unit,
+    inFooter: DIV.() -> Unit
+) {
     div(classes = "modal fade") {
         id = modalId
         tabIndex = "-1"
@@ -116,11 +122,13 @@ private fun DIV.modalFade(modalId: String, title: String, inBody: DIV.() -> Unit
                         attributes["aria-label"] = "Close"
                     }
                 }
-                div(classes = "modal-body") {
-                    inBody()
-                }
-                div(classes = "modal-footer") {
-                    inFooter()
+                form(method = FormMethod.post, action = action) {
+                    div(classes = "modal-body") {
+                        formAction()
+                    }
+                    div(classes = "modal-footer") {
+                        inFooter()
+                    }
                 }
             }
         }
@@ -145,16 +153,18 @@ internal fun HTML.studentPage(allHomework: List<Homework>) {
                 attributes["data-bs-target"] = "#$modalId"
                 text("Сдать")
             }
-            modalFade(modalId, it.content.name, {
+            modalFade(modalId, it.content.name, "student/submission", {
                 p {
                     text(it.content.statement)
                 }
-                form {
-                    div(classes = "mb-3") {
-                        input(type = InputType.text, classes = "form-control") {
-                            id = "solution"
-                            placeholder = "Ссылка на github с решением"
-                        }
+                div(classes = "mb-3") {
+                    input(type = InputType.text, classes = "form-control", name = "link") {
+                        id = "solution"
+                        placeholder = "Ссылка на github с решением"
+                    }
+                    input(type = InputType.text, classes = "form-control", name = "homeworkId") {
+                        hidden = true
+                        value = it.id.toString()
                     }
                 }
             }) {
@@ -162,7 +172,7 @@ internal fun HTML.studentPage(allHomework: List<Homework>) {
                     attributes["data-bs-dismiss"] = "modal"
                     text("Отменить")
                 }
-                button(type = ButtonType.button, classes = "btn btn-primary") {
+                button(type = ButtonType.submit, classes = "btn btn-primary") {
                     text("Отправить")
                 }
             }
@@ -267,7 +277,7 @@ internal fun HTML.homeworkPage(
                                 attributes["data-bs-target"] = "#$modalId"
                                 text(submission.content.solutionLink.toString())
                             }
-                            modalFade(modalId, "Решение задачи ${homework.name}", {
+                            modalFade(modalId, "Решение задачи ${homework.name}", "", {
                                 p {
                                     text("Сдано: ${dateFormat.format(submission.content.date)}")
                                 }

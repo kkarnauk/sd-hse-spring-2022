@@ -38,6 +38,14 @@ private fun Route.routeStudent() {
             studentPage(allHomework)
         }
     }
+
+    post("/submission") {
+        val formParameters = call.receiveParameters()
+        val homeworkId = checkNotNull(formParameters["homeworkId"]?.toIntOrNull())
+        val link = checkNotNull(formParameters["link"])
+        ApiRequest.addSubmission(homeworkId, link)
+        call.respondRedirect("/student")
+    }
 }
 
 private fun Route.routeProfessor() {
