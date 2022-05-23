@@ -21,7 +21,7 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
     }
 
     suspend fun getSubmissions(id: Int): List<Submission> {
-        return request("api/student/$id/submissions", HttpMethod.Get) // I'm not sure that' right link
+        return request("api/student/submission/$id", HttpMethod.Get)
     }
 
     suspend fun getSubmissionResult(submissionId: Int): Submission.Result? {
