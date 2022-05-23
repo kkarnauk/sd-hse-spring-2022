@@ -3,6 +3,7 @@ package ru.hse.sd.webserver
 import io.ktor.features.*
 import io.ktor.http.*
 import ru.hse.sd.hwproj.facade.Facade
+import ru.hse.sd.hwproj.model.Checker
 import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.Submission
 import ru.hse.sd.hwproj.settings.WebServerApiSettings
@@ -32,8 +33,7 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
         }
     }
 
-    suspend fun addChecker(content: String): Long {
-//        TODO("Not yet implemented")
-        return 0
+    suspend fun addChecker(content: String): Checker {
+        return request("/api/submission/checker", HttpMethod.Post, Checker.Content(content.toByteArray().toList()))
     }
 }

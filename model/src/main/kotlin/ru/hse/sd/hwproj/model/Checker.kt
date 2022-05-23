@@ -16,10 +16,10 @@ data class Checker(
     /**
      * Contains information about a program that will be invoked to check a submission.
      */
-    class Content(
+    data class Content(
         /**
          * Bytes of the program.
          */
-        val bytes: ByteArray
+        val bytes: List<Byte>
     )
 }

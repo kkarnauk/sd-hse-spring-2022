@@ -38,7 +38,7 @@ class RunnerTest {
     @Test
     fun `test simple runner`() {
         val runner = mockRunner(
-            Checker.Content("echo hello\n".toByteArray()),
+            Checker.Content("echo hello\n".toByteArray().toList()),
             Submission.Content(0, now(), URL("https://github.com")),
             Homework.Content("Test homework", now(), now(), "Nothing needed", 0)
         ) {

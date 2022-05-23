@@ -98,13 +98,13 @@ internal class RepositoryImpl : Repository {
     }
 
     override suspend fun getChecker(id: Int): Checker.Content {
-        return Checker.Content(fileStorage.readBinary(id))
+        return Checker.Content(fileStorage.readBinary(id).toList())
     }
 
     override suspend fun addChecker(content: Checker.Content): Checker {
         return transaction {
             val id = Checkers.insert { } get Checkers.id
-            fileStorage.putBinary(id, content.bytes)
+            fileStorage.putBinary(id, content.bytes.toByteArray())
             Checker(id, content)
         }
     }

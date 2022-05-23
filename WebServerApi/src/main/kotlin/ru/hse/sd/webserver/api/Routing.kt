@@ -81,7 +81,7 @@ private fun Route.routeSubmissionApi(repo: Repository) {
 
     post("/checker") {
         val checkerContent = call.receive<Checker.Content>()
-        repo.addChecker(checkerContent)
-        call.respond(HttpStatusCode.OK)
+        val checker = repo.addChecker(checkerContent)
+        call.respond(HttpStatusCode.OK, checker)
     }
 }

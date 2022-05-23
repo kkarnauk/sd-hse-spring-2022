@@ -37,7 +37,7 @@ internal class Runner(private val root: Path) {
         return filesLock.withLock {
             val filepath = root.resolve("checker_$id.sh")
             if (!filepath.exists()) {
-                filepath.writeBytes(checker.bytes)
+                filepath.writeBytes(checker.bytes.toByteArray())
             }
             filepath
         }
