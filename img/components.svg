@@ -80,6 +80,12 @@
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath25"
       ><path d="M0 0 L0 104 L181 104 L181 0 Z"
       /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath26"
+      ><path d="M0 0 L168 0 L168 315 L0 315 L0 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath27"
+      ><path d="M0 0 L0 315 L168 315 L168 0 Z"
+      /></clipPath
     ></defs
     ><g fill="white" text-rendering="geometricPrecision" fill-opacity="1" stroke-opacity="1" stroke="white"
     ><rect x="0" width="893" height="378" y="0" stroke="none"
@@ -161,8 +167,8 @@
     ><g font-size="11px" transform="translate(234,108)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="4" xml:space="preserve" y="14" clip-path="url(#clipPath2)" stroke="none"
       >&lt;&lt;component&gt;&gt;</text
-      ><text x="10" xml:space="preserve" y="28" clip-path="url(#clipPath2)" font-weight="bold" stroke="none"
-      >QueueHandler</text
+      ><text x="14" xml:space="preserve" y="28" clip-path="url(#clipPath2)" font-weight="bold" stroke="none"
+      >TasksSender</text
     ></g
     ><g font-size="11px" transform="translate(234,2)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
     ><rect x="0" width="134" height="40" y="0" clip-path="url(#clipPath1)" stroke="none"
@@ -337,6 +343,10 @@
     /></g
     ><g stroke-linecap="butt" font-size="11px" transform="translate(100,77)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1"
     ><line y2="50" fill="none" x1="50" clip-path="url(#clipPath25)" x2="127" y1="50"
+    /></g
+    ><g stroke-linecap="butt" font-size="11px" transform="translate(325,-20)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1"
+    ><line y2="50" fill="none" x1="50" clip-path="url(#clipPath27)" x2="113" y1="50"
+      /><line y2="261" fill="none" x1="113" clip-path="url(#clipPath27)" x2="114" y1="50"
     /></g
     ><g font-size="10px" fill-opacity="1" fill="rgb(120,120,120)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" stroke="rgb(120,120,120)" stroke-opacity="1"
     ><text x="631" xml:space="preserve" y="365" stroke="none"
