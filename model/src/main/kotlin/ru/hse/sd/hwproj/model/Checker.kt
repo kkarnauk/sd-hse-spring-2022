@@ -23,7 +23,3 @@ data class Checker(
         val bytes: ByteArray
     )
 }
-
-fun main() {
-    println("echo ok".toByteArray().toList())
-}
