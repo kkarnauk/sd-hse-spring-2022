@@ -60,7 +60,7 @@ internal class RepositoryImpl : Repository {
     override suspend fun getSubmissions(homeworkId: Int): List<Submission> {
         return transaction {
             Submissions
-                .selectAll()
+                .select { Submissions.homeworkId eq homeworkId }
                 .map { it.toSubmission() }
         }
     }

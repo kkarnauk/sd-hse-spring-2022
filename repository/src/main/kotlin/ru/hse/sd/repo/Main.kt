@@ -18,18 +18,18 @@ private class Main : CliktCommand() {
                     configureRouting()
                 }.start(wait = true)
             }
-            "init" -> initializeDb()
+            "init" -> initializeDb().also { println("Db initialized") }
             else -> error("unexpected mode $mode")
         }
     }
 }
 
 internal fun main(args: Array<String>) {
-    println("Debug: args: ${args.toList()}")
     Database.connect(
-        url = "jdbc:postgresql://localhost:5432/hwproj",
+        url = "jdbc:postgresql://db_host:5432/hwproj",
         driver = "org.postgresql.Driver",
         user = "postgres",
-        password = "postgres")
+        password = "postgres"
+    )
     Main().main(args)
 }

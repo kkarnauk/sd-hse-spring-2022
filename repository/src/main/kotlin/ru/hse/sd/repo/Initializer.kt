@@ -4,7 +4,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 @Suppress("SqlNoDataSourceInspection", "SqlResolve")
 internal fun initializeDb() {
+    println("Before transaction")
     transaction {
+        println("In transaction")
         exec(
             """
                 -- migrations level: homework
@@ -18,12 +20,12 @@ internal fun initializeDb() {
                     start_date timestamp not null,
                     end_date timestamp not null,
                     statement text not null,
-                    checker_id int not null references checkers.id 
+                    checker_id int not null references checkers(id) 
                 );
                 
                 create table if not exists submissions(
                     id serial primary key,
-                    homework_id int not null references homeworks.id,
+                    homework_id int not null references homeworks(id),
                     date timestamp not null,
                     link text not null
                 );
@@ -33,9 +35,11 @@ internal fun initializeDb() {
                     success boolean not null,
                     message text not null,
                     check_date timestamp not null,
-                    submission_id int not null references submissions.id
-                )
+                    submission_id int not null references submissions(id)
+                );
             """.trimIndent()
         )
+        println("Before execute")
     }
+    println("After transaction")
 }

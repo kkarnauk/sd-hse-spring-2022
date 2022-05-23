@@ -70,11 +70,13 @@ private fun Route.routeStudentApi(repo: Repository) {
 private fun Route.routeSubmissionApi(repo: Repository) {
     post("/check/{submissionId}") {
         val id = checkNotNull(call.parameters["submissionId"]?.toIntOrNull())
-        TODO()
+        repo.getChecker(id)
+        call.respond(HttpStatusCode.OK)
     }
 
     post("/checker") {
         val checkerContent = call.receive<Checker.Content>()
         repo.addChecker(checkerContent)
+        call.respond(HttpStatusCode.OK)
     }
 }

@@ -4,6 +4,7 @@ services:
   rabbit-mq:
     image: bitnami/rabbitmq:latest
     restart: always
+    hostname: "rabbit_mq_host"
     networks:
       - hw-proj
 
@@ -11,6 +12,7 @@ services:
     image: postgres:latest
     ports:
       - "54321:5432"
+    hostname: "db_host"
     environment:
       - POSTGRES_DB=hwproj
       - POSTGRES_USER=postgres
@@ -21,6 +23,7 @@ services:
   queue:
     build: ./queue
     restart: always
+    hostname: "queue_host"
     networks:
       - hw-proj
     depends_on:
@@ -31,7 +34,7 @@ services:
     restart: always
     ports:
       - "10003:10003"
-    hostname: localhost
+    hostname: "backend_host"
     networks:
       - hw-proj
     depends_on:
@@ -42,7 +45,7 @@ services:
     restart: always
     ports:
       - "10002:10002"
-    hostname: localhost
+    hostname: "frontend_host"
     networks:
       - hw-proj
     depends_on:
@@ -54,6 +57,7 @@ services:
       context: ./repository
       dockerfile: ./init.Dockerfile
     restart: always
+    hostname: "repository_host"
     command: "--mode api"
     networks:
       - hw-proj
