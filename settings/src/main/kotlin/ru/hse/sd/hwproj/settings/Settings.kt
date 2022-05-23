@@ -25,7 +25,7 @@ interface AddressSettings : Settings {
  */
 object TasksSenderSettings : AddressSettings {
     override val host: String
-        get() = "queue_host"
+        get() = "queue"
 
     override val port: Int
         get() = 10004
@@ -36,7 +36,7 @@ object TasksSenderSettings : AddressSettings {
  */
 object BrokerSettings : AddressSettings {
     override val host: String
-        get() = "rabbit_mq_host"
+        get() = "rabbit-mq"
 
     override val port: Int
         get() = 5672
@@ -52,7 +52,7 @@ object BrokerSettings : AddressSettings {
  */
 object RepositorySettings : AddressSettings {
     override val host: String
-        get() = "repository_host"
+        get() = "repository"
 
     override val port: Int
         get() = 10001
@@ -63,7 +63,7 @@ object RepositorySettings : AddressSettings {
  */
 object WebServerSettings : AddressSettings {
     override val host: String
-        get() = "frontend_host"
+        get() = "frontend"
 
     override val port: Int
         get() = 10002
@@ -74,7 +74,7 @@ object WebServerSettings : AddressSettings {
  */
 object WebServerApiSettings : AddressSettings {
     override val host: String
-        get() = "backend_host"
+        get() = "backend"
 
     override val port: Int
         get() = 10003

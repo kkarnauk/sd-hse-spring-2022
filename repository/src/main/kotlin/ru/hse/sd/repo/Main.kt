@@ -26,7 +26,7 @@ private class Main : CliktCommand() {
 
 internal fun main(args: Array<String>) {
     Database.connect(
-        url = "jdbc:postgresql://db_host:5432/hwproj",
+        url = "jdbc:postgresql://db:5432/hwproj",
         driver = "org.postgresql.Driver",
         user = "postgres",
         password = "postgres"
