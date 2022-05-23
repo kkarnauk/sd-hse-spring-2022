@@ -68,7 +68,7 @@ services:
     build:
       context: ./repository
       dockerfile: ./init.Dockerfile
-    restart: always
+    restart: on-failure
     command: "--mode init"
     networks:
       - hw-proj

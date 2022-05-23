@@ -25,7 +25,7 @@ interface AddressSettings : Settings {
  */
 object TasksSenderSettings : AddressSettings {
     override val host: String
-        get() = "rabbit_mq_host"
+        get() = "queue_host"
 
     override val port: Int
         get() = 10004
