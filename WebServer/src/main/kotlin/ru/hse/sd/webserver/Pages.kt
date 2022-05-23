@@ -49,6 +49,22 @@ private fun BODY.cards(allHomework: List<Homework>, createNew: Boolean, inFooter
                                     placeholder = "Описание новой домашки.."
                                 }
                             }
+                            text("Проверялка")
+                            div(classes = "input-group mb-2") {
+                                input(
+                                    type = InputType.file,
+                                    classes = "form-control form-file-input",
+                                    name = "checker"
+                                ) {
+                                    id = "checkerForUpload"
+                                    required = true
+                                }
+                            }
+                            textArea(classes = "form-control") {
+                                name = "checkerContent"
+                                id = "checkerContent"
+                                hidden = true
+                            }
                         }
                         div(classes = "card-footer") {
                             button(type = ButtonType.submit, classes = "btn btn-primary") {
@@ -180,6 +196,29 @@ internal fun HTML.professorPage(allHomework: List<Homework>) {
         }
         script {
             src = "/assets/bootstrap/bootstrap.bundle.min.js"
+        }
+        script {
+            //language=JavaScript
+            unsafe {
+                raw(
+                    """
+                        document.getElementById("checkerForUpload").addEventListener("change", handleChecker, false)
+                        function handleChecker() {
+                            var file = document.getElementById("checkerForUpload").files[0];
+                            if (file) {
+                               var reader = new FileReader();
+                               reader.readAsText(file, "UTF-8");
+                               reader.onload = function (evt) {
+                                   document.getElementById("checkerContent").innerHTML = evt.target.result;
+                               }
+                               reader.onerror = function (evt) {
+                                   document.getElementById("checkerContent").innerHTML = "";
+                               }
+                            }
+                       }
+           """.trimIndent()
+                )
+            }
         }
     }
 }

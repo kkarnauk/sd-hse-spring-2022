@@ -1,20 +1,14 @@
 package ru.hse.sd.webserver
 
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
+import io.ktor.application.*
 import io.ktor.features.*
-import io.ktor.gson.gson
-import io.ktor.html.respondHtml
-import io.ktor.http.HttpStatusCode
-import io.ktor.request.receiveParameters
+import io.ktor.gson.*
+import io.ktor.html.*
+import io.ktor.http.*
+import io.ktor.request.*
 import io.ktor.response.*
-import io.ktor.routing.Route
-import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.route
-import io.ktor.routing.routing
-import io.ktor.webjars.Webjars
+import io.ktor.routing.*
+import io.ktor.webjars.*
 import java.sql.Date
 import java.sql.Timestamp
 import ru.hse.sd.hwproj.model.Homework
@@ -60,7 +54,8 @@ private fun Route.routeProfessor() {
         val statement = checkNotNull(formParameters["statement"])
         val startDate = Timestamp(Date.valueOf(checkNotNull(formParameters["startDate"])).time)
         val endDate = Timestamp(Date.valueOf(checkNotNull(formParameters["endDate"])).time)
-        ApiRequest.addHomework(Homework.Content(name, startDate, endDate, statement, 1))
+        val checkerId = ApiRequest.addChecker(checkNotNull(formParameters["checkerContent"]))
+        ApiRequest.addHomework(Homework.Content(name, startDate, endDate, statement, checkerId))
         call.respondRedirect("/professor")
     }
 

@@ -31,4 +31,9 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
             null
         }
     }
+
+    suspend fun addChecker(content: String): Long {
+//        TODO("Not yet implemented")
+        return 0
+    }
 }
