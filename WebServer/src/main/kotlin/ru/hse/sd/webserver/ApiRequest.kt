@@ -1,14 +1,14 @@
 package ru.hse.sd.webserver
 
-import io.ktor.features.*
-import io.ktor.http.*
+import io.ktor.client.features.ClientRequestException
+import io.ktor.http.HttpMethod
+import java.net.URL
+import java.sql.Timestamp
 import ru.hse.sd.hwproj.facade.Facade
 import ru.hse.sd.hwproj.model.Checker
 import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.Submission
 import ru.hse.sd.hwproj.settings.WebServerApiSettings
-import java.net.URL
-import java.sql.Timestamp
 
 internal object ApiRequest : Facade(WebServerApiSettings) {
     suspend fun getAllHomework(): List<Homework> {
@@ -30,7 +30,7 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
     suspend fun getSubmissionResult(submissionId: Int): Submission.Result? {
         return try {
             request("/api/student/submission/$submissionId/result", HttpMethod.Get)
-        } catch (e: NotFoundException) {
+        } catch (e: ClientRequestException) {
             null
         }
     }
@@ -41,10 +41,9 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
 
     suspend fun addSubmission(homeworkId: Int, link: String) {
         return request(
-            "/api/submission",
+            "/api/student/submission",
             HttpMethod.Post,
             Submission.Content(homeworkId, Timestamp(System.currentTimeMillis()), URL(link))
         )
-        // TODO
     }
 }

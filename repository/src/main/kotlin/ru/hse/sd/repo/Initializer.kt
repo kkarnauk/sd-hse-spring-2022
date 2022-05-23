@@ -35,7 +35,7 @@ internal fun initializeDb() {
                     success boolean not null,
                     message text not null,
                     check_date timestamp not null,
-                    submission_id int not null references submissions(id)
+                    submission_id int not null references submissions(id) unique
                 );
             """.trimIndent()
         )

@@ -1,6 +1,7 @@
 package ru.hse.sd.repo
 
-import io.ktor.http.*
+import io.ktor.client.features.ClientRequestException
+import io.ktor.http.HttpMethod
 import ru.hse.sd.hwproj.facade.Facade
 import ru.hse.sd.hwproj.model.Checker
 import ru.hse.sd.hwproj.model.Homework
@@ -24,7 +25,11 @@ class RepositoryFacade : Facade(RepositorySettings), Repository {
     }
 
     override suspend fun getSubmissionResult(submissionId: Int): Submission.Result? {
-        return request("/submission/$submissionId/result", HttpMethod.Get)
+        return try {
+            request("/submission/$submissionId/result", HttpMethod.Get)
+        } catch (_: ClientRequestException) {
+            null
+        }
     }
 
     override suspend fun addSubmissionResult(submissionId: Int, result: Submission.Result) {
