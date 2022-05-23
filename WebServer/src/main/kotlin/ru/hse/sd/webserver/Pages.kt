@@ -185,7 +185,11 @@ internal fun HTML.professorPage(allHomework: List<Homework>) {
 }
 
 
-internal fun HTML.homeworkPage(homework: Homework, submission: List<Submission>) {
+internal fun HTML.homeworkPage(
+    homework: Homework,
+    submissions: List<Submission>,
+    results: List<Submission.Result?>
+) {
     head {
         title {
             +homework.content.name
@@ -217,25 +221,30 @@ internal fun HTML.homeworkPage(homework: Homework, submission: List<Submission>)
                 }
                 div(classes = "card-footer") {
                     div(classes = "list-group") {
-                        submission.forEach {
-                            val modalId = "modal${it.id}"
+                        submissions.zip(results).forEach { (submission, result) ->
+                            val modalId = "modal${submission.id}"
                             button(classes = "list-group-item list-group-item-action") {
                                 attributes["data-bs-toggle"] = "modal"
                                 attributes["data-bs-target"] = "#$modalId"
-                                text(it.content.solutionLink.toString())
+                                text(submission.content.solutionLink.toString())
                             }
                             modalFade(modalId, "Решение задачи ${homework.content.name}", {
                                 p {
-                                    text("Сдано: ${dateFormat.format(it.content.date)}")
+                                    text("Сдано: ${dateFormat.format(submission.content.date)}")
                                 }
                                 p {
                                     text("Ссылка: ")
-                                    a(classes = "link-primary", href = it.content.solutionLink.toString()) {
-                                        text(it.content.solutionLink.toString())
+                                    a(classes = "link-primary", href = submission.content.solutionLink.toString()) {
+                                        text(submission.content.solutionLink.toString())
                                     }
                                 }
                                 p {
-                                    text("Результат проверки: не проверено")
+                                    val resultMessage = if (result == null) {
+                                        "не проверено"
+                                    } else {
+                                        "успех: ${result.success}, сообщение: ${result.message}, дата: ${result.checkDate}"
+                                    }
+                                    text("Результат проверки: $resultMessage")
                                 }
                             }) {
                                 button(type = ButtonType.button, classes = "btn btn-primary") {

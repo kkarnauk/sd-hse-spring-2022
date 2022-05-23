@@ -1,9 +1,7 @@
 package ru.hse.sd.webserver
 
-import io.ktor.http.HttpMethod
-import java.net.URL
-import java.sql.Timestamp
-import kotlin.random.Random
+import io.ktor.features.*
+import io.ktor.http.*
 import ru.hse.sd.hwproj.facade.Facade
 import ru.hse.sd.hwproj.model.Homework
 import ru.hse.sd.hwproj.model.Submission
@@ -24,5 +22,13 @@ internal object ApiRequest : Facade(WebServerApiSettings) {
 
     suspend fun getSubmissions(id: Int): List<Submission> {
         return request("api/student/$id/submissions", HttpMethod.Get) // I'm not sure that' right link
+    }
+
+    suspend fun getSubmissionResult(submissionId: Int): Submission.Result? {
+        return try {
+            request("api/student/submission/$submissionId/result", HttpMethod.Get)
+        } catch (e: NotFoundException) {
+            null
+        }
     }
 }

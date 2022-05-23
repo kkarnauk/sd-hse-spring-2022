@@ -32,7 +32,7 @@ interface Repository {
     /**
      * @return [Submission.Result] by submission id.
      */
-    suspend fun getSubmissionResult(submissionId: Int): Submission.Result
+    suspend fun getSubmissionResult(submissionId: Int): Submission.Result?
 
     /**
      * Adds a new [Submission.Result].

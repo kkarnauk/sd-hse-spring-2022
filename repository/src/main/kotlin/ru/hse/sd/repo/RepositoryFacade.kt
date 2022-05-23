@@ -23,7 +23,7 @@ class RepositoryFacade : Facade(RepositorySettings), Repository {
         return request("/submission/$id", HttpMethod.Get)
     }
 
-    override suspend fun getSubmissionResult(submissionId: Int): Submission.Result {
+    override suspend fun getSubmissionResult(submissionId: Int): Submission.Result? {
         return request("/submission/$submissionId/result", HttpMethod.Get)
     }
 

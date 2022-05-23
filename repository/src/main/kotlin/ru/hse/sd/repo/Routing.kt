@@ -60,7 +60,12 @@ private fun Route.routeSubmission(repo: Repository) {
 
     get("/{id}/result") {
         val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
-        call.respond(HttpStatusCode.OK, repo.getSubmissionResult(id))
+        val result = repo.getSubmissionResult(id)
+        if (result == null) {
+            call.respond(HttpStatusCode.NotFound)
+        } else {
+            call.respond(HttpStatusCode.OK, result)
+        }
     }
 
     post {

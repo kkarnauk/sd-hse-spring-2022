@@ -76,12 +76,12 @@ internal class RepositoryImpl : Repository {
         }
     }
 
-    override suspend fun getSubmissionResult(submissionId: Int): Submission.Result {
+    override suspend fun getSubmissionResult(submissionId: Int): Submission.Result? {
         return transaction {
             SubmissionResults
                 .select { SubmissionResults.submissionId eq submissionId }
-                .single()
-                .toSubmissionResult()
+                .singleOrNull()
+                ?.toSubmissionResult()
         }
     }
 

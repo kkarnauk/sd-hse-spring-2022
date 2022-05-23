@@ -3,12 +3,12 @@ package ru.hse.sd.webserver
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
+import io.ktor.features.*
 import io.ktor.gson.gson
 import io.ktor.html.respondHtml
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receiveParameters
-import io.ktor.response.respondRedirect
+import io.ktor.response.*
 import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.post
@@ -68,8 +68,9 @@ private fun Route.routeProfessor() {
         val homeworkId = checkNotNull(call.parameters["id"]?.toIntOrNull())
         val homework = ApiRequest.getHomework(homeworkId)
         val submissions = ApiRequest.getSubmissions(homeworkId)
+        val submissionResults = submissions.map { ApiRequest.getSubmissionResult(it.id) }
         call.respondHtml(HttpStatusCode.OK) {
-            homeworkPage(homework, submissions)
+            homeworkPage(homework, submissions, submissionResults)
         }
     }
 }
