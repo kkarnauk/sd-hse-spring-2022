@@ -3,8 +3,9 @@ package ru.hse.sd.repo
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import org.jetbrains.exposed.sql.Database
 import ru.hse.sd.hwproj.settings.RepositorySettings
 
 private class Main : CliktCommand() {
@@ -23,4 +24,12 @@ private class Main : CliktCommand() {
     }
 }
 
-internal fun main(args: Array<String>) = Main().main(args)
+internal fun main(args: Array<String>) {
+    println("Debug: args: ${args.toList()}")
+    Database.connect(
+        url = "jdbc:postgresql://localhost:5432/hwproj",
+        driver = "org.postgresql.Driver",
+        user = "postgres",
+        password = "postgres")
+    Main().main(args)
+}

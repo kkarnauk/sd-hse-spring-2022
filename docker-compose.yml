@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.3"
 
 services:
   rabbit-mq:
@@ -9,6 +9,12 @@ services:
 
   db:
     image: postgres:latest
+    ports:
+      - "54321:5432"
+    environment:
+      - POSTGRES_DB=hwproj
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     networks:
       - hw-proj
 
@@ -43,23 +49,27 @@ services:
       - db
       - backend
 
-#  repository:
-#    build:
-#      context: ./repository
-#      dockerfile: app.Dockerfile
-#    networks:
-#      - hw-proj
-#    depends_on:
-#      - db
+  repository:
+    build:
+      context: ./repository
+      dockerfile: ./init.Dockerfile
+    restart: always
+    command: "--mode api"
+    networks:
+      - hw-proj
+    depends_on:
+      - db
 
-#  db-init:
-#    build:
-#      context: ./repository
-#      dockerfile: init.Dockerfile
-#    networks:
-#      - hw-proj
-#    depends_on:
-#      - db
+  db-init:
+    build:
+      context: ./repository
+      dockerfile: ./init.Dockerfile
+    restart: always
+    command: "--mode init"
+    networks:
+      - hw-proj
+    depends_on:
+      - db
 
 networks:
   hw-proj:

@@ -25,7 +25,7 @@ interface AddressSettings : Settings {
  */
 object TasksSenderSettings : AddressSettings {
     override val host: String
-        get() = "localhost"
+        get() = "0.0.0.0"
 
     override val port: Int
         get() = 10004
@@ -36,7 +36,7 @@ object TasksSenderSettings : AddressSettings {
  */
 object BrokerSettings : AddressSettings {
     override val host: String
-        get() = "localhost"
+        get() = "0.0.0.0"
 
     override val port: Int
         get() = 5672
@@ -52,7 +52,7 @@ object BrokerSettings : AddressSettings {
  */
 object RepositorySettings : AddressSettings {
     override val host: String
-        get() = "localhost"
+        get() = "0.0.0.0"
 
     override val port: Int
         get() = 10001
@@ -63,7 +63,7 @@ object RepositorySettings : AddressSettings {
  */
 object WebServerSettings : AddressSettings {
     override val host: String
-        get() = "localhost"
+        get() = "0.0.0.0"
 
     override val port: Int
         get() = 10002
@@ -74,7 +74,7 @@ object WebServerSettings : AddressSettings {
  */
 object WebServerApiSettings : AddressSettings {
     override val host: String
-        get() = "localhost"
+        get() = "0.0.0.0"
 
     override val port: Int
         get() = 10003
