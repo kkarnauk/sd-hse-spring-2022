@@ -16,6 +16,8 @@ internal class TasksReceiver : AutoCloseable {
         ConnectionFactory().apply {
             host = BrokerSettings.host
             port = BrokerSettings.port
+            username = "rabbit"
+            password = "rabbit"
         }
     }
 

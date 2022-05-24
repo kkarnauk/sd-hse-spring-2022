@@ -2,8 +2,11 @@ version: "3.3"
 
 services:
   rabbit-mq:
-    image: bitnami/rabbitmq:latest
+    image: bitnami/rabbitmq:3.10
     restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbit
+      - RABBITMQ_DEFAULT_PASS=rabbit
     networks:
       - hw-proj
 
@@ -25,6 +28,15 @@ services:
       - hw-proj
     depends_on:
       - rabbit-mq
+
+  runner:
+    build: ./runner
+    restart: always
+    networks:
+      - hw-proj
+    depends_on:
+      - rabbit-mq
+      - queue
 
   backend:
     build: ./WebServerApi

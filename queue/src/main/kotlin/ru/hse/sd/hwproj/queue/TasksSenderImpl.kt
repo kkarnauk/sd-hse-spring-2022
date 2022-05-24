@@ -10,6 +10,8 @@ internal class TasksSenderImpl : TasksSender, AutoCloseable {
         ConnectionFactory().apply {
             host = BrokerSettings.host
             port = BrokerSettings.port
+            username = "rabbit"
+            password = "rabbit"
         }
     }
 

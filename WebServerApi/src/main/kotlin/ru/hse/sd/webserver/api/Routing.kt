@@ -9,7 +9,10 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import ru.hse.sd.hwproj.model.Checker
 import ru.hse.sd.hwproj.model.Homework
+import ru.hse.sd.hwproj.model.RunnerTask
 import ru.hse.sd.hwproj.model.Submission
+import ru.hse.sd.hwproj.queue.TasksSender
+import ru.hse.sd.hwproj.queue.TasksSenderFacade
 import ru.hse.sd.repo.Repository
 import ru.hse.sd.repo.RepositoryFacade
 
@@ -19,13 +22,14 @@ internal fun Application.configureRouting() {
     }
 
     val repo = RepositoryFacade()
+    val tasksSender = TasksSenderFacade()
 
     routing {
         route("api/student") {
             routeStudentApi(repo)
         }
         route("api/submission") {
-            routeSubmissionApi(repo)
+            routeSubmissionApi(repo, tasksSender)
         }
     }
 }
@@ -72,10 +76,12 @@ private fun Route.routeStudentApi(repo: Repository) {
 }
 
 
-private fun Route.routeSubmissionApi(repo: Repository) {
+private fun Route.routeSubmissionApi(repo: Repository, sender: TasksSender) {
     post("/check/{submissionId}") {
-        val id = checkNotNull(call.parameters["submissionId"]?.toIntOrNull())
-        repo.getChecker(id)
+        val submissionId = checkNotNull(call.parameters["submissionId"]?.toIntOrNull())
+        val submission = repo.getSubmission(submissionId)
+        val homework = repo.getHomework(submission.homeworkId)
+        sender.sendRunnerTask(RunnerTask(homework.checkerId, submissionId))
         call.respond(HttpStatusCode.OK)
     }
 

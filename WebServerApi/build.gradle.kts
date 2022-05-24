@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":repository"))
     implementation(project(":facade"))
     implementation(project(":settings"))
+    implementation(project(":queue"))
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
