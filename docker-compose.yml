@@ -1,0 +1,88 @@
+version: "3.3"
+
+services:
+  rabbit-mq:
+    image: bitnami/rabbitmq:3.10
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbit
+      - RABBITMQ_DEFAULT_PASS=rabbit
+    networks:
+      - hw-proj
+
+  db:
+    image: postgres:latest
+    ports:
+      - "54321:5432"
+    environment:
+      - POSTGRES_DB=hwproj
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - hw-proj
+
+  queue:
+    build: ./queue
+    restart: always
+    networks:
+      - hw-proj
+    depends_on:
+      - rabbit-mq
+
+  runner:
+    build: ./runner
+    restart: always
+    networks:
+      - hw-proj
+    depends_on:
+      - rabbit-mq
+      - queue
+
+  backend:
+    build: ./WebServerApi
+    restart: always
+    ports:
+      - "10003:10003"
+    networks:
+      - hw-proj
+    depends_on:
+      - db
+
+  frontend:
+    build: ./WebServer
+    restart: always
+    ports:
+      - "10002:10002"
+    networks:
+      - hw-proj
+    depends_on:
+      - db
+      - backend
+
+  repository:
+    build:
+      context: ./repository
+      dockerfile: ./init.Dockerfile
+    ports:
+      - "10001:10001"
+    restart: always
+    command: "--mode api"
+    networks:
+      - hw-proj
+    depends_on:
+      - db
+
+  db-init:
+    build:
+      context: ./repository
+      dockerfile: ./init.Dockerfile
+    restart: on-failure
+    command: "--mode init"
+    networks:
+      - hw-proj
+    depends_on:
+      - db
+
+networks:
+  hw-proj:
+    driver: bridge

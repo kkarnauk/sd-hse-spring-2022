@@ -102,9 +102,10 @@ MyHwProj -- система для проверки домашних задани
 ![Components](img/components.svg)
 
 - `Web Server` роутит адреса, валидирует данные, общается с репозиторием
-- `Runner` берёт задачу из очереди задач из RabbitMQ, выполняет её, кладёт результат в очередь с результатами
-- `ResultProcessor` берёт результаты из очереди с результатами, записывает их через репозиторий в БД
+- `Runner` берёт задачу из очереди задач из RabbitMQ через TasksSender, выполняет её, записывает результат в репозиторий
 - `Repository` является интерфейсом, через который можно сохранять любые необходимые данные в БД
+- `Model` не является отдельной компонентой по факту, это разделяемая модель (домашки, чекеры, посылки) между всеми компонентами. 
+Мы были не уверены, стоит ли вообще её на диаграмме комопзиций рисовать
 
 ### Логическая структура
 
@@ -138,34 +139,28 @@ MyHwProj -- система для проверки домашних задани
     - `getHomework(id)` -- получить `HomeworkContent` по идентификатору домашки
     - `getSubmission(id)` -- получить `SubmissionContent` по идентификатору решения
     - `getSubmissionResult(id)` -- получить `SubmissionResult` по идентификатору решения
-    - `getAllHomeworks` -- получить все `Homework`
-    - `getAllSubmissions(homeworkId)` -- получить все `Submission` по идентификатору домашки
+    - `getHomeworks` -- получить все `Homework`
+    - `getSubmissions(homeworkId)` -- получить все `Submission` по идентификатору домашки
     - `addHomework(homeworkContent)` -- добавить домашку 
     - `addSubmission(submissionContent)` -- добавить решение
+    - `addChecker(checkerContent)' -- добавить чекер
+    - `getChecker(id)' -- получить чекер
 - `RepositoryFacade` -- нужен, чтобы другие сервисы могли общаться с `Repository`, ходит с помощью REST к
   реализации `Repository`
 - `RepositoryImpl` -- стандартная реализация `Repository`
 
 -----
 
-- `QueueHandler` -- работает с RabbitMQ
-  - `sendTaskForRunner` -- отправить задачу
-  - `sendResult` -- отправить результат
-  - `addCallbackForTask` -- добавить коллбек на задачу
-  - `addCallbackForResult` -- добавить коллбек на результат
-- `QueueHandlerFacade` -- нужен, чтобы другие сервисы могли общаться с `QueueHandler`, 
-  ходит с помощью REST к реализации `QueueHandler`
-- `QueueHandlerImpl` -- стандартная реализация `QueueHandler`
-- `QueueHandlerRoutine` -- тот, кто запускает `QueueHandler`
+- `TasksSender` -- работает с RabbitMQ
+  - `sendRunnerTask` -- отправить задачу
+- `TasksSenderFacade` -- нужен, чтобы другие сервисы могли общаться с `TasksSender`, 
+  ходит с помощью REST к реализации `TasksSender`
+- `TasksSenderImpl` -- стандартная реализация `TasksSender`
 
 -----
 
 - `Runner` -- тот, кто запускает чекеры
-  - `queueHandler` -- ссылка на `QueueHandler`, чтобы отдавать результаты
   - `run` -- запустить чекер
-- `RunnerRoutine` -- тот, кто запускает `Runner`
-- `RunnerFacade` -- нужен, чтобы другие сервисы могли общаться с `Runner`, ходит с помощью REST к реализации `Runner`
-- `RunnerImpl` -- стандартная реализация `Runner`
 
 -----
 
