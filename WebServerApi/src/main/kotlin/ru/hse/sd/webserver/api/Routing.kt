@@ -33,7 +33,7 @@ internal fun Application.configureRouting() {
 private fun Route.routeStudentApi(repo: Repository) {
     get("/homework/{id}") {
         val id = checkNotNull(call.parameters["id"]?.toIntOrNull())
-        call.respond(HttpStatusCode.OK, repo.getHomework(id).also { println("||| $it") })
+        call.respond(HttpStatusCode.OK, repo.getHomework(id))
     }
 
     post("/homework") {
