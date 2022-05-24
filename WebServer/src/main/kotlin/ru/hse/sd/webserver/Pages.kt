@@ -277,7 +277,7 @@ internal fun HTML.homeworkPage(
                                 attributes["data-bs-target"] = "#$modalId"
                                 text(submission.content.solutionLink.toString())
                             }
-                            modalFade(modalId, "Решение задачи ${homework.name}", "", {
+                            modalFade(modalId, "Решение задачи ${homework.name}", "/professor/check", {
                                 p {
                                     text("Сдано: ${dateFormat.format(submission.content.date)}")
                                 }
@@ -296,7 +296,11 @@ internal fun HTML.homeworkPage(
                                     text("Результат проверки: $resultMessage")
                                 }
                             }) {
-                                button(type = ButtonType.button, classes = "btn btn-primary") {
+                                input(type = InputType.text, name = "submissionId") {
+                                    hidden = true
+                                    value = submission.id.toString()
+                                }
+                                button(type = ButtonType.submit, classes = "btn btn-primary") {
                                     text("Проверить")
                                 }
                             }

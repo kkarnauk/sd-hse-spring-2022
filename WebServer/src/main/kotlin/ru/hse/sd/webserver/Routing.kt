@@ -9,9 +9,9 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.webjars.*
+import ru.hse.sd.hwproj.model.Homework
 import java.sql.Date
 import java.sql.Timestamp
-import ru.hse.sd.hwproj.model.Homework
 
 internal fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -64,6 +64,13 @@ private fun Route.routeProfessor() {
         val endDate = Timestamp(Date.valueOf(checkNotNull(formParameters["endDate"])).time)
         val checker = ApiRequest.addChecker(checkNotNull(formParameters["checkerContent"]))
         ApiRequest.addHomework(Homework.Content(name, startDate, endDate, statement, checker.id))
+        call.respondRedirect("/professor")
+    }
+
+    post("/check") {
+        val formParameters = call.receiveParameters()
+        val submissionId = checkNotNull(formParameters["submissionId"]?.toIntOrNull())
+        ApiRequest.checkSubmission(submissionId)
         call.respondRedirect("/professor")
     }
 
