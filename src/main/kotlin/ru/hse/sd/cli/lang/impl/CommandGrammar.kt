@@ -26,7 +26,7 @@ object CommandGrammar : Grammar<Command>() {
     internal val grepToken by literalToken("grep")
     internal val quoteToken by regexToken("'[^']*'")
     internal val doubleQuoteToken by regexToken("\"[^\"]*\"")
-    internal val identifierToken by regexToken("[^\\s=|\"'$]+")
+    internal val identifierToken by regexToken("((\"[^\"]*\")|[^\\s=|\"'$])+")
 
     private val weakCommandName by catToken or echoToken or wcToken or pwdToken or exitToken
     private val literal by identifierToken or quoteToken or doubleQuoteToken or weakCommandName map {
@@ -34,7 +34,7 @@ object CommandGrammar : Grammar<Command>() {
             quoteToken -> it.text.removeSurrounding("'")
             doubleQuoteToken -> it.text.removeSurrounding("\"")
             else -> it.text
-        }
+        }.filter { it != '"' }
     }
 
     private val echoTerm by echoToken and zeroOrMore(literal) map { EchoCommand(it.t2) }

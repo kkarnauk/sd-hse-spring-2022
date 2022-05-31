@@ -129,6 +129,12 @@ internal class CommandLexerTest {
                     CommandGrammar.identifierToken to "README.md",
                 )
             ),
+            Arguments.of(
+                "cat ../utils/\"meow meow.txt\"", listOf(
+                    CommandGrammar.catToken to "cat",
+                    CommandGrammar.identifierToken to "../utils/\"meow meow.txt\""
+                )
+            )
         )
     }
 }
