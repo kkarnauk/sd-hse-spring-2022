@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import ru.hse.sd.cli.command.*
+import ru.hse.sd.cli.command.impl.*
 import kotlin.test.assertEquals
 
 internal class CommandParserTest {
@@ -54,6 +55,21 @@ internal class CommandParserTest {
             Arguments.of("echo= echo", AssignmentCommand("echo", "echo")),
             Arguments.of("echo =echo", AssignmentCommand("echo", "echo")),
             Arguments.of("echo = echo", AssignmentCommand("echo", "echo")),
+            Arguments.of("grep", GrepCommand(emptyList())),
+            Arguments.of(
+                "grep -i \"минимальный\" README.md", GrepCommand(
+                    listOf(
+                        "-i", "минимальный", "README.md"
+                    )
+                )
+            ),
+            Arguments.of(
+                "grep -A 1 \"II\" README.md", GrepCommand(
+                    listOf(
+                        "-A", "1", "II", "README.md"
+                    )
+                )
+            ),
         )
     }
 }

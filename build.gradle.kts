@@ -20,6 +20,8 @@ repositories {
 
 dependencies {
     implementation("com.github.h0tk3y.betterParse:better-parse:0.4.3")
+    implementation("com.github.ajalt.clikt:clikt:3.4.0")
+
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("io.mockk:mockk:1.12.2")

@@ -8,7 +8,7 @@ import java.io.Closeable
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
 import kotlin.test.assertEquals
-import ru.hse.sd.cli.command.ExternalCommand
+import ru.hse.sd.cli.command.impl.ExternalCommand
 
 abstract class CommandExecutorTest {
     fun TestContext.test(pair: Pair<String, String>) = test(pair.first, pair.second)
@@ -30,7 +30,7 @@ abstract class CommandExecutorTest {
         output: String? = null,
         error: String? = null,
         expectedResult: CommandResult = CodeResult.success
-    ) = test(command, output, error) { assertEquals(it, expectedResult) }
+    ) = test(command, output, error) { assertEquals(expectedResult, it) }
 
     open fun withTestContext(block: TestContext.() -> Unit) {
         PipedInputStream().use { input ->
@@ -51,17 +51,14 @@ abstract class CommandExecutorTest {
         val result = execute(command)
         assertEquals(expectedResult, result)
         val actualOutput = buildString {
-            output
-                .windowed(System.lineSeparator().length)
-                .count { it == System.lineSeparator() }
-                .let {
-                    repeat(it) {
-                        append(outputLine())
-                        append(System.lineSeparator())
-                    }
+            output.lines().size.let {
+                repeat(maxOf(it - 1, 0)) {
+                    append(outputLine())
+                    append(System.lineSeparator())
                 }
+            }
         }
-        assertEquals(output, actualOutput)
+        assertEquals(output.lines(), actualOutput.lines())
     }
 
     @Suppress("unused")
