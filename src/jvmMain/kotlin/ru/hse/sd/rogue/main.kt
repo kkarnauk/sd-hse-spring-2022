@@ -29,10 +29,7 @@ import ru.hse.sd.rogue.game.logic.size.KorgeSize
 import ru.hse.sd.rogue.game.logic.size.Size
 import ru.hse.sd.rogue.game.state.InterfaceMutableState
 import ru.hse.sd.rogue.game.state.MapState
-import ru.hse.sd.rogue.game.state.character.MobState
-import ru.hse.sd.rogue.game.state.character.MovementMutableState
-import ru.hse.sd.rogue.game.state.character.PlayerState
-import ru.hse.sd.rogue.game.state.character.ReproducingMoldMobState
+import ru.hse.sd.rogue.game.state.character.*
 import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
 import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.CameraView
@@ -80,8 +77,6 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val containersManager = ContainersManager(this)
     val actionsManager = ActionsManager(containersManager.camera, 30)
 
-    @Suppress("UNUSED_VARIABLE") val globalController = GlobalController()
-
     val gameLevel = level {
         generate {
             map.width = mapSize.width
@@ -110,12 +105,17 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val collisionsController = CollisionsController().also { it.register(actionsManager) }
 
     val playerState = gameLevel.characters.filterIsInstance<PlayerState>().single()
+    val bossState = gameLevel.characters.single { it is BigDemonMobState || it is RinoMobState } as MobState
 
     val playerController = PlayerController(
         actionsManager,
         playerState,
         createMovementController(1)
     ).apply { collisionsController.register(this) }
+
+    GlobalController(actionsManager, playerState, bossState) {
+        gameWindow.close()
+    }
 
     InputHandler(playerController).apply {
         mapKeys()
