@@ -7,7 +7,7 @@ import ru.hse.sd.rogue.game.state.item.LootItemState
 import ru.hse.sd.rogue.game.view.Tiles
 
 /**
- * Represents a view of sword ax on the field.
+ * Represents a view of a sword on the field.
  */
 class LootSwordView(
     container: Container,
