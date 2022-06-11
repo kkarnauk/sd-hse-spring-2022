@@ -185,7 +185,6 @@ class LevelGenerator(
             )
         }
 
-
         private fun generateCorridorsInSubtree(
             node: Node,
             minThickness: Int,
@@ -204,7 +203,6 @@ class LevelGenerator(
                 random.nextInt(minThickness, maxThickness + 1),
                 corridorWobbling
             )
-
 
             generateCorridorsInSubtree(left, minThickness, maxThickness, corridorWobbling)
             generateCorridorsInSubtree(right, minThickness, maxThickness, corridorWobbling)
