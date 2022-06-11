@@ -22,7 +22,7 @@ class ExperienceBar(
      */
     position: Position,
     /**
-     * PLayer damage
+     * Player damage
      */
     private val experience: Experience
 ) {

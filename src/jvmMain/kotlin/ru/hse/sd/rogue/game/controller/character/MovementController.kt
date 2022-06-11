@@ -5,7 +5,7 @@ import ru.hse.sd.rogue.game.controller.MapController
 import ru.hse.sd.rogue.game.logic.action.*
 import ru.hse.sd.rogue.game.logic.position.Direction
 import ru.hse.sd.rogue.game.logic.position.Position
-import ru.hse.sd.rogue.game.state.character.MovementState
+import ru.hse.sd.rogue.game.state.character.MovementMutableState
 
 /**
  * Responsible for tracking whether it's permitted to move to one or another position.
@@ -13,7 +13,7 @@ import ru.hse.sd.rogue.game.state.character.MovementState
  */
 class MovementController(
     private val actionsManager: ActionsManager,
-    private val state: MovementState,
+    private val state: MovementMutableState,
     private val mapController: MapController
 ) : Controller {
     /**

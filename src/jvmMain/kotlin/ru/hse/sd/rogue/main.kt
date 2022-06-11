@@ -14,10 +14,9 @@ import ru.hse.sd.rogue.game.logic.action.ActionPriority
 import ru.hse.sd.rogue.game.logic.action.ActionsManager
 import ru.hse.sd.rogue.game.logic.action.registerRepeatable
 import ru.hse.sd.rogue.game.logic.ai.*
-import ru.hse.sd.rogue.game.logic.ai.withExpirableEffects
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.characteristics.Durability
-import ru.hse.sd.rogue.game.logic.characteristics.Speed
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDamage
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDurability
+import ru.hse.sd.rogue.game.logic.characteristics.MutableSpeed
 import ru.hse.sd.rogue.game.logic.common.Confusion
 import ru.hse.sd.rogue.game.logic.input.InputHandler
 import ru.hse.sd.rogue.game.logic.item.Potion
@@ -28,12 +27,9 @@ import ru.hse.sd.rogue.game.logic.level.mobsfabric.ClassicDungeonMobsFactory
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.logic.size.KorgeSize
 import ru.hse.sd.rogue.game.logic.size.Size
-import ru.hse.sd.rogue.game.state.InterfaceState
+import ru.hse.sd.rogue.game.state.InterfaceMutableState
 import ru.hse.sd.rogue.game.state.MapState
-import ru.hse.sd.rogue.game.state.character.MovementState
-import ru.hse.sd.rogue.game.state.character.MobState
-import ru.hse.sd.rogue.game.state.character.PlayerState
-import ru.hse.sd.rogue.game.state.character.ReproducingMoldMobState
+import ru.hse.sd.rogue.game.state.character.*
 import ru.hse.sd.rogue.game.state.item.weapon.LootPotionState
 import ru.hse.sd.rogue.game.state.item.weapon.LootWeaponState
 import ru.hse.sd.rogue.game.view.CameraView
@@ -81,8 +77,6 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val containersManager = ContainersManager(this)
     val actionsManager = ActionsManager(containersManager.camera, 30)
 
-    @Suppress("UNUSED_VARIABLE") val globalController = GlobalController()
-
     val gameLevel = level {
         generate {
             map.width = mapSize.width
@@ -103,7 +97,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     )
 
     val createMovementController = { ticksToReload: Int ->
-        MovementController(actionsManager, MovementState(Speed(ticksToReload)), mapController)
+        MovementController(actionsManager, MovementMutableState(MutableSpeed(ticksToReload)), mapController)
     }
 
     MapView(containersManager.mapContainer, mapState).also { it.register(actionsManager) }
@@ -111,12 +105,17 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     val collisionsController = CollisionsController().also { it.register(actionsManager) }
 
     val playerState = gameLevel.characters.filterIsInstance<PlayerState>().single()
+    val bossState = gameLevel.characters.single { it is BigDemonMobState || it is RinoMobState } as MobState
 
     val playerController = PlayerController(
         actionsManager,
         playerState,
         createMovementController(1)
     ).apply { collisionsController.register(this) }
+
+    GlobalController(actionsManager, playerState, bossState) {
+        gameWindow.close()
+    }
 
     InputHandler(playerController).apply {
         mapKeys()
@@ -135,9 +134,13 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
 
     gameLevel.characters.filterIsInstance<MobState>().filter { it !is ReproducingMoldMobState }.forEach { state ->
         MobController(
-            actionsManager, state, createMovementController(5), AggressiveStrategy(
-                playerState, state, createMovementController(3), 5
-            ).withExpirableEffects()
+            actionsManager, state, createMovementController(5), DynamicStrategy(
+                AggressiveStrategy(
+                    playerState, state, createMovementController(3), 5
+                ).withExpirableEffects()
+            ).withStrategyRule(CowardlyStrategy(playerState, state, createMovementController(3), 5), 1) {
+                state.health.current <= 0.2 * state.health.maximum
+            }
         )
             .also { it.register() }
             .apply { collisionsController.register(this) }
@@ -149,6 +152,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
             state,
             movementController,
             ReproductiveStrategy(
+                7,
                 state,
                 100,
                 0.5,
@@ -165,7 +169,7 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     run {
         InterfaceView(
             containersManager.interfaceContainer,
-            InterfaceState(
+            InterfaceMutableState(
                 playerState.health,
                 playerState.inventoryState,
                 playerState.experience,
@@ -178,8 +182,8 @@ suspend fun main() = Korge(mapWindowSize, cameraKorgeSize) {
     }
 
     run {
-        val ax = Weapon(Damage(10, 20), Durability(100), Weapon.Type.Ax)
-        val sword = Weapon(Damage(10, 20), Durability(100), Weapon.Type.Sword)
+        val ax = Weapon(MutableDamage(10, 20), MutableDurability(100), Weapon.Type.Ax)
+        val sword = Weapon(MutableDamage(10, 20), MutableDurability(100), Weapon.Type.Sword)
         val swordState = LootWeaponState(sword, MutablePosition(10, 10))
         val axState = LootWeaponState(ax, MutablePosition(13, 13))
 

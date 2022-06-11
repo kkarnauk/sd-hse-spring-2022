@@ -22,7 +22,7 @@ class DamageBar(
      */
     position: Position,
     /**
-     * PLayer damage
+     * Player damage
      */
     private val damage: Damage
 ) {

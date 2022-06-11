@@ -5,7 +5,18 @@ import ru.hse.sd.rogue.game.state.character.*
 import ru.hse.sd.rogue.game.view.character.CharacterView
 import ru.hse.sd.rogue.game.view.character.mob.*
 
-class MobViewFactory(val characterContainer: Container): Controller {
+/**
+ * Creates views of mobs by their states.
+ */
+class MobViewFactory(
+    /**
+     * [Container] of characters.
+     */
+    private val characterContainer: Container
+): Controller {
+    /**
+     * Converts a mov state into a view to display it.
+     */
     fun MobState.toView(): CharacterView {
         return when (this) {
             is AngryPigMobState -> AngryPigView(characterContainer, this)

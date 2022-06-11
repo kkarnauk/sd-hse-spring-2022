@@ -9,7 +9,7 @@ internal class DamageTest {
     fun testValue() {
         val min = 10
         val max = 30
-        val damage = Damage(min, max)
+        val damage = MutableDamage(min, max)
         repeat(100) {
             val value = damage.value
             assertTrue(min <= value)

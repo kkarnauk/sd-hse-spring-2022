@@ -1,7 +1,7 @@
 package ru.hse.sd.rogue.game.state.character
 
-import ru.hse.sd.rogue.game.logic.characteristics.Damage
-import ru.hse.sd.rogue.game.logic.characteristics.Health
+import ru.hse.sd.rogue.game.logic.characteristics.MutableDamage
+import ru.hse.sd.rogue.game.logic.characteristics.MutableHealth
 import ru.hse.sd.rogue.game.logic.position.MutablePosition
 import ru.hse.sd.rogue.game.state.CloneableState
 
@@ -10,7 +10,7 @@ import ru.hse.sd.rogue.game.state.CloneableState
  */
 class ReproducingMoldMobState(
     position: MutablePosition
-) : MobState(Health(3), position, Damage(0, 1)), CloneableState<ReproducingMoldMobState> {
+) : MobState(MutableHealth(3), position, MutableDamage(0, 1)), CloneableState<ReproducingMoldMobState> {
     override fun clone(): ReproducingMoldMobState {
         return ReproducingMoldMobState(MutablePosition(position.x, position.y))
     }
