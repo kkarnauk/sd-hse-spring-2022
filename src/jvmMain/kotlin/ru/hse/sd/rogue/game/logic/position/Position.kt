@@ -44,6 +44,26 @@ open class Position(
      */
     operator fun unaryMinus(): Position = Position(-x, -y)
 
+    /**
+     * Increase [x] by one. Always creates a new [Position].
+     */
+    fun incX(): MutablePosition = MutablePosition(x + 1, y)
+
+    /**
+     * Decrease [x] by one. Always creates a new [Position].
+     */
+    fun decX(): MutablePosition = MutablePosition(x - 1, y)
+
+    /**
+     * Increase [y] by one. Always creates a new [Position].
+     */
+    fun incY(): MutablePosition = MutablePosition(x, y + 1)
+
+    /**
+     * Decrease [y] by one. Always creates a new [Position].
+     */
+    fun decY(): MutablePosition = MutablePosition(x, y - 1)
+
     operator fun rangeTo(other: Position): List<Position> {
         return sequence {
             for (i in x..other.x) {
@@ -105,26 +125,6 @@ class MutablePosition(
         x = other.x
         y = other.y
     }
-
-    /**
-     * Increase [x] by one.
-     */
-    fun incX(): MutablePosition = MutablePosition(x + 1, y)
-
-    /**
-     * Decrease [x] by one.
-     */
-    fun decX(): MutablePosition = MutablePosition(x - 1, y)
-
-    /**
-     * Increase [y] by one.
-     */
-    fun incY(): MutablePosition = MutablePosition(x, y + 1)
-
-    /**
-     * Decrease [y] by one.
-     */
-    fun decY(): MutablePosition = MutablePosition(x, y - 1)
 }
 
 /**
